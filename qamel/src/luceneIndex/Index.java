@@ -75,12 +75,18 @@ public class Index {
 				NodeIterator objectsIterator = model.listObjects();
 				ResIterator subjectsIterator = model.listSubjects();
 				while(objectsIterator.hasNext()){
+					try{
 					String nextObject =  objectsIterator.next().asResource().getLocalName();
 					addDocumentToIndex(nextObject);
+					}catch(Exception e){
+					}
 				}
 				while(subjectsIterator.hasNext()){
+					try{
 					String nextSubject = subjectsIterator.next().asResource().getLocalName();
 					addDocumentToIndex(nextSubject);
+					}catch(Exception e){
+					}
 				}
 				iwriter.close();
 			} else{
@@ -98,7 +104,7 @@ public class Index {
 		try {
 			System.out.println("\t start asking index...");
 
-			Query q = new FuzzyQuery(new Term(FIELD_NAME_URI, uri), 2);
+			Query q = new FuzzyQuery(new Term(FIELD_NAME_URI, uri), 2, 0, 50, true);
 			TopScoreDocCollector collector = TopScoreDocCollector.create(numberOfDocsRetrievedFromIndex);
 			isearcher.search(q, collector);
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;

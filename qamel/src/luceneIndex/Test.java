@@ -4,10 +4,10 @@ import java.util.HashSet;
 
 public class Test {
 	public static void main(String[] args){
-		Index IB = new Index();
-		IB.buildIndex();
-		String query = "Acqualana";
-		HashSet<String> res = IB.search(query);
+		Index I = new Index();
+		I.buildIndex();
+		String query = "aBrack_bOama";
+		HashSet<String> res = I.search(query);
 		System.out.println("Searched : " + query);
 		System.out.println(res.toString());
 
