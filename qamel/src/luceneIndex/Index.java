@@ -1,16 +1,14 @@
 package luceneIndex;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.NodeIterator;
-import org.apache.jena.rdf.model.ResIterator;
-import org.apache.jena.util.FileManager;
+import org.apache.jena.rdf.model.Statement;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -27,10 +25,11 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-//import org.apache.lucene.util.Version;
-
-
-
+import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.RDFParseException;
+import org.openrdf.rio.RDFParser;
+import org.openrdf.rio.helpers.RDFHandlerBase;
+import org.openrdf.rio.turtle.TurtleParser;
 import org.slf4j.LoggerFactory;
 
 public class Index {
@@ -45,7 +44,14 @@ public class Index {
 	private DirectoryReader ireader;
 	private IndexWriter iwriter;
 	private Analyzer analyzer;
+	private HashSet<String> predicates;
 
+	
+	public Index(){
+		predicates = new HashSet<String>();
+		predicates.add("http://www.w3.org/2000/01/rdf-schema#label");
+		buildIndex();
+	}
 	
 	private void addDocumentToIndex(String name) throws IOException {
 		Document doc = new Document();
@@ -70,32 +76,26 @@ public class Index {
 
 /*
  * 			Create the Index
- */
-				Model model = FileManager.get().loadModel( "./resources/test.nt" );
-				NodeIterator objectsIterator = model.listObjects();
-				ResIterator subjectsIterator = model.listSubjects();
-				while(objectsIterator.hasNext()){
-					try{
-					String nextObject =  objectsIterator.next().asResource().getLocalName();
-					addDocumentToIndex(nextObject);
-					}catch(Exception e){
-					}
-				}
-				while(subjectsIterator.hasNext()){
-					try{
-					String nextSubject = subjectsIterator.next().asResource().getLocalName();
-					addDocumentToIndex(nextSubject);
-					}catch(Exception e){
-					}
-				}
+ */    
+				RDFParser parser = new TurtleParser();
+				OnlineStatementHandler osh = new OnlineStatementHandler();
+				parser.setRDFHandler(osh);
+				parser.setStopAtFirstError(false);
+				parser.parse(new FileReader( "./resources/labels_en.ttl" ), "");
 				iwriter.close();
+				
 			} else{
 				directory = FSDirectory.open(indexPath);
 			}
 			ireader = DirectoryReader.open(directory);
 			isearcher = new IndexSearcher(ireader);
+			
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage(), e);
+		} catch (RDFParseException e) {
+			e.printStackTrace();
+		} catch (RDFHandlerException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -121,5 +121,21 @@ public class Index {
 			setUris.add(uris.get(i));
 		}
 		return setUris;
+	}
+	
+	private class OnlineStatementHandler extends RDFHandlerBase {
+		
+		@Override
+		public void handleStatement(Statement st){
+			String predicate = st.getPredicate().toString();
+			String object = st.getObject().toString();
+			try {
+			    if(predicates.contains(predicate)){
+			    	addDocumentToIndex(object.replaceAll("@en", ""));
+			    }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
