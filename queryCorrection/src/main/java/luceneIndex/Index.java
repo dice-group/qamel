@@ -34,7 +34,8 @@ import org.openrdf.rio.turtle.TurtleParser;
 import org.slf4j.LoggerFactory;
 
 public class Index {
-	// private static final Version LUCENE_VERSION = Version.LUCENE_6_3_0;
+	//TODO: Filter out Disambiguations and Redirects
+	
 	private org.slf4j.Logger log = LoggerFactory.getLogger(Index.class);
 	private int numberOfDocsRetrievedFromIndex = 10;
 
@@ -75,21 +76,20 @@ public class Index {
 				 * Create the Index
 				 */
 				RDFParser parser = new TurtleParser();
-				RDFHandlerBase onlineStatementHandler = new RDFHandlerBase(){
-						@Override
-						public void handleStatement(Statement st) {
-							String predicate = st.getPredicate().toString();
-							String object = st.getObject().stringValue();
-							try {
-								if (predicates.contains(predicate)) {
-									addDocumentToIndex(object);
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
+				parser.setRDFHandler(new RDFHandlerBase(){
+					@Override
+					public void handleStatement(Statement st) {
+						String predicate = st.getPredicate().toString();
+						String object = st.getObject().stringValue();
+						try {
+							if (predicates.contains(predicate)) {
+								addDocumentToIndex(object);
 							}
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
-					};
-				parser.setRDFHandler(onlineStatementHandler);
+					}
+				});
 				parser.setStopAtFirstError(false);
 				InputStream resourceToLoad = getClass().getResourceAsStream("/test.nt");
 				parser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
