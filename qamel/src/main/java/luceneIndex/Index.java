@@ -1,14 +1,14 @@
 package luceneIndex;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.apache.jena.rdf.model.Statement;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -25,6 +25,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.openrdf.model.Statement;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.RDFParser;
@@ -33,7 +34,7 @@ import org.openrdf.rio.turtle.TurtleParser;
 import org.slf4j.LoggerFactory;
 
 public class Index {
-	//private static final Version LUCENE_VERSION = Version.LUCENE_6_3_0;
+	// private static final Version LUCENE_VERSION = Version.LUCENE_6_3_0;
 	private org.slf4j.Logger log = LoggerFactory.getLogger(Index.class);
 	private int numberOfDocsRetrievedFromIndex = 10;
 
@@ -46,13 +47,12 @@ public class Index {
 	private Analyzer analyzer;
 	private HashSet<String> predicates;
 
-	
-	public Index(){
+	public Index() {
 		predicates = new HashSet<String>();
 		predicates.add("http://www.w3.org/2000/01/rdf-schema#label");
 		buildIndex();
 	}
-	
+
 	private void addDocumentToIndex(String name) throws IOException {
 		Document doc = new Document();
 		doc.add(new StringField(FIELD_NAME_URI, name, Store.YES));
@@ -60,36 +60,35 @@ public class Index {
 		System.out.println(name);
 	}
 
-	
-	
-	void buildIndex(){
+	void buildIndex() {
 		try {
-			File indexDir = new File("resources/index");
+			File indexDir = new File("index");
 			Path indexPath = Paths.get(indexDir.getAbsolutePath());
 			analyzer = new StandardAnalyzer();
-			
+
 			if (!indexDir.exists()) {
 				indexDir.mkdir();
 				IndexWriterConfig config = new IndexWriterConfig(analyzer);
 				directory = FSDirectory.open(indexPath);
 				iwriter = new IndexWriter(directory, config);
 
-/*
- * 			Create the Index
- */    
+				/*
+				 * Create the Index
+				 */
 				RDFParser parser = new TurtleParser();
 				OnlineStatementHandler osh = new OnlineStatementHandler();
 				parser.setRDFHandler(osh);
 				parser.setStopAtFirstError(false);
-				parser.parse(new FileReader( "./resources/labels_en.ttl" ), "");
+				InputStream resourceToLoad = getClass().getResourceAsStream("/test.nt");
+				parser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
 				iwriter.close();
-				
-			} else{
+
+			} else {
 				directory = FSDirectory.open(indexPath);
 			}
 			ireader = DirectoryReader.open(directory);
 			isearcher = new IndexSearcher(ireader);
-			
+
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage(), e);
 		} catch (RDFParseException e) {
@@ -98,7 +97,7 @@ public class Index {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public HashSet<String> search(String uri) {
 		ArrayList<String> uris = new ArrayList<String>();
 		try {
@@ -117,22 +116,21 @@ public class Index {
 			log.error(e.getLocalizedMessage() + " -> " + uri, e);
 		}
 		HashSet<String> setUris = new HashSet<String>();
-		for(int i = 0; i < uris.size(); i++){
+		for (int i = 0; i < uris.size(); i++) {
 			setUris.add(uris.get(i));
 		}
 		return setUris;
 	}
-	
+
 	private class OnlineStatementHandler extends RDFHandlerBase {
-		
 		@Override
-		public void handleStatement(Statement st){
+		public void handleStatement(Statement st) {
 			String predicate = st.getPredicate().toString();
 			String object = st.getObject().toString();
 			try {
-			    if(predicates.contains(predicate)){
-			    	addDocumentToIndex(object.replaceAll("@en", ""));
-			    }
+				if (predicates.contains(predicate)) {
+					addDocumentToIndex(object.replaceAll("@en", ""));
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

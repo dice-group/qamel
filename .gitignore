@@ -7,6 +7,11 @@ target
 target/
 bin/
 
+qamel/.project
+qamel/.settings
+qamel/index/
+qamel/log.out
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
