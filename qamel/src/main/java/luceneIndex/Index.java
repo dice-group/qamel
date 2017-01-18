@@ -57,7 +57,6 @@ public class Index {
 		Document doc = new Document();
 		doc.add(new StringField(FIELD_NAME_URI, name, Store.YES));
 		iwriter.addDocument(doc);
-		System.out.println(name);
 	}
 
 	void buildIndex() {
@@ -76,8 +75,21 @@ public class Index {
 				 * Create the Index
 				 */
 				RDFParser parser = new TurtleParser();
-				OnlineStatementHandler osh = new OnlineStatementHandler();
-				parser.setRDFHandler(osh);
+				RDFHandlerBase onlineStatementHandler = new RDFHandlerBase(){
+						@Override
+						public void handleStatement(Statement st) {
+							String predicate = st.getPredicate().toString();
+							String object = st.getObject().stringValue();
+							try {
+								if (predicates.contains(predicate)) {
+									addDocumentToIndex(object);
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					};
+				parser.setRDFHandler(onlineStatementHandler);
 				parser.setStopAtFirstError(false);
 				InputStream resourceToLoad = getClass().getResourceAsStream("/test.nt");
 				parser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
@@ -101,8 +113,7 @@ public class Index {
 	public HashSet<String> search(String uri) {
 		ArrayList<String> uris = new ArrayList<String>();
 		try {
-			System.out.println("\t start asking index...");
-
+			log.debug("\t start asking index...");
 			Query q = new FuzzyQuery(new Term(FIELD_NAME_URI, uri), 2, 0, 50, true);
 			TopScoreDocCollector collector = TopScoreDocCollector.create(numberOfDocsRetrievedFromIndex);
 			isearcher.search(q, collector);
@@ -111,7 +122,7 @@ public class Index {
 				Document hitDoc = isearcher.doc(hits[i].doc);
 				uris.add(hitDoc.get(FIELD_NAME_URI));
 			}
-			System.out.println("\t finished asking index...");
+			log.debug("\t finished asking index...");
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage() + " -> " + uri, e);
 		}
@@ -120,20 +131,5 @@ public class Index {
 			setUris.add(uris.get(i));
 		}
 		return setUris;
-	}
-
-	private class OnlineStatementHandler extends RDFHandlerBase {
-		@Override
-		public void handleStatement(Statement st) {
-			String predicate = st.getPredicate().toString();
-			String object = st.getObject().toString();
-			try {
-				if (predicates.contains(predicate)) {
-					addDocumentToIndex(object.replaceAll("@en", ""));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 }
