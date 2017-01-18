@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -40,73 +41,91 @@ public class Index {
 	private int numberOfDocsRetrievedFromIndex = 10;
 
 	public String FIELD_NAME_URI = "uri";
+	public String FIELD_NAME_cURI = "curi";
 
 	private Directory directory;
 	private IndexSearcher isearcher;
 	private DirectoryReader ireader;
 	private IndexWriter iwriter;
 	private Analyzer analyzer;
-	private HashSet<String> predicates;
+	private static HashSet<String> predicates;
+	private static HashMap<String, String> redirects;
+	private static HashMap<String, String> labels;
+	private File indexDir;
 
 	public Index() {
 		predicates = new HashSet<String>();
 		predicates.add("http://www.w3.org/2000/01/rdf-schema#label");
-		buildIndex();
+		indexDir = new File("index");
+		if(!indexDir.exists()){
+			System.out.println("getting Labels..");
+			labels = getLabels();
+			System.out.println("getting Redirects..");
+			redirects = getRedirects();
+			buildIndex();
+		}
+		else{
+			Path indexPath = Paths.get(indexDir.getAbsolutePath());
+			try {
+				directory = FSDirectory.open(indexPath);
+				ireader = DirectoryReader.open(directory);
+				isearcher = new IndexSearcher(ireader);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	private void addDocumentToIndex(String name) throws IOException {
+	private void addDocumentToIndex(String correctName, String name) throws IOException {
 		Document doc = new Document();
 		doc.add(new StringField(FIELD_NAME_URI, name, Store.YES));
+		doc.add(new StringField(FIELD_NAME_cURI, correctName, Store.YES));
 		iwriter.addDocument(doc);
 	}
 
-	void buildIndex() {
+	private void buildIndex() {
 		try {
-			File indexDir = new File("index");
 			Path indexPath = Paths.get(indexDir.getAbsolutePath());
 			analyzer = new StandardAnalyzer();
-
-			if (!indexDir.exists()) {
-				indexDir.mkdir();
-				IndexWriterConfig config = new IndexWriterConfig(analyzer);
-				directory = FSDirectory.open(indexPath);
-				iwriter = new IndexWriter(directory, config);
+			System.out.println("creating Index..");
+			indexDir.mkdir();
+			IndexWriterConfig config = new IndexWriterConfig(analyzer);
+			directory = FSDirectory.open(indexPath);
+			iwriter = new IndexWriter(directory, config);
 
 				/*
 				 * Create the Index
 				 */
-				RDFParser parser = new TurtleParser();
-				parser.setRDFHandler(new RDFHandlerBase(){
-					@Override
-					public void handleStatement(Statement st) {
-						String predicate = st.getPredicate().toString();
-						String object = st.getObject().stringValue();
+			RDFParser parser = new TurtleParser();
+			parser.setRDFHandler(new RDFHandlerBase(){
+				@Override
+				public void handleStatement(Statement st) {
+					String subject = st.getSubject().stringValue();
+					String predicate = st.getPredicate().toString();
+					String object = st.getObject().stringValue();
+					String correctSubject = subject;
+					String correctObject = object;
+					if (redirects.get(subject) != null) {
+						correctSubject = redirects.get(subject);
+					}
+					if (labels.get(correctSubject) != null) {
+						correctObject = labels.get(correctSubject);
+					}
+					if (predicates.contains(predicate)) {
 						try {
-							if (predicates.contains(predicate)) {
-								addDocumentToIndex(object);
-							}
+							addDocumentToIndex(correctObject, object);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}
-				});
-				parser.setStopAtFirstError(false);
-				InputStream resourceToLoad = getClass().getResourceAsStream("/test.nt");
-				parser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
-				iwriter.close();
-
-			} else {
-				directory = FSDirectory.open(indexPath);
-			}
-			ireader = DirectoryReader.open(directory);
-			isearcher = new IndexSearcher(ireader);
-
-		} catch (IOException e) {
+				}
+			});
+			parser.setStopAtFirstError(false);
+			InputStream resourceToLoad = getClass().getResourceAsStream("/labels_en.ttl");
+			parser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
+			iwriter.close();
+		} catch (RDFHandlerException | RDFParseException | IOException e) {
 			log.error(e.getLocalizedMessage(), e);
-		} catch (RDFParseException e) {
-			e.printStackTrace();
-		} catch (RDFHandlerException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -120,7 +139,7 @@ public class Index {
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
 			for (int i = 0; i < hits.length; i++) {
 				Document hitDoc = isearcher.doc(hits[i].doc);
-				uris.add(hitDoc.get(FIELD_NAME_URI));
+				uris.add(hitDoc.get(FIELD_NAME_cURI));
 			}
 			log.debug("\t finished asking index...");
 		} catch (Exception e) {
@@ -131,5 +150,47 @@ public class Index {
 			setUris.add(uris.get(i));
 		}
 		return setUris;
+	}
+
+	private HashMap<String, String> getRedirects(){
+		final HashMap<String, String> redirects = new HashMap<String, String>();
+		RDFParser redirectparser = new TurtleParser();
+		redirectparser.setRDFHandler(new RDFHandlerBase(){
+			@Override
+			public void handleStatement(Statement st) {
+				String subject = st.getSubject().stringValue();
+				String object = st.getObject().stringValue();
+				redirects.put(subject, object);
+				}
+		});
+		redirectparser.setStopAtFirstError(false);
+		InputStream resourceToLoad = getClass().getResourceAsStream("/redirects_en.ttl");
+		try {
+			redirectparser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
+		} catch (RDFHandlerException | RDFParseException | IOException e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+		return redirects;
+	}
+	
+	private HashMap<String, String> getLabels(){
+		final HashMap<String, String> labels = new HashMap<String, String>();
+		RDFParser labelparser = new TurtleParser();
+		labelparser.setRDFHandler(new RDFHandlerBase(){
+			@Override
+			public void handleStatement(Statement st) {
+				String subject = st.getSubject().stringValue();
+				String object = st.getObject().stringValue();
+				labels.put(subject, object);
+			}
+		});
+		labelparser.setStopAtFirstError(false);
+		InputStream resourceToLoad = getClass().getResourceAsStream("/labels_en.ttl");
+		try {
+			labelparser.parse(new InputStreamReader(resourceToLoad), "http://dbpedia.org/resource/");
+		} catch (RDFHandlerException | RDFParseException | IOException e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+		return labels;
 	}
 }
