@@ -35,13 +35,13 @@ import org.openrdf.rio.turtle.TurtleParser;
 import org.slf4j.LoggerFactory;
 
 public class Index {
-	//TODO: Filter out Disambiguations and Redirects
+	//TODO: Filter out Disambiguations
 	
 	private org.slf4j.Logger log = LoggerFactory.getLogger(Index.class);
 	private int numberOfDocsRetrievedFromIndex = 10;
 
-	public String FIELD_NAME_URI = "uri";
-	public String FIELD_NAME_cURI = "curi";
+	public String FIELD_NAME_URI = "uri";   //search key
+	public String FIELD_NAME_cURI = "curi"; //correct label
 
 	private Directory directory;
 	private IndexSearcher isearcher;
@@ -129,7 +129,7 @@ public class Index {
 		}
 	}
 
-	public HashSet<String> search(String uri) {
+	public HashSet<String> fuzzySearch(String uri) {
 		ArrayList<String> uris = new ArrayList<String>();
 		try {
 			log.debug("\t start asking index...");
