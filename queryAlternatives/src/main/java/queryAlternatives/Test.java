@@ -15,7 +15,7 @@ public class Test {
 	 		File gModel = new File(ClassLoader.getSystemResource("GoogleNews-vectors-negative300.bin.gz").getFile());
 		    Word2Vec vec = WordVectorSerializer.readWord2VecModel(gModel);
 	        log.info("Closest Words:");
-	        Collection<String> lst = vec.wordsNearest("town", 15);
+	        Collection<String> lst = vec.wordsNearest("city", 15);
 	        System.out.println(lst);
 	     }
 }
