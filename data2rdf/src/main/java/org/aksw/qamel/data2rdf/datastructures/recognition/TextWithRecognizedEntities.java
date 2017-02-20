@@ -1,4 +1,4 @@
-package org.aksw.qamel.data2rdf;
+package org.aksw.qamel.data2rdf.datastructures.recognition;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ public class TextWithRecognizedEntities {
 	private final List<NERAnnotation> output;
 
 	private final Context context;
+
 	public TextWithRecognizedEntities(List<NERAnnotation> output, Context context) {
 		this.output = output;
 		this.context = context;
@@ -20,8 +21,8 @@ public class TextWithRecognizedEntities {
 	}
 
 	@Override
-    public String toString() {
-	    return "TextWithRecognizedEntities [output=" + output + ", context=" + context + "]";
-    }
+	public String toString() {
+		return "TextWithRecognizedEntities [output=" + output + ", context=" + context + "]";
+	}
 
 }

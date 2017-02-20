@@ -1,11 +1,9 @@
-package org.aksw.qamel.data2rdf;
+package org.aksw.qamel.data2rdf.datastructures.recognition;
 
 public class Context {
-	@SuppressWarnings("unused")
-    private final String ann;
-
-	@SuppressWarnings("unused")
+	private final String ann;
 	private final String scmsann;
+
 	public Context(String ann, String scmsann) {
 		this.ann = ann;
 		this.scmsann = scmsann;
@@ -20,7 +18,7 @@ public class Context {
 	}
 
 	@Override
-    public String toString() {
-	    return "Context [ann=" + ann + ", scmsann=" + scmsann + "]";
-    }
+	public String toString() {
+		return "Context [ann=" + ann + ", scmsann=" + scmsann + "]";
+	}
 }

@@ -1,9 +1,10 @@
-package org.aksw.qamel.data2rdf;
+package org.aksw.qamel.data2rdf.datastructures.recognition;
 
 public class TextInput {
 	private String input;
 
 	private String type;
+
 	public TextInput() {
 	}
 
@@ -21,8 +22,8 @@ public class TextInput {
 	}
 
 	@Override
-    public String toString() {
-	    return "TextInput [input=" + input + ", type=" + type + "]";
-    }
+	public String toString() {
+		return "TextInput [input=" + input + ", type=" + type + "]";
+	}
 
 }

@@ -1,12 +1,14 @@
-package org.aksw.qamel.data2rdf;
-
+package org.aksw.qamel.data2rdf.datastructures.disambiguation;
 
 public class NEDAnnotation {
-	private final String namedEntity;
-	private final String disambiguatedURL;
-	private final int start;
-	private final int end;
-	private final int offset;
+	private  String namedEntity;
+	private  String disambiguatedURL;
+	private  int start;
+	private  int end;
+	private  int offset;
+
+	public NEDAnnotation() {
+	}
 
 	public NEDAnnotation(String namedEntity, int start, int end, int offset, String disambiguatedURL) {
 		this.namedEntity = namedEntity;

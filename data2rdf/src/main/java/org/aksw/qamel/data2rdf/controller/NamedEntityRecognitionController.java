@@ -1,8 +1,12 @@
-package org.aksw.qamel.data2rdf;
+package org.aksw.qamel.data2rdf.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aksw.qamel.data2rdf.datastructures.recognition.Context;
+import org.aksw.qamel.data2rdf.datastructures.recognition.NERAnnotation;
+import org.aksw.qamel.data2rdf.datastructures.recognition.TextInput;
+import org.aksw.qamel.data2rdf.datastructures.recognition.TextWithRecognizedEntities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,13 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class NamedEntityRecognitionController {
-Logger log = LoggerFactory.getLogger(NamedEntityRecognitionController.class);
-	@RequestMapping(value = "/recognition", method = RequestMethod.POST)
-	public TextWithRecognizedEntities greeting(@RequestBody TextInput input) {
+	Logger log = LoggerFactory.getLogger(NamedEntityRecognitionController.class);
 
-		
-		log.info("To recognize: "+input.toString());
-		
+	@SuppressWarnings("serial")
+	@RequestMapping(value = "/recognition", method = RequestMethod.POST)
+	public TextWithRecognizedEntities recognition(@RequestBody TextInput input) {
+
+		log.info("To recognize: " + input.toString());
+
 		List<NERAnnotation> annotations = new ArrayList<NERAnnotation>();
 		annotations.add(new NERAnnotation(1, "Leibniz", new ArrayList<String>() {
 			{
@@ -32,9 +37,9 @@ Logger log = LoggerFactory.getLogger(NamedEntityRecognitionController.class);
 				add("ann:Annotation");
 			}
 		}, 54, 61));
-		
+
 		TextWithRecognizedEntities textWithRecognizedEntities = new TextWithRecognizedEntities(annotations, new Context(null, null));
-		log.info("Recognized: "+textWithRecognizedEntities.toString());
+		log.info("Recognized: " + textWithRecognizedEntities.toString());
 		return textWithRecognizedEntities;
 	}
 }
