@@ -13,3 +13,9 @@ We provide three different interfaces
 
 
 `curl -H "Content-Type: application/json" -X POST -d '{ "input": "The philosopher and mathematician Leibniz was born in Leipzig in 1646.", "namedEntities": { "output": [ { "namedEntity": "Leibniz", "start": 35, "end": 42, "offset": 7, "disambiguatedURL": "http://dbpedia.org/resource/Gottfried_Wilhelm_Leibniz" }, { "namedEntity": "Leipzig", "start": 55, "end": 62, "offset": 7, "disambiguatedURL": "http://dbpedia.org/resource/Leipzig" } ] } }' http://localhost:8080/text2k`
+
+###Issues###
+ * Only POST interfaces?
+ * How to choose other languages?
+ * The datastructures for input and output are not really good reusable
+ * The input for text2k contains one needless level (output) which could be circumvented by adding just an array under the top level
