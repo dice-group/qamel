@@ -19,14 +19,14 @@ Logger log = LoggerFactory.getLogger(NamedEntityRecognitionController.class);
 		
 		log.info("To recognize: "+input.toString());
 		
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		annotations.add(new Annotation(1, "Leibniz", new ArrayList<String>() {
+		List<NERAnnotation> annotations = new ArrayList<NERAnnotation>();
+		annotations.add(new NERAnnotation(1, "Leibniz", new ArrayList<String>() {
 			{
 				add("scmsann:PERSON");
 				add("ann:Annotation");
 			}
 		}, 34, 41));
-		annotations.add(new Annotation(2, "Leipzig", new ArrayList<String>() {
+		annotations.add(new NERAnnotation(2, "Leipzig", new ArrayList<String>() {
 			{
 				add("scmsann:LOCATION");
 				add("ann:Annotation");

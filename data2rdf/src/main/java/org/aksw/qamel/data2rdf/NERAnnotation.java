@@ -2,13 +2,13 @@ package org.aksw.qamel.data2rdf;
 
 import java.util.List;
 
-public class Annotation {
+public class NERAnnotation {
 	private final int id;
 	private final String body;
 	private final List<String> type;
 	private final int beginIndex;
 	private final int endIndex;
-	public Annotation(int id, String body, List<String> type, int beginIndex, int endIndex) {
+	public NERAnnotation(int id, String body, List<String> type, int beginIndex, int endIndex) {
 	    this.id = id;
 	    this.body = body;
 	    this.type = type;

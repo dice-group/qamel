@@ -3,10 +3,10 @@ package org.aksw.qamel.data2rdf;
 import java.util.List;
 
 public class TextWithRecognizedEntities {
-	private final List<Annotation> output;
+	private final List<NERAnnotation> output;
 
 	private final Context context;
-	public TextWithRecognizedEntities(List<Annotation> output, Context context) {
+	public TextWithRecognizedEntities(List<NERAnnotation> output, Context context) {
 		this.output = output;
 		this.context = context;
 	}
@@ -15,7 +15,7 @@ public class TextWithRecognizedEntities {
 		return context;
 	}
 
-	public List<Annotation> getOutput() {
+	public List<NERAnnotation> getOutput() {
 		return output;
 	}
 
