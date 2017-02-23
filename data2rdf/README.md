@@ -17,5 +17,7 @@ We provide three different interfaces
 ###Issues###
  * Only POST interfaces?
  * How to choose other languages?
+ * What does "type" mean in the input?
+ * For the disambiguation it would be more senseful to give it a list of URIs
  * The datastructures for input and output are not really good reusable
  * The input for text2k contains one needless level (output) which could be circumvented by adding just an array under the top level

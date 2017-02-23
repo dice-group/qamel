@@ -1,12 +1,17 @@
 package org.aksw.qamel.data2rdf.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.aksw.qamel.data2rdf.annotator.Entity;
+import org.aksw.qamel.data2rdf.annotator.NER_FOX;
 import org.aksw.qamel.data2rdf.datastructures.recognition.Context;
 import org.aksw.qamel.data2rdf.datastructures.recognition.NERAnnotation;
 import org.aksw.qamel.data2rdf.datastructures.recognition.TextInput;
 import org.aksw.qamel.data2rdf.datastructures.recognition.TextWithRecognizedEntities;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,25 +23,32 @@ import org.springframework.web.bind.annotation.RestController;
 public class NamedEntityRecognitionController {
 	Logger log = LoggerFactory.getLogger(NamedEntityRecognitionController.class);
 
-	@SuppressWarnings("serial")
 	@RequestMapping(value = "/recognition", method = RequestMethod.POST)
 	public TextWithRecognizedEntities recognition(@RequestBody TextInput input) {
 
 		log.info("To recognize: " + input.toString());
+		NER_FOX fox = new NER_FOX();
 
 		List<NERAnnotation> annotations = new ArrayList<NERAnnotation>();
-		annotations.add(new NERAnnotation(1, "Leibniz", new ArrayList<String>() {
-			{
-				add("scmsann:PERSON");
-				add("ann:Annotation");
+
+		try {
+			String sentence = input.getInput();
+			Map<String, List<Entity>> entities = fox.getEntities(sentence);
+			int id = 0;
+			for (String key : entities.keySet()) {
+				for (Entity entity : entities.get(key)) {
+
+					ArrayList<String> listOfTypes = new ArrayList<String>();
+					for (String r : entity.posTypesAndCategories) {
+						listOfTypes.add(r);
+					}
+
+					annotations.add(new NERAnnotation(id++, entity.label, listOfTypes, entity.beginIndex, entity.endIndex));
+				}
 			}
-		}, 34, 41));
-		annotations.add(new NERAnnotation(2, "Leipzig", new ArrayList<String>() {
-			{
-				add("scmsann:LOCATION");
-				add("ann:Annotation");
-			}
-		}, 54, 61));
+		} catch (ParseException | IOException e) {
+			e.printStackTrace();
+		}
 
 		TextWithRecognizedEntities textWithRecognizedEntities = new TextWithRecognizedEntities(annotations, new Context(null, null));
 		log.info("Recognized: " + textWithRecognizedEntities.toString());

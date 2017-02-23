@@ -3,14 +3,14 @@ package org.aksw.qamel.data2rdf.datastructures.disambiguation;
 public class NEDAnnotation {
 	private  String namedEntity;
 	private  String disambiguatedURL;
-	private  int start;
-	private  int end;
-	private  int offset;
+	private  long start;
+	private  long end;
+	private  long offset;
 
 	public NEDAnnotation() {
 	}
 
-	public NEDAnnotation(String namedEntity, int start, int end, int offset, String disambiguatedURL) {
+	public NEDAnnotation(String namedEntity, long start, long end, long offset, String disambiguatedURL) {
 		this.namedEntity = namedEntity;
 		this.disambiguatedURL = disambiguatedURL;
 		this.start = start;
@@ -22,7 +22,7 @@ public class NEDAnnotation {
 		return disambiguatedURL;
 	}
 
-	public int getEnd() {
+	public long getEnd() {
 		return end;
 	}
 
@@ -30,11 +30,11 @@ public class NEDAnnotation {
 		return namedEntity;
 	}
 
-	public int getOffset() {
+	public long getOffset() {
 		return offset;
 	}
 
-	public int getStart() {
+	public long getStart() {
 		return start;
 	}
 
