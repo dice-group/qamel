@@ -11,6 +11,8 @@ public class Test {
 		for(String res: index.search("Frage")){
 			System.out.println(res);
 		}
+		
+		
 		Sentence sent = new Sentence("Berlin is the capital of germany.");
 		List<String> posTags = sent.posTags();
 		for(int i = 0; i < posTags.size(); i++){
