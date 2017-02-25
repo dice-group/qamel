@@ -1,4 +1,4 @@
 #!/bin/bash
 
-wget https://s3.amazonaws.com/dl4j-distribution/GoogleNews-vectors-negative300.bin.gz -O src/main/resources/GoogleNews-vectors-negative300.bin.gz
-
+wget http://www-nlp.stanford.edu/data/wordvecs/glove.6B.zip -O src/main/resources/glove.6B.zip
+gunzip src/main/resources/glove.6B.zip
