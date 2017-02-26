@@ -6,18 +6,24 @@ import org.aksw.qamel.data2rdf.datastructures.disambiguation.NEDAnnotation;
 
 public class TextInputWithNamedEntities {
 	private String input;
+	private String lang;
 	private List<NEDAnnotation> namedEntities;
 
 	public TextInputWithNamedEntities() {
 	}
 
-	public TextInputWithNamedEntities(String input, List<NEDAnnotation> namedEntities) {
+	public TextInputWithNamedEntities(String input, String lang, List<NEDAnnotation> namedEntities) {
 		this.input = input;
+		this.lang = lang;
 		this.namedEntities = namedEntities;
 	}
 
 	public String getInput() {
 		return input;
+	}
+
+	public String getLang() {
+		return lang;
 	}
 
 	public List<NEDAnnotation> getNamedEntities() {
@@ -26,7 +32,7 @@ public class TextInputWithNamedEntities {
 
 	@Override
 	public String toString() {
-		return "TextInputWithNamedEntities [input=" + input + ", namedEntities=" + namedEntities + "]";
+		return "TextInputWithNamedEntities [input=" + input + ", lang=" + lang + ", namedEntities=" + namedEntities + "]";
 	}
 
 }

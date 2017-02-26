@@ -35,13 +35,6 @@ import org.slf4j.LoggerFactory;
 public class NER_FOX {
 	static Logger log = LoggerFactory.getLogger(NER_FOX.class);
 
-	private String requestURL = "http://139.18.2.164:4444/api";
-	private String outputFormat = "N-Triples";
-	private String taskType = "NER";
-	private String inputType = "text";
-
-	// TODO change to unit test
-
 	public static void main(String args[]) {
 		NER_FOX fox = new NER_FOX();
 
@@ -65,6 +58,13 @@ public class NER_FOX {
 			e.printStackTrace();
 		}
 	}
+	private String requestURL = "http://139.18.2.164:4444/api";
+	private String outputFormat = "N-Triples";
+	private String taskType = "NER";
+
+	// TODO change to unit test
+
+	private String inputType = "text";
 
 	private String doTASK(String inputText) throws MalformedURLException, IOException, ProtocolException {
 
@@ -76,42 +76,6 @@ public class NER_FOX {
 		urlParameters += "&input=" + URLEncoder.encode(inputText, "UTF-8");
 
 		return POST(urlParameters, requestURL);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.aksw.hawk.nlp
-	 */
-	private String POST(String urlParameters, String requestURL) throws MalformedURLException, IOException, ProtocolException {
-		URL url = new URL(requestURL);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestMethod("POST");
-		connection.setDoOutput(true);
-		connection.setDoInput(true);
-		connection.setUseCaches(false);
-		connection.setRequestProperty("Accept", "application/json");
-		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-		connection.setRequestProperty("Content-Length", String.valueOf(urlParameters.length()));
-
-		DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-
-		InputStream inputStream = connection.getInputStream();
-		InputStreamReader in = new InputStreamReader(inputStream);
-		BufferedReader reader = new BufferedReader(in);
-
-		StringBuilder sb = new StringBuilder();
-		while (reader.ready()) {
-			sb.append(reader.readLine());
-		}
-
-		wr.close();
-		reader.close();
-		connection.disconnect();
-
-		return sb.toString();
 	}
 
 	/*
@@ -178,6 +142,42 @@ public class NER_FOX {
 			                       .join(tmp.get("en")));
 		}
 		return tmp;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.aksw.hawk.nlp
+	 */
+	private String POST(String urlParameters, String requestURL) throws MalformedURLException, IOException, ProtocolException {
+		URL url = new URL(requestURL);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("POST");
+		connection.setDoOutput(true);
+		connection.setDoInput(true);
+		connection.setUseCaches(false);
+		connection.setRequestProperty("Accept", "application/json");
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+		connection.setRequestProperty("Content-Length", String.valueOf(urlParameters.length()));
+
+		DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+		wr.writeBytes(urlParameters);
+		wr.flush();
+
+		InputStream inputStream = connection.getInputStream();
+		InputStreamReader in = new InputStreamReader(inputStream);
+		BufferedReader reader = new BufferedReader(in);
+
+		StringBuilder sb = new StringBuilder();
+		while (reader.ready()) {
+			sb.append(reader.readLine());
+		}
+
+		wr.close();
+		reader.close();
+		connection.disconnect();
+
+		return sb.toString();
 	}
 
 }

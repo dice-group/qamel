@@ -2,7 +2,6 @@ package org.aksw.qamel.data2rdf.annotator;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -15,7 +14,6 @@ import org.aksw.qamel.data2rdf.datastructures.disambiguation.NEDAnnotation;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * URI Disambiguation using AGDISTIS https://github.com/AKSW/AGDISTIS
@@ -28,18 +26,17 @@ public class NED_AGDISTIS {
 	 * testing main
 	 * 
 	 * @param args
-	 * @throws ParseException
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	// TODO change to unit test
-	public static void main(String[] args) throws ParseException, IOException {
+	public static void main(String[] args) throws Exception {
 		NED_AGDISTIS post = new NED_AGDISTIS();
 		String subjectString = "Tom Cruise";
 		String objectString = "Katie Holmes";
 
 		String preAnnotatedText = "<entity>" + subjectString + "</entity><entity>" + objectString + "</entity>";
 
-		List<NEDAnnotation> results = post.runDisambiguation(preAnnotatedText);
+		List<NEDAnnotation> results = post.runDisambiguation(preAnnotatedText, "en");
 		for (NEDAnnotation namedEntity : results) {
 			System.out.println(namedEntity);
 		}
@@ -51,11 +48,11 @@ public class NED_AGDISTIS {
 	 * @param inputText
 	 *            with encoded entities,e.g.,
 	 *            "<entity> Barack </entity> meets <entity>Angela</entity>"
+	 * @param lang
 	 * @return map of string to disambiguated URL
-	 * @throws ParseException
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public List<NEDAnnotation> runDisambiguation(String inputText) throws ParseException, IOException {
+	public List<NEDAnnotation> runDisambiguation(String inputText, String lang) throws Exception {
 		String urlParameters = "text=" + URLEncoder.encode(inputText, "UTF-8");
 		urlParameters += "&type=agdistis";
 
@@ -66,7 +63,14 @@ public class NED_AGDISTIS {
 		// new endpoint with DBpedia 2016-04 temporarily
 		// German: http://139.18.2.164:4447/AGDISTIS/
 		// English:http://139.18.2.164:4445/AGDISTIS/
-		URL url = new URL("http://139.18.2.164:4445/AGDISTIS/");
+		URL url;
+		if (lang.equals("de")) {
+			url = new URL("http://139.18.2.164:4447/AGDISTIS/");
+		} else if (lang.equals("en")) {
+			url = new URL("http://139.18.2.164:4445/AGDISTIS/");
+		} else {
+			throw new Exception("Language tag unknow");
+		}
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setDoOutput(true);

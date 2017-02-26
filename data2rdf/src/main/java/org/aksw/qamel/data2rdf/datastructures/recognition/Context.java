@@ -1,5 +1,5 @@
 package org.aksw.qamel.data2rdf.datastructures.recognition;
-
+//TODO maybe one can remove this static class
 public class Context {
 	private final String ann;
 	private final String scmsann;
