@@ -35,13 +35,13 @@ import org.slf4j.LoggerFactory;
 public class NER_FOX {
 	static Logger log = LoggerFactory.getLogger(NER_FOX.class);
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 		NER_FOX fox = new NER_FOX();
 
 		String sentence = "Katie Holmes got divorced from Tom Cruise in Deutschland.";
 		Map<String, List<Entity>> list;
 		try {
-			list = fox.getEntities(sentence);
+			list = fox.getEntities(sentence,"en");
 			for (String key : list.keySet()) {
 				System.out.println(key);
 				for (Entity entity : list.get(key)) {
@@ -58,6 +58,7 @@ public class NER_FOX {
 			e.printStackTrace();
 		}
 	}
+
 	private String requestURL = "http://139.18.2.164:4444/api";
 	private String outputFormat = "N-Triples";
 	private String taskType = "NER";
@@ -66,12 +67,18 @@ public class NER_FOX {
 
 	private String inputType = "text";
 
-	private String doTASK(String inputText) throws MalformedURLException, IOException, ProtocolException {
+	private String doTASK(String inputText, String lang) throws Exception {
 
 		String urlParameters = "type=" + inputType;
 		urlParameters += "&task=" + taskType;
-		//FIXME 
-		urlParameters += "&lang=" + "de";
+		if (lang.equals("de")) {
+			urlParameters += "&lang=" + "de";
+		} else if (lang.equals("en")) {
+			// do nothing
+		} else {
+			throw new Exception("Language tag unknow");
+		}
+
 		urlParameters += "&output=" + outputFormat;
 		urlParameters += "&input=" + URLEncoder.encode(inputText, "UTF-8");
 
@@ -83,9 +90,9 @@ public class NER_FOX {
 	 * 
 	 * @see org.aksw.hawk.nlp.NERD_module#getEntities(java.lang.String)
 	 */
-	public Map<String, List<Entity>> getEntities(String question) throws ParseException, MalformedURLException, ProtocolException, IOException {
+	public Map<String, List<Entity>> getEntities(String question, String lang) throws Exception {
 		HashMap<String, List<Entity>> tmp = new HashMap<String, List<Entity>>();
-		String foxJSONOutput = doTASK(question);
+		String foxJSONOutput = doTASK(question, lang);
 
 		JSONParser parser = new JSONParser();
 		JSONObject jsonArray = (JSONObject) parser.parse(foxJSONOutput);

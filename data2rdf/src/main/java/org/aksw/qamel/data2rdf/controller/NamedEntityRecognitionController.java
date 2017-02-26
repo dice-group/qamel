@@ -1,6 +1,5 @@
 package org.aksw.qamel.data2rdf.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import org.aksw.qamel.data2rdf.datastructures.recognition.Context;
 import org.aksw.qamel.data2rdf.datastructures.recognition.NERAnnotation;
 import org.aksw.qamel.data2rdf.datastructures.recognition.TextInput;
 import org.aksw.qamel.data2rdf.datastructures.recognition.TextWithRecognizedEntities;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,30 +22,27 @@ public class NamedEntityRecognitionController {
 	Logger log = LoggerFactory.getLogger(NamedEntityRecognitionController.class);
 
 	@RequestMapping(value = "/recognition", method = RequestMethod.POST)
-	public TextWithRecognizedEntities recognition(@RequestBody TextInput input) {
+	public TextWithRecognizedEntities recognition(@RequestBody TextInput textInput) throws Exception {
 
-		log.info("To recognize: " + input.toString());
+		log.info("To recognize: " + textInput.toString());
 		NER_FOX fox = new NER_FOX();
 
 		List<NERAnnotation> annotations = new ArrayList<NERAnnotation>();
 
-		try {
-			String sentence = input.getInput();
-			Map<String, List<Entity>> entities = fox.getEntities(sentence);
-			int id = 0;
-			for (String key : entities.keySet()) {
-				for (Entity entity : entities.get(key)) {
+		String sentence = textInput.getInput();
+		String lang = textInput.getLang();
+		Map<String, List<Entity>> entities = fox.getEntities(sentence, lang);
+		int id = 0;
+		for (String key : entities.keySet()) {
+			for (Entity entity : entities.get(key)) {
 
-					ArrayList<String> listOfTypes = new ArrayList<String>();
-					for (String r : entity.posTypesAndCategories) {
-						listOfTypes.add(r);
-					}
-
-					annotations.add(new NERAnnotation(id++, entity.label, listOfTypes, entity.beginIndex, entity.endIndex));
+				ArrayList<String> listOfTypes = new ArrayList<String>();
+				for (String r : entity.posTypesAndCategories) {
+					listOfTypes.add(r);
 				}
+
+				annotations.add(new NERAnnotation(id++, entity.label, listOfTypes, entity.beginIndex, entity.endIndex));
 			}
-		} catch (ParseException | IOException e) {
-			e.printStackTrace();
 		}
 
 		TextWithRecognizedEntities textWithRecognizedEntities = new TextWithRecognizedEntities(annotations, new Context(null, null));
