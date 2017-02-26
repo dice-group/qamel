@@ -35,13 +35,14 @@ import org.slf4j.LoggerFactory;
 public class NER_FOX {
 	static Logger log = LoggerFactory.getLogger(NER_FOX.class);
 
+	// TODO write unit test for each language
 	public static void main(String args[]) throws Exception {
 		NER_FOX fox = new NER_FOX();
 
 		String sentence = "Katie Holmes got divorced from Tom Cruise in Deutschland.";
 		Map<String, List<Entity>> list;
 		try {
-			list = fox.getEntities(sentence,"en");
+			list = fox.getEntities(sentence, "de");
 			for (String key : list.keySet()) {
 				System.out.println(key);
 				for (Entity entity : list.get(key)) {

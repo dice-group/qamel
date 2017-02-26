@@ -26,9 +26,9 @@ public class NED_AGDISTIS {
 	 * testing main
 	 * 
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	// TODO change to unit test
+	// TODO change to unit test for each language
 	public static void main(String[] args) throws Exception {
 		NED_AGDISTIS post = new NED_AGDISTIS();
 		String subjectString = "Tom Cruise";
@@ -36,7 +36,7 @@ public class NED_AGDISTIS {
 
 		String preAnnotatedText = "<entity>" + subjectString + "</entity><entity>" + objectString + "</entity>";
 
-		List<NEDAnnotation> results = post.runDisambiguation(preAnnotatedText, "en");
+		List<NEDAnnotation> results = post.runDisambiguation(preAnnotatedText, "de");
 		for (NEDAnnotation namedEntity : results) {
 			System.out.println(namedEntity);
 		}
@@ -50,7 +50,7 @@ public class NED_AGDISTIS {
 	 *            "<entity> Barack </entity> meets <entity>Angela</entity>"
 	 * @param lang
 	 * @return map of string to disambiguated URL
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<NEDAnnotation> runDisambiguation(String inputText, String lang) throws Exception {
 		String urlParameters = "text=" + URLEncoder.encode(inputText, "UTF-8");

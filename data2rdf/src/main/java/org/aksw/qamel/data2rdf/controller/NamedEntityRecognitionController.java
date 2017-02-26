@@ -31,22 +31,31 @@ public class NamedEntityRecognitionController {
 
 		String sentence = textInput.getInput();
 		String lang = textInput.getLang();
-		Map<String, List<Entity>> entities = fox.getEntities(sentence, lang);
-		int id = 0;
-		for (String key : entities.keySet()) {
-			for (Entity entity : entities.get(key)) {
+		String type = textInput.getType();
 
-				ArrayList<String> listOfTypes = new ArrayList<String>();
-				for (String r : entity.posTypesAndCategories) {
-					listOfTypes.add(r);
+		if (type.equals("text")) {
+			Map<String, List<Entity>> entities = fox.getEntities(sentence, lang);
+			int id = 0;
+			for (String key : entities.keySet()) {
+				for (Entity entity : entities.get(key)) {
+
+					ArrayList<String> listOfTypes = new ArrayList<String>();
+					for (String r : entity.posTypesAndCategories) {
+						listOfTypes.add(r);
+					}
+
+					annotations.add(new NERAnnotation(id++, entity.label, listOfTypes, entity.beginIndex, entity.endIndex));
 				}
-
-				annotations.add(new NERAnnotation(id++, entity.label, listOfTypes, entity.beginIndex, entity.endIndex));
 			}
-		}
 
-		TextWithRecognizedEntities textWithRecognizedEntities = new TextWithRecognizedEntities(annotations, new Context(null, null));
-		log.info("Recognized: " + textWithRecognizedEntities.toString());
-		return textWithRecognizedEntities;
+			TextWithRecognizedEntities textWithRecognizedEntities = new TextWithRecognizedEntities(annotations, new Context(null, null));
+			log.info("Recognized: " + textWithRecognizedEntities.toString());
+			return textWithRecognizedEntities;
+		} else if (type.equals("table")) {
+			// This will be a job for TAIPAN by I. Ermilov
+			throw new Exception("Recognition of entities in tables is not supported yet.");
+		} else {
+			throw new Exception("Unsupported type. Please specify 'text' or 'table',");
+		}
 	}
 }

@@ -1,11 +1,11 @@
 package org.aksw.qamel.data2rdf.datastructures.disambiguation;
 
 public class NEDAnnotation {
-	private  String namedEntity;
-	private  String disambiguatedURL;
-	private  long start;
-	private  long end;
-	private  long offset;
+	private String namedEntity;
+	private String disambiguatedURL;
+	private long start;
+	private long end;
+	private long offset;
 
 	public NEDAnnotation() {
 	}

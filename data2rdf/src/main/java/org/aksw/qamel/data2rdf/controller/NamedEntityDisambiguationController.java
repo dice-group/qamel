@@ -25,12 +25,20 @@ public class NamedEntityDisambiguationController {
 
 		String input = textInput.getInput();
 		String lang = textInput.getLang();
+		String type = textInput.getType();
 
-		List<NEDAnnotation> annotations = agdistis.runDisambiguation(input, lang);
+		if (type.equals("text")) {
+			List<NEDAnnotation> annotations = agdistis.runDisambiguation(input, lang);
 
-		TextWithDisambiguatedEntities textWithRecognizedEntities = new TextWithDisambiguatedEntities(annotations);
+			TextWithDisambiguatedEntities textWithRecognizedEntities = new TextWithDisambiguatedEntities(annotations);
 
-		log.info("Disambiguated: " + textWithRecognizedEntities.toString());
-		return textWithRecognizedEntities;
+			log.info("Disambiguated: " + textWithRecognizedEntities.toString());
+			return textWithRecognizedEntities;
+		} else if (type.equals("table")) {
+			// This will be a job for TAIPAN by I. Ermilov
+			throw new Exception("Disambiguation of entities in tables is not supported yet.");
+		} else {
+			throw new Exception("Unsupported type. Please specify 'text' or 'table',");
+		}
 	}
 }
