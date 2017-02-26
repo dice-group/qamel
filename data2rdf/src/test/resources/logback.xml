@@ -5,8 +5,7 @@
 		<file>log.out</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
-				%d{dd.MM.yy HH:mm:ss} %-5p [%-30.30c{1.}] %-5L -
-				&lt;%m&gt;%n
+				%d{dd.MM.yy HH:mm:ss} %-5p [%-30.30c{1.}] %-5L - &lt;%m&gt;%n
 			</Pattern>
 		</encoder>
 
@@ -25,9 +24,8 @@
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>
-				%d{dd.MM.yy HH:mm:ss} %-5p [%-30.30c{1.}] %-5L -
-				&lt;%m&gt;%n
-			</Pattern>log
+				%d{dd.MM.yy HH:mm:ss} %-5p [%-30.30c{1.}] %-5L - &lt;%m&gt;%n
+			</Pattern>
 		</layout>
 	</appender>
 
