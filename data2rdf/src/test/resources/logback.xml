@@ -27,7 +27,7 @@
 			<Pattern>
 				%d{dd.MM.yy HH:mm:ss} %-5p [%-30.30c{1.}] %-5L -
 				&lt;%m&gt;%n
-			</Pattern>
+			</Pattern>log
 		</layout>
 	</appender>
 
