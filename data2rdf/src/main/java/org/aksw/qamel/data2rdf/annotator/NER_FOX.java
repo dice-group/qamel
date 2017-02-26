@@ -45,7 +45,7 @@ public class NER_FOX {
 	public static void main(String args[]) {
 		NER_FOX fox = new NER_FOX();
 
-		String sentence = "Katie Holmes got divorced from Tom Cruise.";
+		String sentence = "Katie Holmes got divorced from Tom Cruise in Deutschland.";
 		Map<String, List<Entity>> list;
 		try {
 			list = fox.getEntities(sentence);
@@ -70,6 +70,8 @@ public class NER_FOX {
 
 		String urlParameters = "type=" + inputType;
 		urlParameters += "&task=" + taskType;
+		//FIXME 
+		urlParameters += "&lang=" + "de";
 		urlParameters += "&output=" + outputFormat;
 		urlParameters += "&input=" + URLEncoder.encode(inputText, "UTF-8");
 

@@ -11,6 +11,8 @@ qamel/.project
 qamel/.settings
 qamel/index/
 qamel/log.out
+queryCorrection/index/
+queryAlternatives/src/main/resources/glove*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

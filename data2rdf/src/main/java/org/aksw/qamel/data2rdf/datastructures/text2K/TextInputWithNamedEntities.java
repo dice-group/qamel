@@ -1,14 +1,17 @@
 package org.aksw.qamel.data2rdf.datastructures.text2K;
 
+import java.util.List;
+
+import org.aksw.qamel.data2rdf.datastructures.disambiguation.NEDAnnotation;
+
 public class TextInputWithNamedEntities {
 	private String input;
-	private NamedEntities namedEntities;
+	private List<NEDAnnotation> namedEntities;
 
 	public TextInputWithNamedEntities() {
 	}
 
-
-	public TextInputWithNamedEntities(String input, NamedEntities namedEntities) {
+	public TextInputWithNamedEntities(String input, List<NEDAnnotation> namedEntities) {
 		this.input = input;
 		this.namedEntities = namedEntities;
 	}
@@ -16,7 +19,8 @@ public class TextInputWithNamedEntities {
 	public String getInput() {
 		return input;
 	}
-	public NamedEntities getNamedEntities() {
+
+	public List<NEDAnnotation> getNamedEntities() {
 		return namedEntities;
 	}
 
