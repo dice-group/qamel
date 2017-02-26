@@ -59,7 +59,7 @@ public class NER_FOX {
 		}
 	}
 
-	private String requestURL = "http://139.18.2.164:4444/api";
+	private String requestURL = "http://fox-demo.aksw.org/api";
 	private String outputFormat = "N-Triples";
 	private String taskType = "NER";
 
