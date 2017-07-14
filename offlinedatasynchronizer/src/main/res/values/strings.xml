@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Offline Data Synchronizer</string>
+    <string name="notification_download_title">Updating offline data</string>
+    <string name="notification_extract_title">Extracting offline data</string>
+</resources>
