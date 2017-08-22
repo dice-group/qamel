@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="config_wdaquaUrl">http://wdaqua-qanary.univ-st-etienne.fr/gerbil</string>
+</resources>
