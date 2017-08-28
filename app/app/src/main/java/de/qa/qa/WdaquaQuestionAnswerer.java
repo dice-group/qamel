@@ -21,9 +21,7 @@ import okhttp3.Response;
 
 public class WdaquaQuestionAnswerer implements QuestionAnswerer {
 
-    //TODO: Previously used WDAQUA endpoint doesn't work anymore. Find another.
-    //TODO: (http://wdaqua-qanary.univ-st-etienne.fr/gerbil)
-    private static final String WDAQUA_URI = "";
+    private static final String WDAQUA_URI = "https://wdaqua-qanary.univ-st-etienne.fr/gerbil-execute/wdaqua-core0,%20QueryExecuter/";
 
     @Override
     public QAResult[] answerQuestion(String question) {
