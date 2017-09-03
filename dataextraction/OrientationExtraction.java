@@ -1,5 +1,3 @@
-package de.bell.permissionmanagement;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,7 +15,7 @@ public class OrientationExtraction implements SensorEventListener {
     private Double heading = null;
 
     OrientationExtraction(MainActivity context) {
-        // Getting the system sensor 'rotaion vector'
+        // Getting the system sensor 'rotation vector'
         sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
     }
@@ -42,7 +40,9 @@ public class OrientationExtraction implements SensorEventListener {
             SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values);
             SensorManager.getOrientation(rotationMatrix, orientation);
 
-            //Extracting the horizontal heading (between -180° and +180°, 0° is north)
+            // Extracting the horizontal heading
+            // The heading is a double value between -180° and +180°
+            // North: 0°, East: 90°, West: -90°, South: either 180° or -180°
             heading = Math.toDegrees(orientation[0]);
         }
     }
