@@ -1,4 +1,4 @@
-package eu.qamel.dataextraction;
+package de.bell.permissionmanagement;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

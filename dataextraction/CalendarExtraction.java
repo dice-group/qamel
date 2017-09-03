@@ -1,4 +1,4 @@
-package eu.qamel.dataextraction;
+package de.bell.permissionmanagement;
 
 import android.Manifest;
 import android.content.ClipData;
@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,6 +33,7 @@ public class CalendarExtraction {
                     MY_PERMISSIONS_REQUEST_READ_CALENDAR);
 
         } else {
+            // Defining which event data will be extracted
             String[] INSTANCE_PROJECTION = new String[]{
                     CalendarContract.Instances.EVENT_TIMEZONE,
                     CalendarContract.Instances.TITLE,
@@ -40,20 +42,22 @@ public class CalendarExtraction {
                     CalendarContract.Instances.DESCRIPTION,
                     CalendarContract.Instances.EVENT_LOCATION
             };
-
-            String[] Columns = new String[]{
-                    "TZID",
-                    "SUMMARY",
-                    "DTSTART",
-                    "DTEND",
+            // Defining the column names that are used as keys in the iCal String
+            String[] Keys = new String[]{
+                    "TZID", //time zone id
+                    "SUMMARY", //title
+                    "DTSTART", //date time start
+                    "DTEND", //date time end
                     "DESCRIPTION",
                     "LOCATION"
             };
 
+            // Setting the time span which we're interested in (36 h)
             long timeSpan = 36 * 60 * 60 * 1000; //36 h in ms
             long startMillis = System.currentTimeMillis();
             long endMillis = startMillis + timeSpan;
 
+            // Extracting the events
             Cursor cursor;
             ContentResolver contentResolver = context.getContentResolver();
 
@@ -63,6 +67,8 @@ public class CalendarExtraction {
 
             cursor = contentResolver.query(builder.build(), INSTANCE_PROJECTION, null, null, null);
 
+            // Building the iCal String
+
             String iCalendar = "BEGIN:VCALENDAR\n" +
                     "VERSION:2.0\n" +
                     "PRODID:-//aksw//qamel//data-extraction//EN\n" +
@@ -71,15 +77,18 @@ public class CalendarExtraction {
             while (cursor.moveToNext()) {
                 String vEvent = "BEGIN:VEVENT\n";
                 for (int i = 1; i < INSTANCE_PROJECTION.length; i++) {
-                    if (Columns[i]=="DTSTART"||Columns[i]=="DTEND"){
+                    if (Keys[i]=="DTSTART"||Keys[i]=="DTEND"){
+                        // Parsing the start (respectively the end) time from epoch millis to the suiting iCal format
                         String timeMillis = cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i]));
                         Date date = new Date(Long.parseLong(timeMillis));
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
                         String dateTime = simpleDateFormat.format(date);
-                        vEvent = vEvent + Columns[i] + ";TZID=/" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[0]))
+                        // Adding key and value (including time zone information)
+                        vEvent = vEvent + Keys[i] + ";TZID=/" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[0]))
                                 + ":" + dateTime + "\n";
                     } else {
-                        vEvent = vEvent + Columns[i] + ":" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i])) + "\n";
+                        // Adding key and value
+                        vEvent = vEvent + Keys[i] + ":" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i])) + "\n";
                     }
                 }
                 vEvent = vEvent + "END:VEVENT\n";
@@ -87,13 +96,13 @@ public class CalendarExtraction {
             }
             iCalendar = iCalendar + "END:VCALENDAR";
             this.iCalendar = iCalendar;
-            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("temp", iCalendar);
-            clipboard.setPrimaryClip(clip);
+            // TODO: There were some errors validating the iCal String on icalendar.org/validator.html
+            // eg time stamp and event id are missing, time zone seems to be incorrect
         }
     }
 
     public String getCalendar() {
+        // Returning the iCal String
         return iCalendar;
     }
 }

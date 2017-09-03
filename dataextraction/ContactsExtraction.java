@@ -1,4 +1,4 @@
-package eu.qamel.dataextraction;
+package de.bell.permissionmanagement;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

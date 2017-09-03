@@ -1,4 +1,4 @@
-package eu.qamel.dataextraction;
+package de.bell.permissionmanagement;
 
 import android.Manifest;
 import android.content.IntentSender;
@@ -70,7 +70,18 @@ public class LocationExtraction {
             // Setting the priority - high accuracy uses information from gps, wifi and network
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-            // TODO delete the settings request because it's probably not needed(?)
+            // Defining the callback void which updates the location using the new location data
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    location = locationResult.getLastLocation();
+                }
+            };
+
+            // TODO delete the settings request because it's probably misplaced
+            // The following lines of code check if the location settings are satisfied (eg if locating over gps, wifi and network are all activated)
+            // If not, a dialog will pop up, asking the user to change the settings
+            // This might happen at an unfitting moment (eg while writing the question)
             LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
             SettingsClient client = LocationServices.getSettingsClient(context);
             Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
@@ -106,14 +117,6 @@ public class LocationExtraction {
                     }
                 }
             });
-
-            // Defining the callback void which updates the location using the new location data
-            locationCallback = new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    location = locationResult.getLastLocation();
-                }
-            };
         }
     }
 
