@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Florian on 11.08.2017.
+ * Created by Florian Speer on 11.08.2017.
  */
 
 public class CalendarExtraction {
