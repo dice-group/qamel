@@ -119,7 +119,7 @@ public class LocationExtraction {
     }
 
     public Location getLocation() {
-        // Returning the current Location
+        // Returning the current location
         return location;
     }
 
@@ -134,7 +134,7 @@ public class LocationExtraction {
     }
 
     public void stopLocationUpdates() {
-        // Stopping (pausing)the location updates
+        // Stopping (pausing) the location updates
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
