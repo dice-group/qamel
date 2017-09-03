@@ -1,5 +1,3 @@
-package de.bell.permissionmanagement;
-
 import android.Manifest;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -78,10 +76,10 @@ public class LocationExtraction {
                 }
             };
 
-            // TODO delete the settings request because it's probably misplaced
+            // TODO eventually delete the followin settings request because it's probably misplaced
             // The following lines of code check if the location settings are satisfied (eg if locating over gps, wifi and network are all activated)
             // If not, a dialog will pop up, asking the user to change the settings
-            // This might happen at an unfitting moment (eg while writing the question)
+            // This might happen at an unfitting moment (eg while typing the question)
             LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
             SettingsClient client = LocationServices.getSettingsClient(context);
             Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
