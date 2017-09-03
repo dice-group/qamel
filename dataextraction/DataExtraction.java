@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Florian on 17.07.2017.
+ * Created by Florian Speer on 17.07.2017.
  */
 
 public class DataExtraction {
