@@ -76,7 +76,7 @@ public class LocationExtraction {
                 }
             };
 
-            // TODO eventually delete the followin settings request because it's probably misplaced
+            // TODO eventually delete the followin settings request because it's probably displaced
             // The following lines of code check if the location settings are satisfied (eg if locating over gps, wifi and network are all activated)
             // If not, a dialog will pop up, asking the user to change the settings
             // This might happen at an unfitting moment (eg while typing the question)
