@@ -6,7 +6,7 @@ import android.hardware.SensorManager;
 import static android.content.Context.SENSOR_SERVICE;
 
 /**
- * Created by Florian on 17.07.2017.
+ * Created by Florian Speer on 17.07.2017.
  */
 
 public class OrientationExtraction implements SensorEventListener {
