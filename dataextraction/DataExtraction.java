@@ -1,7 +1,3 @@
-package de.bell.permissionmanagement;
-
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.location.Location;
 
@@ -32,22 +28,18 @@ public class DataExtraction {
 
         // Initialize contact extraction
         contactsExtraction = new ContactsExtraction(context);
-
-        start();
     }
 
     void start() {
         // Start location and orientation updates
         locationExtraction.startLocationUpdates();
         orientationExtraction.startOrientationUpdates();
-        context.textView.setText(context.textView.getText()+ "Started" + "\n");
     }
 
     void stop() {
         // Stop location and orientation updates
         locationExtraction.stopLocationUpdates();
         orientationExtraction.stopOrientationUpdates();
-        context.textView.setText(context.textView.getText()+ "Stopped" + "\n");
     }
 
     String getData() {
@@ -56,8 +48,6 @@ public class DataExtraction {
         Double orientation = orientationExtraction.getHeading();
         String iCalendar = calendarExtraction.getCalendar();
         ArrayList<String> contacts = contactsExtraction.getContacts();
-
-        context.textView.setText(context.textView.getText()+ "Data" + "\n" + String.valueOf(location.getLatitude()) + "\n" + String.valueOf(orientation) + "\n" + String.valueOf(contacts.get(0))  + iCalendar + "\n");
 
         // Building the JSON
         JSONObject json = new JSONObject();
@@ -69,10 +59,7 @@ public class DataExtraction {
             json.put("vcards", contacts);
         } catch (Exception e) {
         }
-        context.textView.setText(json.toString());
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("temp", json.toString());
-        clipboard.setPrimaryClip(clip);
+        
         // Returning the JSON String
         return json.toString();
     }
