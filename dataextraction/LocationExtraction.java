@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 /**
- * Created by Florian on 17.07.2017.
+ * Created by Florian Speer on 17.07.2017.
  */
 
 public class LocationExtraction {
