@@ -1,5 +1,3 @@
-package de.bell.permissionmanagement;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
@@ -60,9 +58,8 @@ public class ContactsExtraction {
                         for (int i = 0; i < length; i++) {
                             vCard = vCard + (char) mFileInputStream.read();
                         }
-
+                        
                         vCards.add(vCard);
-
                     } catch (IOException e) {
                     }
                 } while (cursor.moveToNext());
