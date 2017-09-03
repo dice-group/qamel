@@ -12,7 +12,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * Created by Florian on 08.08.2017.
+ * Created by Florian Speer on 08.08.2017.
  */
 
 public class ContactsExtraction {
