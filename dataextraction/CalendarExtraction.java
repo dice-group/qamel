@@ -1,5 +1,3 @@
-package de.bell.permissionmanagement;
-
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -25,9 +23,11 @@ public class CalendarExtraction {
     private String iCalendar = null;
 
     public CalendarExtraction(MainActivity context) {
+        // Checking for system permissions to access contacts data
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
-
+            
+            // Requesting system permission if it wasn't granted
             ActivityCompat.requestPermissions(context,
                     new String[]{Manifest.permission.READ_CALENDAR},
                     MY_PERMISSIONS_REQUEST_READ_CALENDAR);
@@ -42,8 +42,8 @@ public class CalendarExtraction {
                     CalendarContract.Instances.DESCRIPTION,
                     CalendarContract.Instances.EVENT_LOCATION
             };
-            // Defining the column names that are used as keys in the iCal String
-            String[] Keys = new String[]{
+            // Defining the Strings that will be used as keys in the iCal String
+            String[] keys = new String[]{
                     "TZID", //time zone id
                     "SUMMARY", //title
                     "DTSTART", //date time start
@@ -57,7 +57,7 @@ public class CalendarExtraction {
             long startMillis = System.currentTimeMillis();
             long endMillis = startMillis + timeSpan;
 
-            // Extracting the events
+            // Extracting the events, storing them in a cursor
             Cursor cursor;
             ContentResolver contentResolver = context.getContentResolver();
 
@@ -68,27 +68,27 @@ public class CalendarExtraction {
             cursor = contentResolver.query(builder.build(), INSTANCE_PROJECTION, null, null, null);
 
             // Building the iCal String
-
             String iCalendar = "BEGIN:VCALENDAR\n" +
                     "VERSION:2.0\n" +
                     "PRODID:-//aksw//qamel//data-extraction//EN\n" +
                     "CALSCALE:GREGORIAN\n";
-
+            
             while (cursor.moveToNext()) {
+                // Extracting the event data
                 String vEvent = "BEGIN:VEVENT\n";
                 for (int i = 1; i < INSTANCE_PROJECTION.length; i++) {
-                    if (Keys[i]=="DTSTART"||Keys[i]=="DTEND"){
+                    if (keys[i]=="DTSTART"||keys[i]=="DTEND"){
                         // Parsing the start (respectively the end) time from epoch millis to the suiting iCal format
                         String timeMillis = cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i]));
                         Date date = new Date(Long.parseLong(timeMillis));
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
                         String dateTime = simpleDateFormat.format(date);
                         // Adding key and value (including time zone information)
-                        vEvent = vEvent + Keys[i] + ";TZID=/" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[0]))
+                        vEvent = vEvent + keys[i] + ";TZID=/" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[0]))
                                 + ":" + dateTime + "\n";
                     } else {
                         // Adding key and value
-                        vEvent = vEvent + Keys[i] + ":" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i])) + "\n";
+                        vEvent = vEvent + keys[i] + ":" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i])) + "\n";
                     }
                 }
                 vEvent = vEvent + "END:VEVENT\n";
