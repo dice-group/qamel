@@ -1,3 +1,4 @@
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,7 +15,7 @@ public class OrientationExtraction implements SensorEventListener {
     Sensor sensor;
     private Double heading = null;
 
-    OrientationExtraction(MainActivity context) {
+    OrientationExtraction(Context context) {
         // Getting the system sensor 'rotation vector'
         sensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
