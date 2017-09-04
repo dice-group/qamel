@@ -1,6 +1,4 @@
 import android.Manifest;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -10,7 +8,6 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,7 +19,7 @@ public class CalendarExtraction {
     private static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR= 10;
     private String iCalendar = null;
 
-    public CalendarExtraction(MainActivity context) {
+    public CalendarExtraction(Context context) {
         // Checking for system permissions to access contacts data
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
