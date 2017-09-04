@@ -1,4 +1,5 @@
 import android.Manifest;
+import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -33,7 +34,7 @@ public class LocationExtraction {
     private LocationCallback locationCallback;
     private Location location = null;
 
-    LocationExtraction(final MainActivity context) {
+    LocationExtraction(final Context context) {
         this.context = context;
 
         // Checking for system permissions to access location data
