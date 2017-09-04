@@ -19,6 +19,7 @@ public class DataExtraction {
 
     DataExtraction(MainActivity context) {
         this.context = context;
+        
         // Initialize extraction of location + orientation
         locationExtraction = new LocationExtraction(context);
         orientationExtraction = new OrientationExtraction(context);
@@ -42,7 +43,7 @@ public class DataExtraction {
         orientationExtraction.stopOrientationUpdates();
     }
 
-    String getData() {
+    JSONObject getData() {
         // Get location, orientation, contacts and calendar data
         Location location = locationExtraction.getLocation();
         Double orientation = orientationExtraction.getHeading();
@@ -61,6 +62,6 @@ public class DataExtraction {
         }
         
         // Returning the JSON String
-        return json.toString();
+        return json;
     }
 }
