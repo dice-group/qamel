@@ -1,7 +1,6 @@
 import android.content.Context;
 import android.location.Location;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -15,9 +14,9 @@ public class DataExtraction {
     private final OrientationExtraction orientationExtraction;
     private final ContactsExtraction contactsExtraction;
     private final CalendarExtraction calendarExtraction;
-    MainActivity context;
+    Context context;
 
-    DataExtraction(MainActivity context) {
+    DataExtraction(Context context) {
         this.context = context;
         
         // Initialize extraction of location + orientation
