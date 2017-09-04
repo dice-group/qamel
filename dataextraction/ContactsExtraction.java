@@ -1,4 +1,5 @@
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
@@ -8,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +19,7 @@ public class ContactsExtraction {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
     ArrayList<String> vCards;
 
-    ContactsExtraction(MainActivity context) {
+    ContactsExtraction(Context context) {
         // Checking for system permissions to access contacts data
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
