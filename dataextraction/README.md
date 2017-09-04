@@ -30,3 +30,4 @@ so I highly recommend to execute this at app start, using a seperate thread
 getting the JSON in line (4)
 * lat, long and orient are double values, ical a String and vcards an Array of Strings
     * orient is a value between -180 and 180. West: -90, North: 0, East: 90, South is either -180 or 180
+* I recommend that the user was already asked for granting system permissions (ACCES_FINE_LOCATION, READ_CALENDAR, READ_CONTACTS)
