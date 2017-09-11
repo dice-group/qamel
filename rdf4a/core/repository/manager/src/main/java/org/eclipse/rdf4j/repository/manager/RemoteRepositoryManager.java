@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.http.client.HttpClient;
+import cz.msebera.android.httpclient.client.HttpClient;
 import org.eclipse.rdf4j.http.client.SesameClient;
 import org.eclipse.rdf4j.http.client.SesameClientImpl;
 import org.eclipse.rdf4j.http.client.SesameSession;

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.client.HttpClient;
+import cz.msebera.android.httpclient.client.HttpClient;
 import org.eclipse.rdf4j.common.io.FileUtil;
 import org.eclipse.rdf4j.http.client.HttpClientDependent;
 import org.eclipse.rdf4j.http.client.SesameClientDependent;

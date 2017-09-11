@@ -7,7 +7,7 @@
  *******************************************************************************/
 package org.eclipse.rdf4j.query.algebra.evaluation.federation;
 
-import org.apache.http.client.HttpClient;
+import cz.msebera.android.httpclient.client.HttpClient;
 import org.eclipse.rdf4j.http.client.HttpClientDependent;
 import org.eclipse.rdf4j.http.client.SesameClient;
 import org.eclipse.rdf4j.http.client.SesameClientDependent;
