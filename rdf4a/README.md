@@ -16,7 +16,7 @@ RDF4A is a modified version of RDF4J which can be used in Android apps. It is ba
 
 Install to local Maven repository
 ```
-mvn package -DskipTests && mvn install -DskipTests
+mvn  install -DskipTests
 ```
 
 Include in an Android project
