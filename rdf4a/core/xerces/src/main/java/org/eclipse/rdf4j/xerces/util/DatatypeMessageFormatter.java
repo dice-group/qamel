@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.xerces.util;
+package org.eclipse.rdf4j.xerces.util;
 
 import java.util.Locale;
 import java.util.MissingResourceException;

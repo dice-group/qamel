@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.xerces.jaxp.datatype;
+package org.eclipse.rdf4j.xerces.jaxp.datatype;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

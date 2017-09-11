@@ -16,7 +16,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.http.client.HttpClient;
+import cz.msebera.android.httpclient.client.HttpClient;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.config.RepositoryConfig;
@@ -52,7 +52,7 @@ public class TypeFilteringRepositoryManager extends RepositoryManager {
 
 	/**
 	 * @param httpClient
-	 * @see org.eclipse.rdf4j.repository.manager.RepositoryManager#setHttpClient(org.apache.http.client.HttpClient)
+	 * @see org.eclipse.rdf4j.repository.manager.RepositoryManager#setHttpClient(HttpClient)
 	 */
 	public void setHttpClient(HttpClient httpClient) {
 		delegate.setHttpClient(httpClient);
