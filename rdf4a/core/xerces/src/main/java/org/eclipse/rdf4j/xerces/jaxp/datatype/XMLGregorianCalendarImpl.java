@@ -17,8 +17,6 @@
 
 package org.eclipse.rdf4j.xerces.jaxp.datatype;
 
-import org.eclipse.rdf4j.xerces.util.DatatypeMessageFormatter;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,6 +31,8 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+
+import org.apache.xerces.util.DatatypeMessageFormatter;
 
 /** 
  * <p>Representation for W3C XML Schema 1.0 date/time datatypes.
