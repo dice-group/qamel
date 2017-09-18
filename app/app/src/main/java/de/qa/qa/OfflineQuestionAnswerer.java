@@ -249,7 +249,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer {
             }
         }
         Collections.sort(mAnswers, new Answer.Comparator());
-        return new TextResult(mQuestion, mAnswers.get(0).getAnswer());
+        return new TextResult(mQuestion, "An error occurred");
     }
 
     private int evaluateResult(Match match, BindingSet result) {

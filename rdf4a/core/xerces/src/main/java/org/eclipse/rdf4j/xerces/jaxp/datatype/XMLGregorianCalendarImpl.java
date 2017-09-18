@@ -32,7 +32,7 @@ import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
-import org.apache.xerces.util.DatatypeMessageFormatter;
+import org.eclipse.rdf4j.xerces.util.DatatypeMessageFormatter;
 
 /** 
  * <p>Representation for W3C XML Schema 1.0 date/time datatypes.

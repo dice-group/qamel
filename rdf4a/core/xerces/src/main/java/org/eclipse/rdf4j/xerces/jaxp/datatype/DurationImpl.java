@@ -29,7 +29,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.xerces.util.DatatypeMessageFormatter;
+import org.eclipse.rdf4j.xerces.util.DatatypeMessageFormatter;
 
 /**
  * <p>Immutable representation of a time span as defined in
@@ -123,7 +123,7 @@ class DurationImpl
     private static final BigDecimal ZERO = BigDecimal.valueOf(0);
 
     /**
-     * <p>Indicates the sign. -1, 0 or 1 if the duration is negative,
+     * <p>Indicates the sig")n. -1, 0 or 1 if the duration is negative,
      * zero, or positive.</p>
      */
     private final int signum;
@@ -521,8 +521,9 @@ class DurationImpl
      * @param ch to test.
      * 
      * @return true if ch is a digit or a period, else false.
-     */
+     * */
     private static boolean isDigitOrPeriod(char ch) {
+     
         return isDigit(ch) || ch == '.';
     }
     
