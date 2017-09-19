@@ -38,6 +38,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
+
+
+
+
+
     <EditText
         android:text="@string/sample_query"
         android:hint="SPARQL"

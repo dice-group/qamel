@@ -2,6 +2,8 @@ package de.qa.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
+import android.widget.ListView;
 
 import de.qa.fragment.QAFragment;
 import de.qa.misc.Utils;
@@ -13,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     private static final String TAG = MainActivity.class.getSimpleName();
     private TripleStore mTripleStore;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
                 .beginTransaction()
                 .replace(android.R.id.content, new QAFragment())
                 .commit();
+
     }
 
     @Override
