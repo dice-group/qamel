@@ -1,5 +1,6 @@
 package de.qa.qa;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -9,10 +10,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import de.qa.qa.result.DateResult;
 import de.qa.qa.result.FooterResult;
 import de.qa.qa.result.HeaderResult;
 import de.qa.qa.result.QAResult;
 import de.qa.qa.result.TextResult;
+import de.qa.qa.result.UriResult;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -53,7 +56,7 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer {
             answers[0] = new HeaderResult(question);
             for (int i = 0; i < bindings.length(); i++) {
                 JSONObject binding = bindings.getJSONObject(i);
-                answers[i + 1] = QAResult.newInstance(question,
+                answers[i + 1] = createQAResult(question,
                         binding.getJSONObject("x").getString("type"),
                         binding.getJSONObject("x").optString("datatype"),
                         //Nah
@@ -84,5 +87,19 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer {
             };
         }
         return answers;
+    }
+
+    private QAResult createQAResult(String question, String type, @Nullable String dataType,
+                                    String data) {
+        switch (type) {
+            case "uri":
+                return new UriResult(question, data);
+            case "typed-literal":
+                switch (dataType) {
+                    case "http://www.w3.org/2001/XMLSchema#date":
+                        return new DateResult(question, data);
+                }
+        }
+        return new QAResult(question, data);
     }
 }
