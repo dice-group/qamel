@@ -1,4 +1,4 @@
-# data extraction module
+# Data Extraction module
 ## general
 This module will extract specific user data from the android device:
 * current **location**, including latitude, longitude and orientation of the device
