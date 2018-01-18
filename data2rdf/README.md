@@ -7,7 +7,7 @@ You can run this project using `mvn clean test spring-boot:run`
 ###Testing interface###
 We provide three different interfaces
 
-`curl -H "Content-Type: application/json" -X POST -d '{"input": "The philosopher and mathematician Leibniz was born in Leipzig in 1646.","type":"text","lang":"en"}' http://localhost:8080/recognition`
+`curl -H "Content-Type:application/json;charset=utf-8" -d '{"input": "The philosopher and mathematician Leibniz was born in Leipzig in 1646.","type":"text","lang":"en", "task":"ner"}' http://localhost:8080/recognition`
 
 `curl -H "Content-Type: application/json" -X POST -d '{"input": "The philosopher and mathematician <entity>Leibniz</entity> was born in <entity>Leipzig</entity> in 1646.","type":"text","lang":"en"}' http://localhost:8080/disambiguation`
 

@@ -65,9 +65,9 @@ public class NED_AGDISTIS {
 		// English:http://139.18.2.164:4445/AGDISTIS/
 		URL url;
 		if (lang.equals("de")) {
-			url = new URL("http://139.18.2.164:4447/AGDISTIS/");
+			url = new URL("http://akswnc9.informatik.uni-leipzig.de:8113/AGDISTIS");
 		} else if (lang.equals("en")) {
-			url = new URL("http://139.18.2.164:4445/AGDISTIS/");
+			url = new URL("http://akswnc9.informatik.uni-leipzig.de:8113/AGDISTIS");
 		} else {
 			throw new Exception("Language tag unknow");
 		}

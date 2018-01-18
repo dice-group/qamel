@@ -3,7 +3,7 @@
 #######
 ##TODO TRANSFORM ME TO UNIT TEST
 echo "Testing recognition (en)"
-curl -H "Content-Type: application/json" -X POST -d '{"input": "The philosopher and mathematician Leibniz was born in Leipzig in 1646.","type":"text","lang":"en"}' http://localhost:8080/recognition
+curl -H "Content-Type: application/json;charset=utf-8" -X POST -d '{"input": "The philosopher and mathematician Leibniz was born in Leipzig in 1646.","type":"text","lang":"en"}' http://localhost:8080/recognition
 echo 
 echo "Testing disambiguation (en)"
 curl -H "Content-Type: application/json" -X POST -d '{"input": "The philosopher and mathematician <entity>Leibniz</entity> was born in <entity>Leipzig</entity> in 1646.","type":"text","lang":"en"}' http://localhost:8080/disambiguation

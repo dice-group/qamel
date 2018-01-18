@@ -60,7 +60,7 @@ public class NER_FOX {
 		}
 	}
 
-	private String requestURL = "http://fox-demo.aksw.org/api";
+	private String requestURL = "http://fox-demo.aksw.org/fox";
 	private String outputFormat = "N-Triples";
 	private String taskType = "NER";
 
@@ -82,8 +82,8 @@ public class NER_FOX {
 
 		urlParameters += "&output=" + outputFormat;
 		urlParameters += "&input=" + URLEncoder.encode(inputText, "UTF-8");
-
 		return POST(urlParameters, requestURL);
+		
 	}
 
 	/*
@@ -92,6 +92,7 @@ public class NER_FOX {
 	 * @see org.aksw.hawk.nlp.NERD_module#getEntities(java.lang.String)
 	 */
 	public Map<String, List<Entity>> getEntities(String question, String lang) throws Exception {
+
 		HashMap<String, List<Entity>> tmp = new HashMap<String, List<Entity>>();
 		String foxJSONOutput = doTASK(question, lang);
 
