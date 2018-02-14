@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.aksw.qamel</groupId>
+  <artifactId>OfflineQABenchmark</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>OfflineQABenchmark</name>
+  <url>http://maven.apache.org</url>
+  <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<JAVA_OPTS>-Xms415m -Xmx16G -XX:MaxPermSize=1G</JAVA_OPTS>
+					</systemProperties>
+					<mainClass>org.aksw.qamel.OfflineQABenchmark.App</mainClass>
+					<layout>JAR</layout>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>bootable-with-spring</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <version>3.1</version>
+			    <configuration>
+			        <source>1.8</source>
+			        <target>1.8</target>
+			    </configuration>
+			</plugin>
+			
+		</plugins>
+	</build>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-model</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-api</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-memory</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-nativerdf</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-repository-api</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-repository-sail</artifactId><version>1.0.3</version></dependency>
+    <dependency>
+    <groupId>info.debatty</groupId>
+    <artifactId>java-string-similarity</artifactId>
+    <version>0.24</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-assembly-plugin</artifactId>
+  <version>3.1.0</version>
+  <type>maven-plugin</type>
+</dependency>
+   
+  </dependencies>
+</project>
