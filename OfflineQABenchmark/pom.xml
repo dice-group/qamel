@@ -74,6 +74,20 @@
   <version>3.1.0</version>
   <type>maven-plugin</type>
 </dependency>
-   
+   <dependency>
+  <groupId>org.aksw.qa</groupId>
+  <artifactId>commons</artifactId>
+  <version>0.4.18</version>
+</dependency>
   </dependencies>
+  <repositories><repository>
+			<id>maven.aksw.internal</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/internal</url>
+		</repository>
+		<repository>
+			<id>maven.aksw.snapshots</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/snapshots</url>
+</repository></repositories>
 </project>

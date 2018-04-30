@@ -9,35 +9,35 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
+
 public class TripleStore {
 	private static final String TAG = TripleStore.class.getSimpleName();
 
-    private static Repository sDatabase;
+	private Repository sDatabase;
+	private RepositoryConnection connection;
 
-    private static void openDatabase(String database) {
-        File dbDir = new File(database);
-        sDatabase = new SailRepository(new NativeStore(dbDir));
-        System.out.println("Initializing database...");
-        sDatabase.initialize();
-        System.out.println("Done.");
-    }
+	public TripleStore(String database) {
+		 File dbDir = new File(database);
+		 sDatabase = new SailRepository(new NativeStore(dbDir));
+		 sDatabase.initialize();
+		 sDatabase.isInitialized();
+		
+		connection = sDatabase.getConnection();
+	}
 
-    public static TupleQueryResult query(String database, String sparqlQuery) {
-        if (sDatabase == null) openDatabase(database);
-        RepositoryConnection connection = sDatabase.getConnection();
-        TupleQuery tupleQuery = connection.prepareTupleQuery(sparqlQuery);
-        return tupleQuery.evaluate();
-    }
+	public TupleQueryResult query(String sparqlQuery) {
+		TupleQuery tupleQuery = connection.prepareTupleQuery(sparqlQuery);
+		TupleQueryResult evaluate = tupleQuery.evaluate();
+		return evaluate;
+	}
 
-
-    public static void printTupleResult(TupleQueryResult result) {
-        while (result.hasNext()) {
-            BindingSet set = result.next();
-            System.out.println("---");
-            for (String s : set.getBindingNames()) {
-                System.out.println(s + ": " + set.getValue(s).stringValue());
-            }
-        }
-    }
+	public void printTupleResult(TupleQueryResult result) {
+		while (result.hasNext()) {
+			BindingSet set = result.next();
+			for (String s : set.getBindingNames()) {
+				System.out.println(s + ": " + set.getValue(s).stringValue());
+			}
+		}
+	}
 
 }
