@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -11,93 +12,97 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.qa.activity.MainActivity">
+    android:layout_marginTop="100dp"
+    >
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/results_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
-
-
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="55dp"
-
-
-        />
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="4dp">
-
-
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/results_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"
+            />
 
 
-            <EditText
-                android:id="@+id/question_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_margin="8dp"
-                android:layout_toLeftOf="@+id/qa_btn"
-                android:layout_toStartOf="@+id/btSpeak"
-                android:background="@null"
-                android:hint="@string/question_input_hint"
-                android:text="When was the Leipzig University founded?"/>
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/card_view"
+            />
 
-            <ImageButton
-                android:id="@+id/btSpeak"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="5dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/microphone"
-                android:layout_toLeftOf="@+id/qa_btn"
-                tools:context=".VoiceRecognitionActivity" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="4dp">
 
 
-            <ImageView
-                android:id="@+id/qa_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:selectableItemBackground"
-                android:padding="8dp"
-                android:tint="?colorAccent"
-                app:srcCompat="@drawable/ic_send"/>
+            <RelativeLayout
+                android:id="@+id/question_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:defaultFocusHighlightEnabled="true">
+
+                <EditText
+                    android:id="@+id/question_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="8dp"
+                    android:layout_toLeftOf="@+id/qa_btn"
+                    android:layout_toStartOf="@+id/btSpeak"
+                    android:background="@null"
+                    android:hint="@string/question_input_hint"
+                    android:text="When was the Leipzig University founded?"/>
+
+                <ImageButton
+                    android:id="@+id/btSpeak"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/microphone"
+                    android:layout_toLeftOf="@+id/qa_btn"
+                    tools:context=".VoiceRecognitionActivity" />
 
 
-            <ProgressBar
-                android:visibility="invisible"
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:tint="?colorAccent"/>
+                <ImageView
+                    android:id="@+id/qa_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:selectableItemBackground"
+                    android:padding="8dp"
+                    android:tint="?colorAccent"
+                    app:srcCompat="@drawable/ic_send"/>
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+
+                <ProgressBar
+                    android:visibility="invisible"
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:tint="?colorAccent"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
 </RelativeLayout>
+

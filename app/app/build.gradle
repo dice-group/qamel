@@ -43,6 +43,12 @@ dependencies {
     compile 'de.mm20.rdf4a:rdf4j-sail-api:1.1-SNAPSHOT'
     compile 'de.mm20.rdf4a:rdf4j-sail-nativerdf:1.1-SNAPSHOT'
     compile 'info.debatty:java-string-similarity:0.24'
+    compile 'com.google.android.gms:play-services-auth:11.8.0'
+    compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
     compile project(':offlinedatasynchronizer')
     testCompile 'junit:junit:4.12'
+
 }

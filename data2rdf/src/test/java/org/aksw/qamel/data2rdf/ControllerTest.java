@@ -37,31 +37,31 @@ public class ControllerTest {
 	public void disambiguation() throws Exception {
 
 		this.mockMvc.perform(post("/disambiguation").content("{\"input\": \"The philosopher and mathematician <entity>Leibniz</entity> was born in <entity>Leipzig</entity> in 1646.\",\"type\": \"text\",\"lang\":\"en\"}")
-				.contentType(MediaType.APPLICATION_JSON))
+								.contentType(MediaType.APPLICATION_JSON))
 		                                            
 
-		            .andDo(print())
-		            .andExpect(status().isOk())
-		            .andExpect(content().json("{"
-		            		+ "			\"output\": ["
-		            		+ "				{"
-		            		+ "					\"namedEntity\": \"Leibniz\","
-		            		+ "					\"start\": 34,"
-		            		+ "					\"end\": 41,"
-		            		+ "					\"offset\": 7,"
-		            		+ "					\"disambiguatedURL\": \"http://dbpedia.org/resource/Gottfried_Wilhelm_Leibniz\""
-		            		+ "				},"
-		            		+ "				{"
-		            		+ "					\"namedEntity\": \"Leipzig\","
-		            		+ "					\"start\": 54,"
-		            		+ "					\"end\": 61,"
-		            		+ "					\"offset\": 7,"
-		            		+ "					\"disambiguatedURL\": \"http://dbpedia.org/resource/Leipzig\""
-		            		+ "				}"
-		            		+ "			]"
-		            		+ "		}"));
-		           
-		
-		
-	}
+		 .andDo(print())
+         .andExpect(status().isOk())
+         .andExpect(content().json("{"
+         		+ "			\"output\": ["
+         		+ "				{"
+         		+ "					\"namedEntity\": \"Leibniz\","
+         		+ "					\"start\": 34,"
+         		+ "					\"end\": 41,"
+         		+ "					\"offset\": 7,"
+         		+ "					\"disambiguatedURL\": \"http://dbpedia.org/resource/Gottfried_Wilhelm_Leibniz\""
+         		+ "				},"
+         		+ "				{"
+         		+ "					\"namedEntity\": \"Leipzig\","
+         		+ "					\"start\": 54,"
+         		+ "					\"end\": 61,"
+         		+ "					\"offset\": 7,"
+         		+ "					\"disambiguatedURL\": \"http://dbpedia.org/resource/Leipzig\""
+         		+ "				}"
+         		+ "			]"
+         		+ "		}"));
+        
+
+
+}
 }

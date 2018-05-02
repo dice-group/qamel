@@ -1,3 +1,4 @@
+
 package de.qa.fragment;
 
 import android.app.SearchManager;
@@ -24,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +34,20 @@ import de.qa.misc.Utils;
 import de.qa.qa.OfflineQuestionAnswerer;
 import de.qa.qa.QuestionAnswerer;
 import de.qa.qa.WdaquaQuestionAnswerer;
-import de.qa.qa.result.TextResult;
 import de.qa.qa.result.FooterResult;
 import de.qa.qa.result.HeaderResult;
 import de.qa.qa.result.QAResult;
+import de.qa.qa.result.TextResult;
 import de.qa.qa.result.UriResult;
 import de.qa.view.adapter.QAAdapter;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.OnClickListener;
+import static android.view.View.VISIBLE;
 
-import static android.content.Context.LAUNCHER_APPS_SERVICE;
-
-public class QAFragment extends Fragment implements View.OnClickListener,
+public class QAFragment extends Fragment implements OnClickListener,
         QAAdapter.OnItemClickListener, AdapterView.OnItemClickListener{
     private static final String TAG = QAFragment.class.getSimpleName();
 
@@ -57,8 +59,6 @@ public class QAFragment extends Fragment implements View.OnClickListener,
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
     private ListView mlist;
-
-
     private ImageButton mbtSpeak;
 
     @Nullable
@@ -147,9 +147,11 @@ public class QAFragment extends Fragment implements View.OnClickListener,
     }
 
 
-    /**
+
+/*
      * Helper method to show the toast message
      **/
+
     void showToastMessage(String message){
 
     }
@@ -165,12 +167,12 @@ public class QAFragment extends Fragment implements View.OnClickListener,
             task.execute(question);
             mQuestionInput.setText("");
             mResultsRecycler.smoothScrollToPosition(0);
-            view.setVisibility(View.INVISIBLE);
-            mRootView.findViewById(R.id.progress).setVisibility(View.VISIBLE);
+            view.setVisibility(INVISIBLE);
+            mRootView.findViewById(R.id.progress).setVisibility(VISIBLE);
         }
         if (view == mbtSpeak) {
             mlist.setAdapter(null);
-            mlist.setVisibility(View.VISIBLE);
+            mlist.setVisibility(VISIBLE);
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
             // Specify the calling package to identify your application
@@ -205,26 +207,27 @@ public class QAFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    /**
+/**
      * Display a question with all its answers on the screen.
      *
      * @param results the results to display
      */
+
     private void publishAnswers(QAResult[] results) {
         for (QAResult result : results) {
             mAnswers.add(0, result);
             mResultsRecycler.getAdapter().notifyItemInserted(1);
         }
         mResultsRecycler.smoothScrollToPosition(0);
-        mQaButton.setVisibility(View.VISIBLE);
-        mRootView.findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+        mQaButton.setVisibility(VISIBLE);
+        mRootView.findViewById(R.id.progress).setVisibility(INVISIBLE);
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Log.e(TAG,"item sleected position"+i);
         mQuestionInput.setText(adapterView.getItemAtPosition(i).toString());
-        mlist.setVisibility(View.GONE);
+        mlist.setVisibility(GONE);
     }
 
 

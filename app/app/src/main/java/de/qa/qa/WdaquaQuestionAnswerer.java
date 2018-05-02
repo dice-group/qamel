@@ -2,6 +2,7 @@ package de.qa.qa;
 
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Button;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +23,50 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class WdaquaQuestionAnswerer implements QuestionAnswerer {
+public class WdaquaQuestionAnswerer implements QuestionAnswerer{
+    private static final String TAG = null;
+    Button online_test;
+    String data = "";
+   // private static final String WDAQUA_URI = "http://185.2.103.92:8081/tebaqa/qa";
 
-    private static final String WDAQUA_URI = "https://wdaqua-qanary.univ-st-etienne.fr/gerbil-execute/wdaqua-core0,%20QueryExecuter/";
+   /* @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        setContentView(R.layout.online_test);
+        online_test = (Button) findViewById(R.id.online_test);
+        online_test.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        InputStream is = this.getResources().openRawResource(R.raw.questions);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        if (is != null) {
+
+            try {
+                while (reader.ready()) {
+                    data = reader.readLine();
+                    if (data != null) {
+                       this.answerQuestion(data);
+                    }
+                }
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+    }
+        Toast.makeText(this,"Test Ended",Toast.LENGTH_LONG).show();
+
+}
+*/
+   private static final String WDAQUA_URI = "http://185.2.103.92:8081/tebaqa/qa";
 
     @Override
     public QAResult[] answerQuestion(String question) {

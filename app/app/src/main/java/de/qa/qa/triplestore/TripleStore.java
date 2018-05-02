@@ -1,3 +1,4 @@
+
 package de.qa.qa.triplestore;
 
 import org.eclipse.rdf4j.query.BindingSet;
@@ -17,6 +18,7 @@ public class TripleStore {
 
     private static void openDatabase(String database) {
         File dbDir = new File(database);
+        System.out.println("Database directory"+dbDir);
         sDatabase = new SailRepository(new NativeStore(dbDir));
         System.out.println("Initializing database...");
         sDatabase.initialize();
@@ -30,7 +32,6 @@ public class TripleStore {
         return tupleQuery.evaluate();
     }
 
-
     public static void printTupleResult(TupleQueryResult result) {
         while (result.hasNext()) {
             BindingSet set = result.next();
@@ -41,3 +42,5 @@ public class TripleStore {
         }
     }
 }
+
+
