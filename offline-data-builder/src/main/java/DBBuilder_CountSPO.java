@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-public class DBBuilder {
+public class DBBuilder_CountSPO {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
         if (args.length < 2) {

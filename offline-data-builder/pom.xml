@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>DBBuilder</mainClass>
+                            <mainClass>DBBuilder_CountS</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

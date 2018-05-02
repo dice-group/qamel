@@ -31,8 +31,10 @@ public class App implements QuestionAnswerer {
 		 * in.close();
 		 */
 		 
-		QAResult[] answerQuestion = app.answerQuestion("What is the capital of Germany?");
-		System.out.println(((TextResult) answerQuestion[1]).getmData());
+//		QAResult[] answerQuestion = app.answerQuestion("When was the Leipzig University founded?");
+//		System.out.println(((TextResult) answerQuestion[1]).getmData());
+//		 answerQuestion = app.answerQuestion("What is the capital of Germany?");
+//		System.out.println(((TextResult) answerQuestion[1]).getmData());
 		List<IQuestion> questions = LoaderController.load(Dataset.QALD7_Train_Multilingual);
 		int i= 0;
 		double fmeasureavg = 0;
@@ -55,8 +57,8 @@ public class App implements QuestionAnswerer {
 			+ "PREFIX  dbo: <http://dbpedia.org/ontology/> \n" + "PREFIX  dbp: <http://dbpedia.org/property/> \n"
 			+ "PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#> \n";
 	private static final Context Context = null;
-	private static final String[] BLACKLIST = { "the", "is", "did", "to", "does", "are", "was", "were", "he", "she", "it", "they", "of",
-			"in", "at", "by", "why", "who", "where", "when", "what", "which", "year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me" };
+	private static final String[] BLACKLIST = { "the", "is", "did", "do", "his", "her", "to", "does", "are", "was", "were", "he", "she", "it", "they", "of",
+			"in", "at", "by", "why", "who", "where", "when", "what", "which", "year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me","with" };
 	private static final int QUESTION_TYPE_DATE = 0x1;
 	private static final int QUESTION_TYPE_PLACE = 0x2;
 	private static final int QUESTION_TYPE_PERSON = 0x4;
@@ -82,7 +84,7 @@ public class App implements QuestionAnswerer {
 			String candidatesQuery = QUERY_PREFIX
 					+ "SELECT DISTINCT ?x ?z WHERE { "
 					+ "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z "
-					+ "FILTER regex(str(?x), \"" + word + "\") "
+					+ "FILTER regex(lcase(str(?x)), \"" + word +"\") "
 					+ "FILTER (lang(?z)='en') } "
 					+ "LIMIT 100";
 			TupleQueryResult result = tripleStore.query(candidatesQuery);
@@ -239,7 +241,8 @@ public class App implements QuestionAnswerer {
 			queryBuilder.append("}");
 			TupleQueryResult result = tripleStore.query(queryBuilder.toString());
 			while (result.hasNext()) {
-				maxConfidence = Math.max(evaluateResult(thing, result.next()), maxConfidence);
+				BindingSet next = result.next();
+				maxConfidence = Math.max(evaluateResult(thing, next), maxConfidence);
 				if (maxConfidence >= -thing.getDistance()) {
 					Collections.sort(mAnswers, new Answer.Comparator());
 					return new TextResult(mQuestion, mAnswers.get(0).getAnswer());
