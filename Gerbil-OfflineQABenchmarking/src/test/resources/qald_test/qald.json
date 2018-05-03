@@ -1,0 +1,186 @@
+{
+	"dataset": {
+		"id": "qald-6-test-hybrid"
+	},
+	"questions": [
+		{
+			"id": "1",
+			"answertype": "number",
+			"aggregation": "false",
+			"onlydbo": "false",
+			"hybrid": "true",
+			"question": [
+				{
+					"language": "en",
+					"string": "How old are the twins?"
+				}
+			],
+			"query": {
+				"pseudo": "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT ?uri  WHERE {           res:Hawaii dbo:label ?uri . }"
+			},
+			"answers": [
+				{
+					"head": {
+						"vars": [
+							"number"
+						]
+					},
+					"results": {
+						"bindings": [
+							{
+								"number": {
+									"type": "literal",
+									"value": "123"
+								}
+							},
+							{
+								"number": {
+									"type": "literal",
+									"value": "23.0",
+									"datatype": "http://www.w3.org/2001/XMLSchema#double"
+								}
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"id": "2",
+			"answertype": "date",
+			"aggregation": "false",
+			"onlydbo": "false",
+			"hybrid": "true",
+			"question": [
+				{
+					"language": "en",
+					"string": "When was the beginning of the war?"
+				}
+			],
+			"query": {
+				"pseudo": "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT ?uri  WHERE {           res:Hawaii dbo:label ?uri . }"
+			},
+			"answers": [
+				{
+					"head": {
+						"vars": [
+							"date"
+						]
+					},
+					"results": {
+						"bindings": [
+							{
+								"date": {
+									"type": "literal",
+									"value": "2002-09-24",
+									"datatype": "http://www.w3.org/2001/XMLSchema#date"
+								}
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"id": "3",
+			"answertype": "boolean",
+			"aggregation": "false",
+			"onlydbo": "false",
+			"hybrid": "true",
+			"question": [
+				{
+					"language": "en",
+					"string": "Is Hawaii a Country?"
+				}
+			],
+			"query": {
+				"pseudo": "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT ?uri  WHERE {           res:Hawaii dbo:label ?uri . }"
+			},
+			"answers": [
+				{
+					"head": {
+						
+					},
+					"boolean": true
+				}
+			]
+		},
+		{
+			"id": "4",
+			"answertype": "string",
+			"aggregation": "false",
+			"onlydbo": "false",
+			"hybrid": "true",
+			"question": [
+				{
+					"language": "en",
+					"string": "What is the name of the isle that whatever?"
+				}
+			],
+			"query": {
+				"pseudo": "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT ?uri  WHERE {           res:Hawaii dbo:label ?uri . }"
+			},
+			"answers": [
+				{
+					"head": {
+						"vars": [
+							"string"
+						]
+					},
+					"results": {
+						"bindings": [
+							{
+								"string": {
+									"type": "literal",
+									"value": "Hawaii",
+									"xml:lang": "en"
+								}
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"id": "5",
+			"answertype": "resource",
+			"aggregation": "false",
+			"onlydbo": "false",
+			"hybrid": "true",
+			"question": [
+				{
+					"language": "en",
+					"string": "Where is what located?"
+				}
+			],
+			"query": {
+				"pseudo": "PREFIX res: <http://dbpedia.org/resource/> PREFIX dbo: <http://dbpedia.org/ontology/>  SELECT DISTINCT ?uri  WHERE {           res:Hawaii dbo:label ?uri . }"
+			},
+			"answers": [
+				{
+					"head": {
+						"vars": [
+							"uri"
+						]
+					},
+					"results": {
+						"bindings": [
+							{
+								"uri": {
+									"type": "uri",
+									"value": "http://dbpedia.org/resource/Hawaii"
+								}
+							},
+							{
+								"uri": {
+									"type": "uri",
+									"value": "http://dbpedia.org/resource/New_York"
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	]
+}
