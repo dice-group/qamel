@@ -1,17 +1,14 @@
 package de.qa.qa;
 
 import android.content.Context;
-
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.TupleQueryResult;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import de.qa.qa.offline.Answer;
 import de.qa.qa.offline.Match;
 import de.qa.qa.result.FooterResult;
@@ -67,20 +64,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
     private int mQuestionType;
     private List<Answer> mAnswers;
     private String mDatabasePath;
-    //Button test;
-    //String data="";
-
-
-/*
- @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
-        test=(Button)findViewById(R.id.test_button);
-        test.setOnClickListener(this);
-    }*/
-
-
 
     public OfflineQuestionAnswerer(Context context) {
         mDatabasePath = new File(context.getExternalFilesDir(null), "/offline_data")
@@ -88,51 +71,22 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
 
     }
 
-
-
-/*  @Override
-       public void onClick(View v) {
-           mDatabasePath = new File(this.getExternalFilesDir(null), "/offline_data")
-                   .getAbsolutePath();
-
-
-        System.out.println("Database path: " + mDatabasePath);
-        InputStream is = this.getResources().openRawResource(R.raw.questions);
-        BufferedReader reader =new BufferedReader(new InputStreamReader(is));
-        if (is!=null){
-            try {
-                while (reader.ready()){
-                    data=reader.readLine();
-                    if(data!=null){
-                       this.answerQuestion(data);
-                        System.out.println("File questions: " + data);
-                    }
-                }
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Toast.makeText(this,"Test Ended", Toast.LENGTH_LONG).show();
-
-    }*/
-
     private void findMatches(String word) {
         try {
             word = word.replaceAll(" ", ".*").toLowerCase();
             String candidatesQuery = QUERY_PREFIX +
                     "SELECT DISTINCT ?x ?z WHERE { ?x <http://www.w3.org/2000/01/rdf-schema#label> ?z . FILTER regex(str(?x), \"(?i).*" + word + ".*\") FILTER (lang(?z)='en') }";
             TupleQueryResult result = TripleStore.query(mDatabasePath,candidatesQuery);
-              System.out.println("Tuple Query Result: "+result);
-          System.out.println("Candidate Query: "+candidatesQuery);
+            System.out.println("Tuple Query Result: "+result);
+            System.out.println("Candidate Query: "+candidatesQuery);
             while (result.hasNext())
             {
-                 System.out.println("Result: "+result);
+                System.out.println("Result: "+result);
                 BindingSet set = result.next();
                 //System.out.println("Set: "+result);
                 String uri = set.getValue("x").stringValue();
                 String label = set.getValue("z").stringValue();
-            //System.out.println("Binding Set: "+set+"URI: "+uri+"Label: "+label);
+                //System.out.println("Binding Set: "+set+"URI: "+uri+"Label: "+label);
                 insertMatch(word, uri, label);
             }
         } catch (MalformedQueryException e) {
@@ -147,8 +101,8 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             for (Match m : mThings) {
                 if (m.getUri().equals(uri)) {
                     m.addWord(word);
-                  //  System.out.println("Insert Match: "+match);
-                  //  System.out.println("Match m: "+m);
+                    //  System.out.println("Insert Match: "+match);
+                    //  System.out.println("Match m: "+m);
                     return;
                 }
             }
@@ -164,15 +118,15 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             mProperties.add(match);
         }
     }
-/**
- * Returns number of occurrences for each position of a statement
- *
- * @param uri the entity to lookup
- * @return an array containing<br>
- * [0] the number of occurrences as subject <br>
- * [1] the number of occurrences as predicate<br>
- * [2] the number of occurrences as object
- */
+    /**
+     * Returns number of occurrences for each position of a statement
+     *
+     * @param uri the entity to lookup
+     * @return an array containing<br>
+     * [0] the number of occurrences as subject <br>
+     * [1] the number of occurrences as predicate<br>
+     * [2] the number of occurrences as object
+     */
 
 
     private int[] getOccurrences(String uri) {
@@ -281,8 +235,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
                         .append(thing.getUri())
                         .append("> ?p ?o . FILTER (datatype(?o) = xsd:gYear)}}");
-               //  System.out.println("Which Query: "+queryBuilder);
-                //  System.out.println("Match Thing: "+mThings);
+
             }
             if ((mQuestionType & QUESTION_TYPE_PLACE) != 0) {
                 queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
@@ -294,7 +247,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <")
                         .append(thing.getUri())
                         .append("> . ?s rdf:type dbo:Place}}");
-               //  System.out.println("Where Query: "+queryBuilder);
+
             }
             if ((mQuestionType & QUESTION_TYPE_PERSON) != 0) {
                 queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
@@ -303,7 +256,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <")
                         .append(thing.getUri())
                         .append("> . ?o rdf:type dbo:Person}}");
-                   // System.out.println("Who Query: "+queryBuilder);
+
             }
             if ((mQuestionType & QUESTION_TYPE_UNKNOWN) != 0) {
                 queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
@@ -312,7 +265,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <")
                         .append(thing.getUri())
                         .append("> .}}");
-                // System.out.println("Unknown Query: "+queryBuilder);
+
             }
             queryBuilder.append("}");
             TupleQueryResult result = TripleStore.query(mDatabasePath, queryBuilder.toString());
@@ -343,7 +296,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 System.out.println("Evaluate result answer: "+answer);
                 int confidence = -1 * match.getDistance() + match.getWordsLength()
                         + match.getQuestion().length();
-                 System.out.println("Evaluate result confidence: "+confidence);
+                System.out.println("Evaluate result confidence: "+confidence);
                 mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
                 System.out.println("Answers: "+mAnswers);
                 return confidence;
@@ -371,8 +324,8 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         String query = "SELECT ?l WHERE { <" + uri + "> " +
                 "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
         TupleQueryResult labelResult = TripleStore.query(mDatabasePath, query);
-          System.out.println("get Label Query: "+query);
-           System.out.println("Label resulr: "+labelResult);
+        System.out.println("get Label Query: "+query);
+        System.out.println("Label resulr: "+labelResult);
         Value value;
         if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)
             return null;
@@ -382,5 +335,4 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
 
 
 }
-
 

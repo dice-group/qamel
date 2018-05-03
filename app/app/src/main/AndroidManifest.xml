@@ -29,14 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--  <activity
-            android:name=".qa.OfflineQuestionAnswerer"
-            android:label="QA">
-        </activity>
-      <activity
-            android:name=".qa.WdaquaQuestionAnswerer"
-            android:label="QA">
-        </activity>-->
         <activity
             android:name=".activity.SparqlActivity"
             android:label="QA:SparQL"/>

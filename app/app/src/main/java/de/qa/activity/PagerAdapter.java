@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import de.qa.fragment.QAFragment;
-import de.qa.qa.dataextraction.CalendarExtraction;
 import de.qa.qa.dataextraction.ContactsExtraction;
 
 /**
@@ -31,7 +30,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 QAFragment tab1 = new QAFragment();
                 return tab1;
             case 1:
-                CalendarExtraction tab2 = new CalendarExtraction();
+                QAFragment tab2 = new QAFragment();
                 return tab2;
             case 2:
                 ContactsExtraction tab3 = new ContactsExtraction();

@@ -31,11 +31,6 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
             }
         });
         thread.start();
-
-       /* Intent i = new Intent(MainActivity.this, OfflineQuestionAnswerer.class);
-        startActivity(i);*/
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);

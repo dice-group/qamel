@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class DataExtraction {
 
     private final ContactsExtraction contactsExtraction;
-    private final CalendarExtraction calendarExtraction;
-
     Context context;
 
     public DataExtraction(Context context) {
@@ -22,21 +20,18 @@ public class DataExtraction {
 
         contactsExtraction = new ContactsExtraction();
         // Initialize calendar extraction
-        calendarExtraction = new CalendarExtraction();
+
     }
 
 
     JSONObject getData() {
 
         ArrayList<String> contacts = contactsExtraction.getContacts();
-        String iCalendar = calendarExtraction.getCalendar();
-
         // Building the JSON
         JSONObject json = new JSONObject();
         try {
 
             json.put("vcards", contacts);
-            json.put("ical", iCalendar);
         } catch (Exception e) {
         }
 

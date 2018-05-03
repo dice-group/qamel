@@ -1,10 +1,10 @@
 package de.qa.qa.offline;
 
-import info.debatty.java.stringsimilarity.Levenshtein;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import info.debatty.java.stringsimilarity.Levenshtein;
 
 public class Match {
     public static final int TYPE_UNKNOWN = 0x0;

@@ -181,12 +181,8 @@ public class QAFragment extends Fragment implements OnClickListener,
 
             // Display an hint to the user about what he should say.
             //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, metTextHint.getText().toString());
-
-
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
-
-
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
 
         }
