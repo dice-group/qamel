@@ -20,49 +20,27 @@ import info.debatty.java.stringsimilarity.Levenshtein;
 
 
 public class OfflineQuestionAnswerer implements QuestionAnswerer{
-    private static final String QUERY_PREFIX =
-            "PREFIX rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                    "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                    "PREFIX  dbo: <http://dbpedia.org/ontology/> \n" +
-                    "PREFIX  dbp: <http://dbpedia.org/property/> \n" +
-                    "PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#> \n";
-
-    //Commonly used words without any useful information including verbs, articles, prepositions, pronouns and question words
-    private static final String[] BLACKLIST = {
-            "the",
-            "is",
-            "are",
-            "was",
-            "were",
-            "he",
-            "she",
-            "it",
-            "they",
-            "of",
-            "in",
-            "at",
-            "by",
-            "why",
-            "who",
-            "where",
-            "when",
-            "what",
-            "how",
-            "has",
-            "have",
-            "a"
-    };
+    private static final String QUERY_PREFIX = "PREFIX rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+            + "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+            + "PREFIX  dbo: <http://dbpedia.org/ontology/> \n" + "PREFIX  dbp: <http://dbpedia.org/property/> \n"
+            + "PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#> \n";
+    private static final Context Context = null;
+    private static final String[] BLACKLIST = { "the", "is", "did", "do", "his", "her", "to", "does", "are", "was", "were", "he", "she", "it", "they", "of",
+            "in", "at", "by", "why", "who", "where", "when", "what", "which", "year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me","with" };
     private static final int QUESTION_TYPE_DATE = 0x1;
     private static final int QUESTION_TYPE_PLACE = 0x2;
     private static final int QUESTION_TYPE_PERSON = 0x4;
     private static final int QUESTION_TYPE_NUMBER = 0x8;
     private static final int QUESTION_TYPE_UNKNOWN = 0x10;
+
     private String mQuestion;
     private String[] mWords;
     private List<Match> mThings;
     private List<Match> mProperties;
     private int mQuestionType;
-    private List<Answer> mAnswers;
+    public List<Answer> mAnswers;
+    private TripleStore tripleStore;
+
     private String mDatabasePath;
 
     public OfflineQuestionAnswerer(Context context) {
@@ -74,20 +52,19 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
     private void findMatches(String word) {
         try {
             word = word.replaceAll(" ", ".*").toLowerCase();
-            String candidatesQuery = QUERY_PREFIX +
-                    "SELECT DISTINCT ?x ?z WHERE { ?x <http://www.w3.org/2000/01/rdf-schema#label> ?z . FILTER regex(str(?x), \"(?i).*" + word + ".*\") FILTER (lang(?z)='en') }";
-            TupleQueryResult result = TripleStore.query(mDatabasePath,candidatesQuery);
-            System.out.println("Tuple Query Result: "+result);
-            System.out.println("Candidate Query: "+candidatesQuery);
-            while (result.hasNext())
-            {
-                System.out.println("Result: "+result);
+            String candidatesQuery = QUERY_PREFIX
+                    + "SELECT DISTINCT ?x ?z WHERE { "
+                    + "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z "
+                    + "FILTER regex(lcase(str(?x)), \"" + word +"\") "
+                    + "FILTER (lang(?z)='en') } "
+                    + "LIMIT 100";
+            TupleQueryResult result = tripleStore.query(candidatesQuery);
+            while (result.hasNext()) {
                 BindingSet set = result.next();
-                //System.out.println("Set: "+result);
                 String uri = set.getValue("x").stringValue();
                 String label = set.getValue("z").stringValue();
-                //System.out.println("Binding Set: "+set+"URI: "+uri+"Label: "+label);
                 insertMatch(word, uri, label);
+                System.out.println("\t "+ word+": "+ uri + ", "+label);
             }
         } catch (MalformedQueryException e) {
             System.err.println("Invalid query.");
@@ -101,8 +78,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             for (Match m : mThings) {
                 if (m.getUri().equals(uri)) {
                     m.addWord(word);
-                    //  System.out.println("Insert Match: "+match);
-                    //  System.out.println("Match m: "+m);
                     return;
                 }
             }
@@ -111,7 +86,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             for (Match m : mProperties) {
                 if (m.getUri().equals(uri)) {
                     m.addWord(word);
-                    System.out.println(" Else Match: "+match);
                     return;
                 }
             }
@@ -131,27 +105,15 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
 
     private int[] getOccurrences(String uri) {
         int[] occurrences = new int[3];
-        //Count occurrences as subject
-        String query = QUERY_PREFIX +
-                "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-        occurrences[0] = Integer.parseInt(TripleStore.query(mDatabasePath, query).next()
-                .getValue("c")
-                .stringValue());
-        //  System.out.println("Get Occurances Query (Subject): "+query);
-        //Count occurrences as predicate
-        query = QUERY_PREFIX +
-                "SELECT (count (?x) as ?c) WHERE { ?x <" + uri + "> ?y }";
-        occurrences[1] = Integer.parseInt(TripleStore.query(mDatabasePath, query).next()
-                .getValue("c")
-                .stringValue());
-        //  System.out.println("Get Occurances Query (Predicate): "+query);
-        //Count occurrences as object
-        query = QUERY_PREFIX +
-                "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-        occurrences[2] = Integer.parseInt(TripleStore.query(mDatabasePath, query).next()
-                .getValue("c")
-                .stringValue());
-        //    System.out.println("Get Occurances Query (Object): "+query);
+        // Count occurrences as subject
+        String query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
+        occurrences[0] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+        // Count occurrences as predicate
+        query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { ?x <" + uri + "> ?y }";
+        occurrences[1] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+        // Count occurrences as object
+        query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
+        occurrences[2] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
         return occurrences;
     }
 
@@ -159,36 +121,37 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         mQuestionType = 0;
         if (mQuestion.contains("when")) {
             mQuestionType |= QUESTION_TYPE_DATE;
-            System.out.println("Question type"+mQuestionType);
         }
         if (mQuestion.contains("where")) {
             mQuestionType |= QUESTION_TYPE_PLACE;
-            System.out.println("Question type: "+mQuestionType);
         }
         if (mQuestion.contains("who")) {
             mQuestionType |= QUESTION_TYPE_PERSON;
-            System.out.println("Question type: "+mQuestionType);
         }
         if (mQuestion.contains("when")) {
             mQuestionType |= QUESTION_TYPE_DATE;
-            System.out.println("Question type: "+mQuestionType);
         }
         if (mQuestion.contains("how many") || mQuestion.contains("how much")) {
             mQuestionType |= QUESTION_TYPE_NUMBER;
-            System.out.println("Question type: "+mQuestionType);
         }
-        if (mQuestionType == 0) mQuestionType = QUESTION_TYPE_UNKNOWN;
-        System.out.println("Question type: "+mQuestionType);
+        if (mQuestionType == 0)
+            mQuestionType = QUESTION_TYPE_UNKNOWN;
+
     }
 
     @Override
     public QAResult[] answerQuestion(String question) {
+        System.out.println("******************************");
 
-        System.out.println("String Question:"+ question);
+        System.out.println("Question original: " + question);
 
-        //Replace non alpha-numeric with spaces
-        question = question.replaceAll("[^A-Za-z0-9\\s]", " ");
-        //Remove redundant whitespaces ('    ' -> ' ')
+        // Replace non alpha-numeric with spaces, keep genitive 's, keep . for e.g. U.S.
+        // remove trailing . for e.g. "List me... ."
+        question = question.replaceAll("[^A-Za-z0-9'.\\s]", " ");
+        if (question.endsWith(".")) {
+            question = question.substring(0, question.lastIndexOf("."));
+        }
+        // Remove redundant whitespaces (' ' -> ' ')
         question = question.replaceAll("\\s+", " ");
         question = question.toLowerCase();
         mQuestion = question;
@@ -196,85 +159,64 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         mThings = new ArrayList<>();
         mProperties = new ArrayList<>();
         determineQuestionType();
-        //Add spaces at start and end of question
+        // Add spaces at start and end of question
         mQuestion = " " + mQuestion + " ";
         for (String blacklisted : BLACKLIST) {
             mQuestion = mQuestion.replace(" " + blacklisted + " ", " ");
         }
         mQuestion = mQuestion.substring(1, mQuestion.length() - 1);
-        System.out.println("Question replace: "+question);
-        System.out.println("Things: "+mThings);
-        System.out.println("Properties: "+mProperties);
-        System.out.println("Question: "+mQuestion);
         mWords = mQuestion.split(" ");
         for (String word : mWords) {
-            if (word.equals(" ") || word.equals("")) continue;
+            System.out.println(word);
+            if (word.equals(" ") || word.equals(""))
+                continue;
             findMatches(word);
-            System.out.println("Words: "+mWords);
         }
         Collections.sort(mThings, new Match.Comparator());
         Collections.sort(mProperties, new Match.Comparator());
-        return new QAResult[]{
-                new HeaderResult(question),
-                findBestAnswer(),
-                new FooterResult(question)
-        };
+        HeaderResult headerResult = new HeaderResult(question);
+        QAResult findBestAnswer = findBestAnswer();
+        FooterResult footerResult = new FooterResult(question);
+        return new QAResult[] { headerResult, findBestAnswer, footerResult };
 
     }
 
     private QAResult findBestAnswer() {
-        System.out.println("QARESULT method started");
         int maxConfidence = Integer.MIN_VALUE;
         for (Match thing : mThings) {
             StringBuilder queryBuilder = new StringBuilder();
-            queryBuilder.append(QUERY_PREFIX).append("SELECT * WHERE {{}");
+            queryBuilder.append(QUERY_PREFIX).append("SELECT DISTINCT * WHERE {{}");
             if ((mQuestionType & QUESTION_TYPE_DATE) != 0) {
-                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
-                        .append(thing.getUri())
-                        .append("> ?p ?o . FILTER (datatype(?o) = xsd:date)}}");
-                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
-                        .append(thing.getUri())
-                        .append("> ?p ?o . FILTER (datatype(?o) = xsd:gYear)}}");
-
+                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <").append(thing.getUri())
+                        .append("> ?p ?o .\n FILTER (datatype(?o) = xsd:date)}}");
+                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <").append(thing.getUri())
+                        .append("> ?p ?o .\n FILTER (datatype(?o) = xsd:gYear)}}");
             }
             if ((mQuestionType & QUESTION_TYPE_PLACE) != 0) {
-                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
-                        .append(thing.getUri())
-                        .append("> ?p ?o . FILTER (datatype(?o) = xsd:place)}}");
-                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
-                        .append(thing.getUri())
-                        .append("> ?p ?o . ?o rdf:type dbo:Place}}");
-                queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <")
-                        .append(thing.getUri())
-                        .append("> . ?s rdf:type dbo:Place}}");
-
+                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <").append(thing.getUri())
+                        .append("> ?p ?o .\n FILTER (datatype(?o) = xsd:place)}}");
+                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <").append(thing.getUri())
+                        .append("> ?p ?o .\n ?o rdf:type dbo:Place}}");
+                queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <").append(thing.getUri())
+                        .append("> .\n ?o rdf:type dbo:Place}}");
             }
             if ((mQuestionType & QUESTION_TYPE_PERSON) != 0) {
-                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
-                        .append(thing.getUri())
-                        .append("> ?p ?o . ?o rdf:type dbo:Person}}");
-                queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <")
-                        .append(thing.getUri())
-                        .append("> . ?o rdf:type dbo:Person}}");
-
+                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <").append(thing.getUri())
+                        .append("> ?p ?o .\n ?o rdf:type dbo:Person}}");
+                queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <").append(thing.getUri())
+                        .append("> .\n ?o rdf:type dbo:Person}}");
             }
             if ((mQuestionType & QUESTION_TYPE_UNKNOWN) != 0) {
-                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <")
-                        .append(thing.getUri())
-                        .append("> ?p ?o .}}");
-                queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <")
-                        .append(thing.getUri())
-                        .append("> .}}");
-
+                queryBuilder.append("UNION { SELECT ?p ?o WHERE { <").append(thing.getUri()).append("> ?p ?o .}}");
+                queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <").append(thing.getUri()).append("> .}}");
             }
             queryBuilder.append("}");
-            TupleQueryResult result = TripleStore.query(mDatabasePath, queryBuilder.toString());
+            TupleQueryResult result = tripleStore.query(queryBuilder.toString());
             while (result.hasNext()) {
-                maxConfidence = Math.max(evaluateResult(thing, result.next()), maxConfidence);
+                BindingSet next = result.next();
+                maxConfidence = Math.max(evaluateResult(thing, next), maxConfidence);
                 if (maxConfidence >= -thing.getDistance()) {
                     Collections.sort(mAnswers, new Answer.Comparator());
-                    System.out.println("Answers: "+mAnswers);
-                    System.out.println("MaxConfidence: "+maxConfidence);
                     return new TextResult(mQuestion, mAnswers.get(0).getAnswer());
                 }
             }
@@ -291,22 +233,20 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         String propertyLabel = getLabel(property);
         for (Match p : mProperties) {
             if (p.getUri().equals(property)) {
-                //TODO Save type
+                // TODO Save type
                 String answer = result.getValue("o").stringValue();
-                System.out.println("Evaluate result answer: "+answer);
-                int confidence = -1 * match.getDistance() + match.getWordsLength()
-                        + match.getQuestion().length();
-                System.out.println("Evaluate result confidence: "+confidence);
+                int confidence = -1 * match.getDistance() + match.getWordsLength() + match.getQuestion().length();
                 mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
-                System.out.println("Answers: "+mAnswers);
                 return confidence;
             }
         }
-        if (propertyLabel == null) propertyLabel = "";
+        if (propertyLabel == null)
+            propertyLabel = "";
         int minDistance = Integer.MAX_VALUE;
         String word = "";
         for (String w : mWords) {
-            if (w.equals(" ") || w.equals("")) continue;
+            if (w.equals(" ") || w.equals(""))
+                continue;
             int distance = (int) new Levenshtein().distance(w, propertyLabel);
             if (minDistance > distance) {
                 minDistance = distance;
@@ -321,18 +261,16 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
     }
 
     private String getLabel(String uri) {
-        String query = "SELECT ?l WHERE { <" + uri + "> " +
-                "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
-        TupleQueryResult labelResult = TripleStore.query(mDatabasePath, query);
-        System.out.println("get Label Query: "+query);
-        System.out.println("Label resulr: "+labelResult);
+        String query = "SELECT ?l WHERE { <" + uri + "> "
+                + "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
+        TupleQueryResult labelResult = tripleStore.query(query);
         Value value;
+
         if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)
+
             return null;
         return value.stringValue();
     }
-
-
-
 }
+
 

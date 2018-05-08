@@ -7,6 +7,7 @@ import java.util.List;
 import info.debatty.java.stringsimilarity.Levenshtein;
 
 public class Match {
+
     public static final int TYPE_UNKNOWN = 0x0;
     public static final int TYPE_PROPERTY = 0x1;
     public static final int TYPE_THING = 0x2;
@@ -93,7 +94,6 @@ public class Match {
 
     public static class Comparator implements java.util.Comparator<Match> {
 
-        @Override
         public int compare(Match match, Match t1) {
             if (match.getWords().size() > t1.getWords().size()) return -1;
             if (match.getWords().size() < t1.getWords().size()) return 1;
@@ -106,4 +106,10 @@ public class Match {
             return 0;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Match [mLabel=" + mLabel + "]";
+    }
+
 }

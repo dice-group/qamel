@@ -30,7 +30,7 @@ public class Answer {
     @Override
     public String toString() {
         return mMatch.getUri() + " " + mBindingSet.getValue("p").stringValue() + " "
-                + mBindingSet.getValue("o").stringValue() + "[" + mConfidence + "] '" + mPropertyLabel + "'";
+                + mBindingSet.getValue("o").stringValue() + "[" + mConfidence + "] '" + mPropertyLabel + "'\n";
     }
 
     public static class Comparator implements java.util.Comparator<Answer> {
@@ -42,4 +42,5 @@ public class Answer {
             return 0;
         }
     }
+
 }

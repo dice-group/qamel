@@ -1,6 +1,8 @@
 
 package de.qa.qa.triplestore;
 
+import java.io.File;
+
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
@@ -9,36 +11,34 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
-import java.io.File;
-
 public class TripleStore {
     private static final String TAG = TripleStore.class.getSimpleName();
 
-    private static Repository sDatabase;
+    private Repository sDatabase;
+    private RepositoryConnection connection;
 
-    private static void openDatabase(String database) {
+    public TripleStore(String database) {
         File dbDir = new File(database);
-        System.out.println("Database directory"+dbDir);
         sDatabase = new SailRepository(new NativeStore(dbDir));
-        System.out.println("Initializing database...");
         sDatabase.initialize();
-        System.out.println("Done.");
+        sDatabase.isInitialized();
+
+        connection = sDatabase.getConnection();
     }
 
-    public static TupleQueryResult query(String database, String sparqlQuery) {
-        if (sDatabase == null) openDatabase(database);
-        RepositoryConnection connection = sDatabase.getConnection();
+    public TupleQueryResult query(String sparqlQuery) {
         TupleQuery tupleQuery = connection.prepareTupleQuery(sparqlQuery);
-        return tupleQuery.evaluate();
+        TupleQueryResult evaluate = tupleQuery.evaluate();
+        return evaluate;
     }
 
-    public static void printTupleResult(TupleQueryResult result) {
+    public void printTupleResult(TupleQueryResult result) {
         while (result.hasNext()) {
             BindingSet set = result.next();
-            System.out.println("---");
             for (String s : set.getBindingNames()) {
                 System.out.println(s + ": " + set.getValue(s).stringValue());
             }
         }
     }
+
 }
