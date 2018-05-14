@@ -107,4 +107,9 @@ public class Match {
         }
     }
 
+	@Override
+	public String toString() {
+		return "Match [mLabel=" + mLabel + "]";
+	}
+
 }
