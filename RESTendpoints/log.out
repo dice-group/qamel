@@ -1,0 +1,123 @@
+04.06.18 11:32:07 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 11:32:07 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 11:32:07 DEBUG [f4j.sail.nativerdf.TripleStore] 173   - <No indexes specified, using default indexes: spoc,posc>
+04.06.18 11:32:07 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 11:32:07 ERROR [.commons.load.LoaderController] 208   - <Couldn't load dataset LCQUAD. Returning null.>
+04.06.18 11:33:13 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 11:33:13 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 11:33:13 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 11:33:13 ERROR [.commons.load.LoaderController] 208   - <Couldn't load dataset QALD8_Train_Multilingual. Returning null.>
+04.06.18 16:58:17 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 16:58:17 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 16:58:18 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 16:58:18 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.serql.SeRQLParserFactory>
+04.06.18 16:58:18 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory>
+04.06.18 17:00:45 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 17:00:45 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 17:00:45 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 17:00:45 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.serql.SeRQLParserFactory>
+04.06.18 17:00:45 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory>
+04.06.18 17:01:08 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 17:01:08 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 17:01:08 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 17:01:08 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.serql.SeRQLParserFactory>
+04.06.18 17:01:08 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory>
+04.06.18 17:01:47 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 17:01:47 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 17:01:47 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 17:01:47 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.serql.SeRQLParserFactory>
+04.06.18 17:01:47 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory>
+04.06.18 17:22:10 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 17:22:10 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 17:22:10 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 17:22:10 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.serql.SeRQLParserFactory>
+04.06.18 17:22:10 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.StringCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.FloatCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.DoubleCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.DecimalCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.IntegerCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.BooleanCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.DateTimeCast>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Day>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Hours>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Minutes>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Month>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Now>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Seconds>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Timezone>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Tz>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Year>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.MD5>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA1>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA256>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA384>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA512>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Abs>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Ceil>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Floor>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Rand>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Round>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.StrDt>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.StrLang>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.UUID>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.STRUUID>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Concat>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Contains>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.EncodeForUri>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.LowerCase>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Replace>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrAfter>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrBefore>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrEnds>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrLen>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrStarts>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Substring>
+04.06.18 17:22:10 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.UpperCase>
+04.06.18 17:23:14 DEBUG [f4j.sail.nativerdf.NativeStore] 205   - <Initializing NativeStore...>
+04.06.18 17:23:14 DEBUG [f4j.sail.nativerdf.NativeStore] 229   - <Data dir is /home/paramjot/Documents/workspace/RESTendpoints/Database>
+04.06.18 17:23:14 DEBUG [f4j.sail.nativerdf.NativeStore] 286   - <NativeStore initialized>
+04.06.18 17:23:14 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.serql.SeRQLParserFactory>
+04.06.18 17:23:14 DEBUG [ery.parser.QueryParserRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.parser.sparql.SPARQLParserFactory>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.StringCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.FloatCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.DoubleCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.DecimalCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.IntegerCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.BooleanCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.DateTimeCast>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Day>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Hours>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Minutes>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Month>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Now>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Seconds>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Timezone>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Tz>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.datetime.Year>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.MD5>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA1>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA256>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA384>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.hash.SHA512>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Abs>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Ceil>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Floor>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Rand>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.numeric.Round>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.StrDt>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.StrLang>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.UUID>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.rdfterm.STRUUID>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Concat>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Contains>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.EncodeForUri>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.LowerCase>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Replace>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrAfter>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrBefore>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrEnds>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrLen>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.StrStarts>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.Substring>
+04.06.18 17:23:14 DEBUG [tion.function.FunctionRegistry] 53    - <Registered service class org.eclipse.rdf4j.query.algebra.evaluation.function.string.UpperCase>
