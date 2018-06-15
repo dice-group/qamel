@@ -24,8 +24,7 @@ public class App implements QuestionAnswerer {
 	
 	public static void main(String[] args) {
 		App app = new App(Context);
-		QAResult[] answerQuestion = app.answerQuestion("What is the Capital of France?");
-	}
+
 		/*
 		 * Scanner in = new Scanner(System.in); 
 		 * String ques = in.nextLine();
@@ -36,7 +35,23 @@ public class App implements QuestionAnswerer {
 //		System.out.println(((TextResult) answerQuestion[1]).getmData());
 //		 answerQuestion = app.answerQuestion("What is the capital of Germany?");
 //		System.out.println(((TextResult) answerQuestion[1]).getmData());
-		
+		List<IQuestion> questions = LoaderController.load(Dataset.QALD8_Train_Multilingual);
+		int i= 0;
+		double fmeasureavg = 0;
+		for (IQuestion q : questions) {
+			System.out.println(++i +" / "+ questions.size());
+			String question = q.getLanguageToQuestion().get("en");
+			QAResult[] results = app.answerQuestion(question);
+				System.out.println("answer: " +((TextResult) results[1]).getmData());
+			HashSet<String> systemAnswer = new HashSet<>(Arrays.asList(new String[] {((TextResult) results[1]).getmData()}));
+			double precision = AnswerBasedEvaluation.precision(systemAnswer, q);
+			double recall = AnswerBasedEvaluation.recall(systemAnswer, q);
+			double fMeasure = AnswerBasedEvaluation.fMeasure(systemAnswer, q);
+			fmeasureavg += fMeasure;
+		}
+		System.out.println(fmeasureavg/i);
+	}
+	
 	private static final String QUERY_PREFIX = "PREFIX rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 			+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 			+ "PREFIX  dbo: <http://dbpedia.org/ontology/> \n" + "PREFIX  dbp: <http://dbpedia.org/property/> \n"
@@ -152,7 +167,6 @@ public class App implements QuestionAnswerer {
 			mQuestionType = QUESTION_TYPE_UNKNOWN;
 	}
 
-	@Override
 	public QAResult[] answerQuestion(String question) {
 		System.out.println("******************************");
 
@@ -250,7 +264,6 @@ public class App implements QuestionAnswerer {
 				String answer = result.getValue("o").stringValue();
 				int confidence = -1 * match.getDistance() + match.getWordsLength() + match.getQuestion().length();
 				mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
-				System.out.println("ANSWER: "+answer);
 				return confidence;
 			}
 		}
@@ -271,7 +284,6 @@ public class App implements QuestionAnswerer {
 		int confidence = (int) (-2 * match.getDistance() - (10f * minDistance) / word.length()
 				+ match.getWordsLength());
 		mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, word));
-		
 		return confidence;
 	}
 
