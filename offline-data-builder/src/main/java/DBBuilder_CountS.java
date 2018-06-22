@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-public class DBBuilder {
+public class DBBuilder_CountS {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
         if (args.length < 2) {
@@ -50,9 +50,9 @@ public class DBBuilder {
             //Key: entity URI, value: occurrences in input file
             HashMap<String, Integer> index = new HashMap<>();
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-            String line = reader.readLine();
             //Count occurrences of all entities
-            while (line != null) {
+            while (reader.ready()) {
+            	String line = reader.readLine();
                 //Ignore comments
                 if (line.startsWith("#")) {
                     line = reader.readLine();
@@ -60,44 +60,21 @@ public class DBBuilder {
                 }
                 String subj = line.substring(0, line.indexOf(' '));
                 line = line.substring(line.indexOf(' ') + 1);
-                String pred = line.substring(0, line.indexOf(' '));
-                line = line.substring(line.indexOf(' ') + 1);
-                String obj;
-                //Object is a literal, doesn't have to be counted
-                if (!line.startsWith("<")) {
-                    obj = null;
-                } else {
-                    obj = line.substring(0, line.lastIndexOf('>') + 1);
-                }
-
                 if (index.containsKey(subj)) {
                     index.put(subj, index.get(subj) + 1);
                 } else {
                     index.put(subj, 1);
                 }
-                if (index.containsKey(pred)) {
-                    index.put(pred, index.get(pred) + 1);
-                } else {
-                    index.put(pred, 1);
-                }
-                if (obj != null) {
-                    if (index.containsKey(obj)) {
-                        index.put(obj, index.get(obj) + 1);
-                    } else {
-                        index.put(obj, 1);
-                    }
-                }
-                line = reader.readLine();
             }
             reader.close();
             System.out.println("I:  --> " + index.entrySet().size() + " entities found.");
             System.out.println("I: Writing relevant triples...");
             reader = new BufferedReader(new FileReader(inputFile));
             PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
-            line = reader.readLine();
             int triples = 0;
             //Search triples consisting of either three relevant entities or two relevant entities and a literal.
-            while (line != null) {
+            while (reader.ready()) {
+            	String  line = reader.readLine();
                 if (line.startsWith("#")) {
                     line = reader.readLine();
                     continue;
@@ -105,28 +82,10 @@ public class DBBuilder {
                 String triple = line;
                 String subj = line.substring(0, line.indexOf(' '));
                 line = line.substring(line.indexOf(' ') + 1);
-                String pred = line.substring(0, line.indexOf(' '));
-                line = line.substring(line.indexOf(' ') + 1);
-                String obj;
-                // object is not an URI, must be a literal
-                if (!line.startsWith("<")) {
-                    obj = "literal";
-                } else {
-                    obj = line.substring(0, line.lastIndexOf('>') + 1);
-                }
-                int matches = 0;
-                //Check if subject is relevant
-                if (index.get(subj) >= threshold) matches++;
-                //Check if predicate is relevant
-                if (index.get(pred) >= threshold) matches++;
-                //Check if object is relevant
-                if (!obj.startsWith("<") || index.get(obj) >= threshold) matches++;
-                //This triple is relevant if s, p and o are relevant.
-                if (matches == 3) {
+                if (index.get(subj) >= threshold) {
                     writer.println(triple);
                     triples++;
                 }
-                line = reader.readLine();
             }
             writer.close();
             //Free some memory (hopefully)
@@ -142,32 +101,34 @@ public class DBBuilder {
             RepositoryConnection connection = db.getConnection();
             InputStream inputStream = new FileInputStream(outputFile);
             connection.add(inputStream, "", RDFFormat.NTRIPLES);
+             inputStream = new FileInputStream("dbpedia_2016-10.nt");
+            connection.add(inputStream, "", RDFFormat.NTRIPLES);
             db.shutDown();
             writer = new PrintWriter(new FileWriter(new File(databaseDir, "revision")));
             writer.print(revision);
             writer.close();
             System.out.println("I:  --> Database successfully created.");
-            //Compress database to one single tar.gz which can be distributed
-            System.out.println("I: Compressing database...");
-            File tarGz = new File(databaseDir.getPath() + ".tar.gz");
-            createTarGZ(databaseDir, tarGz);
-            String md5 = getMD5(tarGz);
-            System.out.println("I:  --> Database has been compressed into " + tarGz.getPath());
-            Date timeDiff = new Date(System.currentTimeMillis() - startTime);
-            DateFormat df = new SimpleDateFormat("HH:mm:ss");
-            df.setTimeZone(TimeZone.getTimeZone("GMT"));
-            System.out.println("I:  FINISHED. (" + df.format(timeDiff) + ")");
-            System.out.println("I:   --> Offline data has been created successfully.");
-            System.out.println("I:   --> Output file: " + tarGz.getPath());
-            System.out.println("I:   --> Revision: " + revision);
-            System.out.println("");
-            System.out.println("{");
-            System.out.println("\"revision\": \"" + revision + "\",");
-            System.out.println("\"timestamp\": \"" + System.currentTimeMillis() + "\",");
-            System.out.println("\"size\": \"" + FileUtils.sizeOf(tarGz) + "\",");
-            System.out.println("\"md5\": \"" + md5 + "\",");
-            System.out.println("\"url\": \"\"");
-            System.out.println("}");
+//            //Compress database to one single tar.gz which can be distributed
+//            System.out.println("I: Compressing database...");
+//            File tarGz = new File(databaseDir.getPath() + ".tar.gz");
+//            createTarGZ(databaseDir, tarGz);
+//            String md5 = getMD5(tarGz);
+//            System.out.println("I:  --> Database has been compressed into " + tarGz.getPath());
+//            Date timeDiff = new Date(System.currentTimeMillis() - startTime);
+//            DateFormat df = new SimpleDateFormat("HH:mm:ss");
+//            df.setTimeZone(TimeZone.getTimeZone("GMT"));
+//            System.out.println("I:  FINISHED. (" + df.format(timeDiff) + ")");
+//            System.out.println("I:   --> Offline data has been created successfully.");
+//            System.out.println("I:   --> Output file: " + tarGz.getPath());
+//            System.out.println("I:   --> Revision: " + revision);
+//            System.out.println("");
+//            System.out.println("{");
+//            System.out.println("\"revision\": \"" + revision + "\",");
+//            System.out.println("\"timestamp\": \"" + System.currentTimeMillis() + "\",");
+//            System.out.println("\"size\": \"" + FileUtils.sizeOf(tarGz) + "\",");
+//            System.out.println("\"md5\": \"" + md5 + "\",");
+//            System.out.println("\"url\": \"\"");
+//            System.out.println("}");
         } catch (FileNotFoundException e) {
             System.err.println("E: input file not found!");
         } catch (IOException | NoSuchAlgorithmException e) {
