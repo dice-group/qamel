@@ -25,8 +25,8 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             + "PREFIX  dbo: <http://dbpedia.org/ontology/> \n" + "PREFIX  dbp: <http://dbpedia.org/property/> \n"
             + "PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#> \n";
     private static final Context Context = null;
-    private static final String[] BLACKLIST = { "the", "is", "did", "do", "his", "her", "to", "does", "are", "was", "were", "he", "she", "it", "they", "of",
-            "in", "at", "by", "why", "who", "where", "when", "what", "which", "year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me","with" };
+    private static final String[] BLACKLIST = { "the", "is", "did", "to", "does", "are", "was", "were", "he", "she", "it", "they", "of",
+            "in", "at", "by", "why", "who", "where", "when", "what", "which", "year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me" };
     private static final int QUESTION_TYPE_DATE = 0x1;
     private static final int QUESTION_TYPE_PLACE = 0x2;
     private static final int QUESTION_TYPE_PERSON = 0x4;
@@ -41,11 +41,11 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
     public List<Answer> mAnswers;
     private TripleStore tripleStore;
 
-    private String mDatabasePath;
-
+    String mDatabasePath;
     public OfflineQuestionAnswerer(Context context) {
         mDatabasePath = new File(context.getExternalFilesDir(null), "/offline_data")
                 .getAbsolutePath();
+        tripleStore = new TripleStore(mDatabasePath);
 
     }
 
@@ -55,10 +55,10 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             String candidatesQuery = QUERY_PREFIX
                     + "SELECT DISTINCT ?x ?z WHERE { "
                     + "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z "
-                    + "FILTER regex(lcase(str(?x)), \"" + word +"\") "
+                    + "FILTER regex(str(?x), \"" + word + "\") "
                     + "FILTER (lang(?z)='en') } "
                     + "LIMIT 100";
-            TupleQueryResult result = tripleStore.query(candidatesQuery);
+            TupleQueryResult result = tripleStore.query(mDatabasePath, candidatesQuery);
             while (result.hasNext()) {
                 BindingSet set = result.next();
                 String uri = set.getValue("x").stringValue();
@@ -92,28 +92,28 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             mProperties.add(match);
         }
     }
+
     /**
      * Returns number of occurrences for each position of a statement
      *
-     * @param uri the entity to lookup
+     * @param uri
+     *            the entity to lookup
      * @return an array containing<br>
-     * [0] the number of occurrences as subject <br>
-     * [1] the number of occurrences as predicate<br>
-     * [2] the number of occurrences as object
+     *         [0] the number of occurrences as subject <br>
+     *         [1] the number of occurrences as predicate<br>
+     *         [2] the number of occurrences as object
      */
-
-
     private int[] getOccurrences(String uri) {
         int[] occurrences = new int[3];
         // Count occurrences as subject
         String query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-        occurrences[0] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+        occurrences[0] = Integer.parseInt(tripleStore.query(mDatabasePath, query).next().getValue("c").stringValue());
         // Count occurrences as predicate
         query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { ?x <" + uri + "> ?y }";
-        occurrences[1] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+        occurrences[1] = Integer.parseInt(tripleStore.query(mDatabasePath, query).next().getValue("c").stringValue());
         // Count occurrences as object
         query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-        occurrences[2] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+        occurrences[2] = Integer.parseInt(tripleStore.query(mDatabasePath, query).next().getValue("c").stringValue());
         return occurrences;
     }
 
@@ -136,7 +136,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         }
         if (mQuestionType == 0)
             mQuestionType = QUESTION_TYPE_UNKNOWN;
-
     }
 
     @Override
@@ -178,10 +177,10 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         QAResult findBestAnswer = findBestAnswer();
         FooterResult footerResult = new FooterResult(question);
         return new QAResult[] { headerResult, findBestAnswer, footerResult };
-
     }
 
-    private QAResult findBestAnswer() {
+    public QAResult findBestAnswer() {
+
         int maxConfidence = Integer.MIN_VALUE;
         for (Match thing : mThings) {
             StringBuilder queryBuilder = new StringBuilder();
@@ -211,10 +210,9 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <").append(thing.getUri()).append("> .}}");
             }
             queryBuilder.append("}");
-            TupleQueryResult result = tripleStore.query(queryBuilder.toString());
+            TupleQueryResult result = tripleStore.query(mDatabasePath, queryBuilder.toString());
             while (result.hasNext()) {
-                BindingSet next = result.next();
-                maxConfidence = Math.max(evaluateResult(thing, next), maxConfidence);
+                maxConfidence = Math.max(evaluateResult(thing, result.next()), maxConfidence);
                 if (maxConfidence >= -thing.getDistance()) {
                     Collections.sort(mAnswers, new Answer.Comparator());
                     return new TextResult(mQuestion, mAnswers.get(0).getAnswer());
@@ -237,6 +235,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 String answer = result.getValue("o").stringValue();
                 int confidence = -1 * match.getDistance() + match.getWordsLength() + match.getQuestion().length();
                 mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
+                System.out.println("Answer: "+answer);
                 return confidence;
             }
         }
@@ -260,10 +259,10 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         return confidence;
     }
 
-    private String getLabel(String uri) {
+    public String getLabel(String uri) {
         String query = "SELECT ?l WHERE { <" + uri + "> "
                 + "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
-        TupleQueryResult labelResult = tripleStore.query(query);
+        TupleQueryResult labelResult = tripleStore.query(mDatabasePath, query);
         Value value;
 
         if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)
@@ -272,5 +271,3 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         return value.stringValue();
     }
 }
-
-

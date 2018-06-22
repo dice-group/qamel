@@ -79,7 +79,7 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer{
             Log.e(getClass().getSimpleName(), Log.getStackTraceString(e));
             answers = new QAResult[]{
                     new HeaderResult(question),
-                    new TextResult(question, "Couldn't connect to WDAQUA"),
+                    new TextResult(question, "Couldn't connect to Internet"),
                     new FooterResult(question)
             };
         }

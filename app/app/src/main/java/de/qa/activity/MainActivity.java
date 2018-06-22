@@ -24,10 +24,12 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run(){
                 dataExtraction=new DataExtraction(context);
+               // dataExtraction.start();
             }
         });
         thread.start();
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Location"));
+       // tabLayout.addTab(tabLayout.newTab().setText("Orien"));
+
    //   tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);

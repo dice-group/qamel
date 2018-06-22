@@ -3,7 +3,6 @@ package de.qa.qa.dataextraction;
 /**
  * Created by paramjot on 5/2/18.
  */
-
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -18,11 +17,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import de.qa.R;
 
 /**
@@ -33,13 +32,15 @@ public class CalendarExtraction extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR= 10;
     private String iCalendar=null;
     private View view;
-    TextView calendatText;
+    TextView calendar;
+    Date date;
+    CalendarView cal;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_contacts, container, false);
-        calendatText = (TextView) view.findViewById(R.id.calendar_text);
-
+        view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        calendar=(TextView) view.findViewById(R.id.calendar);
+       // cal=(CalendarView)view.findViewById(R.id.cal);
 
         // Checking for system permissions to access contacts data
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
@@ -98,12 +99,9 @@ public class CalendarExtraction extends Fragment {
                     if (keys[i] == "DTSTART" || keys[i] == "DTEND") {
                         // Parsing the start (respectively the end) time from epoch millis to the suiting iCal format
                         String timeMillis = cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[i]));
-                        System.out.println("Time in millis: "+timeMillis);
-                        Date date = new Date(Long.parseLong(timeMillis));
+                        date = new Date();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        System.out.println("Format "+simpleDateFormat);
                         String dateTime = simpleDateFormat.format(date);
-                        System.out.println("date Time: "+dateTime);
                         // Adding key and value (including time zone information)
                         vEvent = vEvent + keys[i] + ";TZID=/" + cursor.getString(cursor.getColumnIndex(INSTANCE_PROJECTION[0]))
                                 + ":" + dateTime + "\n";
@@ -117,6 +115,9 @@ public class CalendarExtraction extends Fragment {
             }
             iCalendar = iCalendar + "END:VCALENDAR";
             this.iCalendar = iCalendar;
+            calendar.setText(iCalendar);
+
+            // Toast.makeText(getContext(),"Calendar:  "+iCalendar,Toast.LENGTH_LONG).show();
             // TODO: There were some errors validating the iCal String on icalendar.org/validator.html
             // eg time stamp and event id are missing, time zone seems to be incorrect
 

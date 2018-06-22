@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "de.qa"
         minSdkVersion 16
@@ -28,6 +28,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'de.julielab:xercesImpl:2.11.0.1'
     compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'

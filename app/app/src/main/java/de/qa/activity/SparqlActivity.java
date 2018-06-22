@@ -32,7 +32,7 @@ public class SparqlActivity extends Activity {
         EditText editText = (EditText) findViewById(R.id.sparqlEditText);
         String query = editText.getText().toString();
         try {
-         /*   TupleQueryResult result = TripleStore.query(new File(getExternalFilesDir(null),
+            TupleQueryResult result = TripleStore.query(new File(getExternalFilesDir(null),
                     "/offline_data").getAbsolutePath(), query);
             StringBuilder out = new StringBuilder();
             while (result.hasNext()) {
@@ -41,7 +41,7 @@ public class SparqlActivity extends Activity {
                     out.append(s).append(": ").append(set.getValue(s).stringValue()).append("\n");
                 }
             }
-            ((TextView) findViewById(R.id.resultText)).setText(out.toString()); */
+            ((TextView) findViewById(R.id.resultText)).setText(out.toString());
         } catch (MalformedQueryException e) {
             Toast.makeText(this, "Invalid query", Toast.LENGTH_SHORT).show();
         }

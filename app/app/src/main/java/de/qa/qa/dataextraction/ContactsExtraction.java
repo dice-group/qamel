@@ -21,11 +21,6 @@ import java.util.ArrayList;
 
 import de.qa.R;
 
-
-/**
- * Created by Florian Speer on 08.08.2017.
- */
-
 public class ContactsExtraction extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 10;
     ArrayList<String> vCards;
