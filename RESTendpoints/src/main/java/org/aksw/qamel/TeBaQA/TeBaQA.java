@@ -21,7 +21,7 @@ public class TeBaQA{
 
 	private static final String URI = "http://185.2.103.92:8081/tebaqa/qa";
 	static String question= "What is capital of France";
-	List Answer = new ArrayList();
+	public List<String> Answer = new ArrayList();
 
 
 
