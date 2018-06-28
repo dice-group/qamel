@@ -15,3 +15,8 @@ OfflineQA
 TeBaQA
 ``` curl -d "query=What is the birthdate of Barack Obama?&lang=en" -X POST http://localhost:8080/tebaqa ```
 
+KnowledgeCards
+``` curl -d "url=http://dbpedia.org/resource/BarackObama" -X POST http://localhost:8080/knowledgeCard ```
+
+
+
