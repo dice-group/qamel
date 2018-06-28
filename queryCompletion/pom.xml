@@ -7,11 +7,7 @@
 	<name>Linked Data-based Auto Completion</name>
 
 	<repositories>
-		<repository>
-			<id>nexus</id>
-			<name>Nexus Staging Repo</name>
-			<url>http://nexus.aws.semweb.unister.de/content/repositories/releases</url>
-		</repository>
+		
 		<repository>
 			<id>clojars.org</id>
 			<url>http://clojars.org/repo</url>
@@ -94,12 +90,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
-		</dependency>
-		<!-- Prefix Tries -->
-		<dependency>
-			<groupId>com.unister.semweb</groupId>
-			<artifactId>sparsebytearraytree</artifactId>
-			<version>1.2.10</version>
 		</dependency>
 		<!-- Lucene -->
 		<dependency>
