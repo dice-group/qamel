@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.jena.ext.com.google.common.base.Joiner;
+import org.apache.jena.ext.com.google.common.collect.Sets;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -36,11 +37,9 @@ public class KnowledgeCardCreator {
                     "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
                     "PREFIX dct: <http://purl.org/dc/terms/>\n"
     );
-	private List<ExplorerProperties> explorerProperties;
 
 
     public KnowledgeCardCreator() throws IOException {
-    	explorerProperties = readCSVWithExplorerProperties();
 	}
     
     public static void main(String[] args) throws IOException {
@@ -73,10 +72,10 @@ public class KnowledgeCardCreator {
             QuerySolution solution = results.next();
             if(solution.get("types") != null && solution.get("properties") != null) {
                List<String> types = Arrays.asList(solution.get("types").asLiteral().getString().split(" "));
-               String[] properties = solution.get("properties").asLiteral().getString().split(" ");
+               HashSet<String> properties = Sets.newHashSet(solution.get("properties").asLiteral().getString().split(" "));
                // Get Relevant Properties based on CouchDB
-               fields.addAll(getRelevantProperties(uri, types, properties)); 
-               
+               List<Field> relevantProperties = getRelevantProperties(uri, types, properties);
+               fields.addAll(relevantProperties); 
             }
         }
     
@@ -85,12 +84,11 @@ public class KnowledgeCardCreator {
     }
 
 
-    public  List<Field> getRelevantProperties(String uri,List<String> Answer, String[] properties) {
+    public  List<Field> getRelevantProperties(String uri,List<String> Answer, HashSet<String> properties) {
         List<Field> fields = new ArrayList<Field>();
         try {
             TreeMap<Float, String> propertyMap = new TreeMap<Float, String>();
-            
-
+        	List<ExplorerProperties> explorerProperties = readCSVWithExplorerProperties(properties);
 
             for(ExplorerProperties property : explorerProperties) {
                 // Check if the property matches one of the list of classes(types) found for the entity
@@ -153,19 +151,18 @@ public class KnowledgeCardCreator {
     }
 
 
-    private List<ExplorerProperties> readCSVWithExplorerProperties() throws IOException {
+    private List<ExplorerProperties> readCSVWithExplorerProperties(HashSet<String> properties) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(this.getClass().getClassLoader().getResource("db.csv").getPath()));
 		List<ExplorerProperties> tmp = new ArrayList<ExplorerProperties>();
 		while(br.ready()) {
 			String[] line = br.readLine().split(",");
+			if(properties.contains(line[1])) {
 			tmp.add(new ExplorerProperties(line[0], line[1], line[2]));
-			}
+			}}
 		br.close();
 		return tmp;
 	}
 
-
-        
   
 
 }
