@@ -5,7 +5,6 @@
   <groupId>org.aksw.qamel</groupId>
   <artifactId>RESTendpoints</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <name>RESTendpoints</name>
   <url>http://maven.apache.org</url>
@@ -40,7 +39,6 @@
 					</systemPropertie
 					s> -->
 					<mainClass>org.aksw.qamel.RESTendpoints.Application</mainClass>
-					<layout>JAR</layout>
 				</configuration>
 				<executions>
 					<execution>
@@ -57,7 +55,6 @@
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-compiler-plugin</artifactId>
-			    <version>3.1</version>
 			    <configuration>
 			        <source>1.8</source>
 			        <target>1.8</target>
@@ -67,21 +64,6 @@
 	</build>
  
 <dependencies>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
-<!-- <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-beans</artifactId>
-    <version>4.1.4.RELEASE</version>
-</dependency> -->
-
-
- <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot -->
-<!-- <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot</artifactId>
-    <version>2.0.2.RELEASE</version>
-</dependency>
- -->
 	
   	<dependency>
  		<groupId>org.aksw.qa</groupId>
@@ -95,18 +77,10 @@
   		<version>0.5.13</version>
 	</dependency>
  
-	<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
 	 <dependency>
 	    <groupId>org.springframework.boot</groupId>
 	    <artifactId>spring-boot-starter-web</artifactId>
-	    <version>2.0.2.RELEASE</version>
-	</dependency> 
-	 <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
-<!-- <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-web</artifactId>
-    <version>4.3.11.RELEASE</version>
-</dependency> -->
+	    </dependency> 
 	
 	 
      <dependency>
@@ -131,16 +105,9 @@
 	 <dependency>
       	<groupId>junit</groupId>
       	<artifactId>junit</artifactId>
-     	 <version>3.8.1</version>
      	 <scope>test</scope>
     </dependency>
     
-    <!-- https://mvnrepository.com/artifact/com.cloudant/cloudant-client -->
-	<dependency>
-	    <groupId>com.cloudant</groupId>
-	    <artifactId>cloudant-client</artifactId>
-	    <version>2.12.0</version>
-	</dependency>
 	
 	<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
 	<dependency>

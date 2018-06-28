@@ -1,8 +1,9 @@
 package org.aksw.qamel.KnowledgeCard;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,29 +20,25 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Service;
+@Service
 public class KnowledgeCardCreator {
 
 	private static final int MAX_FIELD_SIZE = 5; // Top N Properties that you want
 	private static final int API_TIMEOUT = 5000;
 	private static final String ENDPOINT = "http://dbpedia.org/sparql";
-
+	@Autowired
+	private ResourceLoader resourceLoader;
+	
 	private static final String PREFIXES = new String("PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
 			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 			+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX dbo: <http://dbpedia.org/ontology/>\n"
 			+ "PREFIX dbp: <http://dbpedia.org/property/>\n" + "PREFIX dbr: <http://dbpedia.org/resource/>\n"
 			+ "PREFIX dct: <http://purl.org/dc/terms/>\n");
 
-	public KnowledgeCardCreator() throws IOException {
-	}
-
-	public static void main(String[] args) throws IOException {
-		String uri = "http://dbpedia.org/resource/Barack_Obama"; // URI you want to test
-
-		KnowledgeCardCreator tmp = new KnowledgeCardCreator();
-		HashSet<Field> tmpOutput = tmp.process(uri);
-		System.out.println(Joiner.on("\n").join(tmpOutput));
-	}
 
 	private QueryExecution executeQuery(String queryString) {
 		Query query = QueryFactory.create(queryString);
@@ -65,8 +62,9 @@ public class KnowledgeCardCreator {
 			QuerySolution solution = results.next();
 			if (solution.get("types") != null && solution.get("properties") != null) {
 				List<String> types = Arrays.asList(solution.get("types").asLiteral().getString().split(" "));
+				String[] split = solution.get("properties").asLiteral().getString().split(" ");
 				HashSet<String> properties = Sets
-						.newHashSet(solution.get("properties").asLiteral().getString().split(" "));
+						.newHashSet(split);
 				// Get Relevant Properties based on CouchDB
 				List<Field> relevantProperties = getRelevantProperties(uri, types, properties);
 				fields.addAll(relevantProperties);
@@ -143,8 +141,10 @@ public class KnowledgeCardCreator {
 	}
 
 	private List<ExplorerProperties> readCSVWithExplorerProperties(HashSet<String> properties) throws IOException {
-		BufferedReader br = new BufferedReader(
-				new FileReader(this.getClass().getClassLoader().getResource("db.csv").getPath()));
+		Resource resource = resourceLoader.getResource("classpath:db.csv");
+		InputStream openResource = resource.getInputStream();
+		InputStreamReader in = new InputStreamReader(openResource);
+		BufferedReader br = new BufferedReader(in);
 		List<ExplorerProperties> tmp = new ArrayList<ExplorerProperties>();
 		while (br.ready()) {
 			String[] line = br.readLine().split(",");

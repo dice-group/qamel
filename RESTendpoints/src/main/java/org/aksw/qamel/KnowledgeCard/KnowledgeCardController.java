@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,12 +22,9 @@ import com.github.jsonldjava.utils.JsonUtils;
 @EnableAutoConfiguration
 public class KnowledgeCardController {
 	private Logger log = LoggerFactory.getLogger(KnowledgeCardController.class);
+	@Autowired
 	private KnowledgeCardCreator knowledgeCardCreator;
 
-	public KnowledgeCardController() throws IOException {
-
-		knowledgeCardCreator = new KnowledgeCardCreator();
-	}
 
 	@RequestMapping(value = "/knowledgeCard", method = RequestMethod.POST)
 	public String askGenesis(@RequestParam String url, final HttpServletResponse response)
