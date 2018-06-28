@@ -3,7 +3,6 @@ package org.aksw.qamel.KnowledgeCard;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,148 +20,140 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
 
-
 public class KnowledgeCardCreator {
-   
-    private static final int MAX_FIELD_SIZE = 5;        // Top N Properties that you want
-    private static final int API_TIMEOUT = 5000;
-    private static final String ENDPOINT = "http://dbpedia.org/sparql";
 
-    private static final String PREFIXES = new String(
-            "PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n" +
-                    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"+
-                    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                    "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
-                    "PREFIX dbp: <http://dbpedia.org/property/>\n" +
-                    "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
-                    "PREFIX dct: <http://purl.org/dc/terms/>\n"
-    );
+	private static final int MAX_FIELD_SIZE = 5; // Top N Properties that you want
+	private static final int API_TIMEOUT = 5000;
+	private static final String ENDPOINT = "http://dbpedia.org/sparql";
 
+	private static final String PREFIXES = new String("PREFIX foaf: <http://xmlns.com/foaf/0.1/>\n"
+			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+			+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" + "PREFIX dbo: <http://dbpedia.org/ontology/>\n"
+			+ "PREFIX dbp: <http://dbpedia.org/property/>\n" + "PREFIX dbr: <http://dbpedia.org/resource/>\n"
+			+ "PREFIX dct: <http://purl.org/dc/terms/>\n");
 
-    public KnowledgeCardCreator() throws IOException {
+	public KnowledgeCardCreator() throws IOException {
 	}
-    
-    public static void main(String[] args) throws IOException {
-		String uri = "http://dbpedia.org/resource/Barack_Obama"; //  URI you want to test
-		
+
+	public static void main(String[] args) throws IOException {
+		String uri = "http://dbpedia.org/resource/Barack_Obama"; // URI you want to test
+
 		KnowledgeCardCreator tmp = new KnowledgeCardCreator();
-		HashSet<Field> tmpOutput=  tmp.process(uri);
+		HashSet<Field> tmpOutput = tmp.process(uri);
 		System.out.println(Joiner.on("\n").join(tmpOutput));
-    }
+	}
 
-    private  QueryExecution executeQuery(String queryString) {
-        Query query = QueryFactory.create(queryString);
-        QueryEngineHTTP queryEngine = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(ENDPOINT, query);
-        queryEngine.addParam("timeout", String.valueOf(API_TIMEOUT));
-        return queryEngine;
-    }
+	private QueryExecution executeQuery(String queryString) {
+		Query query = QueryFactory.create(queryString);
+		QueryEngineHTTP queryEngine = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(ENDPOINT, query);
+		queryEngine.addParam("timeout", String.valueOf(API_TIMEOUT));
+		return queryEngine;
+	}
 
-    public HashSet<Field> process(String uri) {
-        String query = PREFIXES +
-                "SELECT (GROUP_CONCAT(distinct ?type;separator=' ') as ?types) (GROUP_CONCAT(distinct ?property;separator=' ') as ?properties) WHERE {\n" +
-                        "<" + uri + "> rdf:type ?type . FILTER(STRSTARTS(STR(?type), 'http://dbpedia.org/ontology')) . \n" +
-                        "<" + uri + "> ?property ?value . FILTER(STRSTARTS(STR(?property), 'http://dbpedia.org/ontology')) . \n" +
-                        "}";
-        QueryExecution queryExecution = executeQuery(query); // Get all Ontology Classes and Properties for given entity
-        Iterator<QuerySolution> results = queryExecution.execSelect();
-        
-        HashSet<Field> fields = new HashSet<>();
-        
-        while(results.hasNext()) {
-            QuerySolution solution = results.next();
-            if(solution.get("types") != null && solution.get("properties") != null) {
-               List<String> types = Arrays.asList(solution.get("types").asLiteral().getString().split(" "));
-               HashSet<String> properties = Sets.newHashSet(solution.get("properties").asLiteral().getString().split(" "));
-               // Get Relevant Properties based on CouchDB
-               List<Field> relevantProperties = getRelevantProperties(uri, types, properties);
-               fields.addAll(relevantProperties); 
-            }
-        }
-    
-        queryExecution.close();
-        return fields;
-    }
+	public HashSet<Field> process(String uri) {
+		String query = PREFIXES
+				+ "SELECT (GROUP_CONCAT(distinct ?type;separator=' ') as ?types) (GROUP_CONCAT(distinct ?property;separator=' ') as ?properties) WHERE {\n"
+				+ "<" + uri + "> rdf:type ?type . FILTER(STRSTARTS(STR(?type), 'http://dbpedia.org/ontology')) . \n"
+				+ "<" + uri
+				+ "> ?property ?value . FILTER(STRSTARTS(STR(?property), 'http://dbpedia.org/ontology')) . \n" + "}";
+		QueryExecution queryExecution = executeQuery(query); // Get all Ontology Classes and Properties for given entity
+		Iterator<QuerySolution> results = queryExecution.execSelect();
 
+		HashSet<Field> fields = new HashSet<>();
 
-    public  List<Field> getRelevantProperties(String uri,List<String> Answer, HashSet<String> properties) {
-        List<Field> fields = new ArrayList<Field>();
-        try {
-            TreeMap<Float, String> propertyMap = new TreeMap<Float, String>();
-        	List<ExplorerProperties> explorerProperties = readCSVWithExplorerProperties(properties);
+		while (results.hasNext()) {
+			QuerySolution solution = results.next();
+			if (solution.get("types") != null && solution.get("properties") != null) {
+				List<String> types = Arrays.asList(solution.get("types").asLiteral().getString().split(" "));
+				HashSet<String> properties = Sets
+						.newHashSet(solution.get("properties").asLiteral().getString().split(" "));
+				// Get Relevant Properties based on CouchDB
+				List<Field> relevantProperties = getRelevantProperties(uri, types, properties);
+				fields.addAll(relevantProperties);
+			}
+		}
 
-            for(ExplorerProperties property : explorerProperties) {
-                // Check if the property matches one of the list of classes(types) found for the entity
-                if(Answer.contains(property.getClassName())) {
-                    propertyMap.put(Float.parseFloat(property.getScore()), property.getProperty());
-                }
-            }
+		queryExecution.close();
+		return fields;
+	}
 
-            if(propertyMap.size() > 0) {
-                int count = 0;
-                Iterator<Float> iterator = propertyMap.descendingKeySet().iterator(); // Sorts descending order
-                String property_uris = "";
-                while (count < MAX_FIELD_SIZE && iterator.hasNext()) {
-                    property_uris += "<" + propertyMap.get(iterator.next()) + "> ";
-                    count++;
-                }
+	public List<Field> getRelevantProperties(String uri, List<String> Answer, HashSet<String> properties) {
+		List<Field> fields = new ArrayList<Field>();
+		try {
+			TreeMap<Float, String> propertyMap = new TreeMap<Float, String>();
+			List<ExplorerProperties> explorerProperties = readCSVWithExplorerProperties(properties);
 
-                String query = PREFIXES + "SELECT ?property_label (group_concat(distinct ?value;separator='__') as ?values) (group_concat(distinct ?value_label;separator='__') as ?value_labels) where {\n" +
-                        "VALUES ?property {" + property_uris + "}\n" +
-                        "<" + uri + "> ?property ?value . \n" +
-                        "?property rdfs:label ?property_label . FILTER(lang(?property_label)='en'). \n" +
-                        "OPTIONAL {?value rdfs:label ?value_label . FILTER(lang(?value_label) = 'en') }\n" +
-                        "} GROUP BY ?property_label";
-                QueryExecution queryExecution = executeQuery(query);
-                try {
-                    Iterator<QuerySolution> results = queryExecution.execSelect();
-                    while(results.hasNext()) {
-                        QuerySolution result = results.next();
-                        Field field = new Field();
-                        field.setName(result.get("property_label").asLiteral().getString());
+			for (ExplorerProperties property : explorerProperties) {
+				// Check if the property matches one of the list of classes(types) found for the
+				// entity
+				if (Answer.contains(property.getClassName())) {
+					propertyMap.put(Float.parseFloat(property.getScore()), property.getProperty());
+				}
+			}
 
-                        // If Value Label String is empty then we use Value String instead which means the value is a literal. So we are only taking the first element before space
-                        if(result.get("value_labels").asLiteral().getString().equals("")) {
-                            field.setValue(result.get("values").asLiteral().getString().split("__")[0]);
-                        }
-                        else {
-                            LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-                            String[] keyArray = result.get("values").asLiteral().getString().split("__");
-                            String[] valueArray = result.get("value_labels").asLiteral().getString().split("__");
+			if (propertyMap.size() > 0) {
+				int count = 0;
+				Iterator<Float> iterator = propertyMap.descendingKeySet().iterator(); // Sorts descending order
+				String property_uris = "";
+				while (count < MAX_FIELD_SIZE && iterator.hasNext()) {
+					property_uris += "<" + propertyMap.get(iterator.next()) + "> ";
+					count++;
+				}
 
-                            for(int index = 0; index < keyArray.length; index++) {
-                                map.put(keyArray[index], valueArray[index]);
-                            }
-                            field.setValues(map);
-                        }
-                        fields.add(field);
-                    }
-                    return fields;
-                }
-                finally {
-                    queryExecution.close();
-                }
-            }
-        return fields;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fields;
-    }
+				String query = PREFIXES
+						+ "SELECT ?property_label (group_concat(distinct ?value;separator='__') as ?values) (group_concat(distinct ?value_label;separator='__') as ?value_labels) where {\n"
+						+ "VALUES ?property {" + property_uris + "}\n" + "<" + uri + "> ?property ?value . \n"
+						+ "?property rdfs:label ?property_label . FILTER(lang(?property_label)='en'). \n"
+						+ "OPTIONAL {?value rdfs:label ?value_label . FILTER(lang(?value_label) = 'en') }\n"
+						+ "} GROUP BY ?property_label";
+				QueryExecution queryExecution = executeQuery(query);
+				try {
+					Iterator<QuerySolution> results = queryExecution.execSelect();
+					while (results.hasNext()) {
+						QuerySolution result = results.next();
+						Field field = new Field();
+						field.setName(result.get("property_label").asLiteral().getString());
 
+						// If Value Label String is empty then we use Value String instead which means
+						// the value is a literal. So we are only taking the first element before space
+						if (result.get("value_labels").asLiteral().getString().equals("")) {
+							field.setValue(result.get("values").asLiteral().getString().split("__")[0]);
+						} else {
+							LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+							String[] keyArray = result.get("values").asLiteral().getString().split("__");
+							String[] valueArray = result.get("value_labels").asLiteral().getString().split("__");
 
-    private List<ExplorerProperties> readCSVWithExplorerProperties(HashSet<String> properties) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(this.getClass().getClassLoader().getResource("db.csv").getPath()));
+							for (int index = 0; index < keyArray.length; index++) {
+								map.put(keyArray[index], valueArray[index]);
+							}
+							field.setValues(map);
+						}
+						fields.add(field);
+					}
+					return fields;
+				} finally {
+					queryExecution.close();
+				}
+			}
+			return fields;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fields;
+	}
+
+	private List<ExplorerProperties> readCSVWithExplorerProperties(HashSet<String> properties) throws IOException {
+		BufferedReader br = new BufferedReader(
+				new FileReader(this.getClass().getClassLoader().getResource("db.csv").getPath()));
 		List<ExplorerProperties> tmp = new ArrayList<ExplorerProperties>();
-		while(br.ready()) {
+		while (br.ready()) {
 			String[] line = br.readLine().split(",");
-			if(properties.contains(line[1])) {
-			tmp.add(new ExplorerProperties(line[0], line[1], line[2]));
-			}}
+			if (properties.contains(line[1])) {
+				tmp.add(new ExplorerProperties(line[0], line[1], line[2]));
+			}
+		}
 		br.close();
 		return tmp;
 	}
-
-  
 
 }

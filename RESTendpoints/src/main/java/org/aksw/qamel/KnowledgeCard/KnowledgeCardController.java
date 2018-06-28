@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.jsonldjava.utils.JsonUtils;
 
-
 @RestController
 @EnableAutoConfiguration
 public class KnowledgeCardController {
@@ -30,13 +29,12 @@ public class KnowledgeCardController {
 	}
 
 	@RequestMapping(value = "/knowledgeCard", method = RequestMethod.POST)
-	public String askGenesis(@RequestParam String url, final HttpServletResponse response) throws ExecutionException, RuntimeException, IOException, ParseException {
+	public String askGenesis(@RequestParam String url, final HttpServletResponse response)
+			throws ExecutionException, RuntimeException, IOException, ParseException {
 		HashSet<Field> answer = knowledgeCardCreator.process(url);
 		String prettyString = JsonUtils.toPrettyString(answer);
-		log.info("Got: "+prettyString);
+		log.info("Got: " + prettyString);
 		return prettyString;
 	}
 
 }
-
-
