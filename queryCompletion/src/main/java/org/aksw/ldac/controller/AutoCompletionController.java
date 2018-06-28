@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.aksw.ldac.autocompletion.AC_Lucene;
-import org.aksw.ldac.autocompletion.AC_materializedLinkedData;
 import org.aksw.ldac.autocompletion.AutoCompletion;
 import org.aksw.ldac.eval.Evaluation;
 import org.aksw.ldac.util.DataSplitter;
