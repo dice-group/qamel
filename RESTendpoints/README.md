@@ -10,7 +10,7 @@ mvn spring-boot:run
 An example request would look like: 
 
 OfflineQA
-``` curl -d "query=What is the birthdate of Barack Obama?&lang=en" -X POST http://localhost:8080/gerbil ```
+``` curl -d "query=What is the birthdate of Barack Obama?&lang=en" -X POST http://localhost:8080/offline ```
 
 TeBaQA
 ``` curl -d "query=What is the birthdate of Barack Obama?&lang=en" -X POST http://localhost:8080/tebaqa ```
