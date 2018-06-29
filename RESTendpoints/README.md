@@ -1,4 +1,4 @@
-# RESTendpoints for TeBaQA, OfflineQA, Genesis
+# RESTendpoints for TeBaQA, OfflineQA, knowledgeCard
 
 ## Run it via Maven
 After cloning/downloading the repository, on the terminal run: 
