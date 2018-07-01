@@ -7,11 +7,7 @@
 	<name>Linked Data-based Auto Completion</name>
 
 	<repositories>
-		<repository>
-			<id>nexus</id>
-			<name>Nexus Staging Repo</name>
-			<url>http://nexus.aws.semweb.unister.de/content/repositories/releases</url>
-		</repository>
+		
 		<repository>
 			<id>clojars.org</id>
 			<url>http://clojars.org/repo</url>
@@ -56,8 +52,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -83,23 +79,11 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<!-- ~~~~~~~~~~~~~~~~~~~ End Logging ~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- Jena -->
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-			<version>2.9.2</version>
-		</dependency>
 		<!-- Mutable Pair -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
-		</dependency>
-		<!-- Prefix Tries -->
-		<dependency>
-			<groupId>com.unister.semweb</groupId>
-			<artifactId>sparsebytearraytree</artifactId>
-			<version>1.2.10</version>
 		</dependency>
 		<!-- Lucene -->
 		<dependency>
@@ -114,19 +98,14 @@
 		</dependency>
 		<!-- Sparql -->
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-			<version>2.10.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.aksw.jena-sparql-api</groupId>
 			<artifactId>jena-sparql-api-core</artifactId>
-			<version>2.10.0-22</version>
+			<version>2.13.0-5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aksw.jena-sparql-api</groupId>
 			<artifactId>jena-sparql-api-server</artifactId>
-			<version>2.10.0-22</version>
+			<version>2.13.0-5</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,13 +1,8 @@
 package org.aksw.ldac.util;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
-import org.aksw.jena_sparql_api.cache.core.QueryExecutionFactoryCacheEx;
-import org.aksw.jena_sparql_api.cache.extra.CacheCoreEx;
-import org.aksw.jena_sparql_api.cache.extra.CacheCoreH2;
-import org.aksw.jena_sparql_api.cache.extra.CacheExImpl;
 import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.delay.core.QueryExecutionFactoryDelay;
 import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
@@ -57,19 +52,15 @@ public class SparqlEndpoint {
 			 * level classes - i.e. ResultSet and Model
 			 */
 
-			CacheCoreEx cacheBackend;
-			cacheBackend = CacheCoreH2.create(cache, timeToLive, true);
-			CacheExImpl cacheFrontend = new CacheExImpl(cacheBackend);
-			qef = new QueryExecutionFactoryCacheEx(qef, cacheFrontend);
+//			CacheCoreEx cacheBackend;
+//			cacheBackend = CacheCoreH2.create(cache, timeToLive, true);
+//			CacheExImpl cacheFrontend = new CacheExImpl(cacheBackend);
+//			qef = new QueryExecutionFactoryCacheEx(qef, cacheFrontend);
 
 			// Add pagination
 			return new QueryExecutionFactoryPaginated(qef, 900);
 		} catch (IOException e) {
 			log.error("IOException: ", e);
-		} catch (ClassNotFoundException e) {
-			log.error("ClassNotFoundException: ", e);
-		} catch (SQLException e) {
-			log.error("SQLException: ", e);
 		}
 		return null;
 	}

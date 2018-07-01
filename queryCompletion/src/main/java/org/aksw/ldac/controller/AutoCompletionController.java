@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.aksw.ldac.autocompletion.AC_materializedLinkedData;
+import org.aksw.ldac.autocompletion.AC_Lucene;
 import org.aksw.ldac.autocompletion.AutoCompletion;
 import org.aksw.ldac.eval.Evaluation;
 import org.aksw.ldac.util.DataSplitter;
@@ -21,7 +21,7 @@ public class AutoCompletionController {
 	public static void main(String args[]) throws FileNotFoundException {
 
 		AutoCompletionController controller = new AutoCompletionController();
-		controller.setDatasets(new String[] { "data/hotelModeSearches_100000.txt", "data/normalModeSearches_100000.txt" });
+		controller.setDatasets(new String[] { "src/main/resources/file1.txt", "src/main/resources/file2.txt" });
 		controller.run();
 	}
 
@@ -31,7 +31,7 @@ public class AutoCompletionController {
 		for (String data : datasets) {
 			DataSplitter dataSplitter = new DataSplitter(data, 10);
 			// new AC_Lucene(), new AC_PrefixTrie()
-			for (AutoCompletion ac : new AutoCompletion[] { new AC_materializedLinkedData("data/materializedOntology.cleaned") }) {
+			for (AutoCompletion ac : new AutoCompletion[] { new AC_Lucene() }) {
 				ArrayList<Double> aucs = crossValidate(dataSplitter, ac);
 				saveResult(approachDatasetValue, data, ac, aucs);
 				log.info("Approach: " + ac.toString() + " Data: " + data + " Average AUC = " + average(aucs));
