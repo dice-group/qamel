@@ -24,9 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import de.qa.R;
 
-/**
- * Created by Florian Speer on 11.08.2017.
- */
 
 public class CalendarExtraction extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_CALENDAR= 10;

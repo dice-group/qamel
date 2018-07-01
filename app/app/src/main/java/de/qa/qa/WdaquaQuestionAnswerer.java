@@ -28,7 +28,7 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer{
     Button online_test;
     String data = "";
 
-   private static final String WDAQUA_URI = "http://185.2.103.92:8081/tebaqa/qa";
+   private static final String TEBAQA_URI = "http://185.2.103.92:8081/tebaqa/qa";
 
     @Override
     public QAResult[] answerQuestion(String question) {
@@ -44,8 +44,9 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer{
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("query", question)
                     .build();
+
             Request request = new Request.Builder()
-                    .url(WDAQUA_URI)
+                    .url(TEBAQA_URI)
                     .post(requestBody)
                     .build();
             Response response = client.newCall(request).execute();
@@ -63,7 +64,6 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer{
                 answers[i + 1] = createQAResult(question,
                         binding.getJSONObject("x").getString("type"),
                         binding.getJSONObject("x").optString("datatype"),
-                        //Nah
                         binding.getJSONObject("x").getString("value"));
                 Log.d("QA", "Result: " + binding.toString());
             }
