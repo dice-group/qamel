@@ -52,8 +52,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -79,12 +79,6 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 		<!-- ~~~~~~~~~~~~~~~~~~~ End Logging ~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- Jena -->
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-			<version>2.9.2</version>
-		</dependency>
 		<!-- Mutable Pair -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -104,19 +98,14 @@
 		</dependency>
 		<!-- Sparql -->
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-			<version>2.10.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.aksw.jena-sparql-api</groupId>
 			<artifactId>jena-sparql-api-core</artifactId>
-			<version>2.10.0-22</version>
+			<version>2.13.0-5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aksw.jena-sparql-api</groupId>
 			<artifactId>jena-sparql-api-server</artifactId>
-			<version>2.10.0-22</version>
+			<version>2.13.0-5</version>
 		</dependency>
 	</dependencies>
 </project>

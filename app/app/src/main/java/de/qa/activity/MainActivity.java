@@ -7,6 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+
 import de.qa.R;
 import de.qa.fragment.QAFragment;
 import de.qa.misc.Utils;
@@ -20,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     private TripleStore mTripleStore;
     private DataExtraction dataExtraction;
     Context context;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
             @Override
             public void run(){
                 dataExtraction=new DataExtraction(context);
-               // dataExtraction.start();
             }
         });
         thread.start();
@@ -40,9 +45,8 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Location"));
-       // tabLayout.addTab(tabLayout.newTab().setText("Orien"));
+        //tabLayout.addTab(tabLayout.newTab().setText("Orientation"));
 
-   //   tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter

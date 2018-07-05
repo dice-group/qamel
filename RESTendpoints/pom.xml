@@ -5,55 +5,147 @@
   <groupId>org.aksw.qamel</groupId>
   <artifactId>RESTendpoints</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <name>RESTendpoints</name>
   <url>http://maven.apache.org</url>
-
+  <pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+		<pluginRepository>
+        <id>spring-milestones</id>
+        <url>http://repo.spring.io/milestone</url>
+    </pluginRepository>
+	</pluginRepositories>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
  <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.2.RELEASE</version>
-    </parent>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-parent</artifactId>
+	<version>2.0.2.RELEASE</version>
+	
+</parent>
 
- <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
-  <dependencies>
-    <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
-<dependency>
-    <groupId>com.squareup.okhttp3</groupId>
-    <artifactId>okhttp</artifactId>
-    <version>3.10.0</version>
-</dependency>
-
-  
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!-- <systemProperties>
+						<JAVA_OPTS>-Xms415m -Xmx16G -XX:MaxPermSize=1G</JAVA_OPTS>
+					</systemPropertie
+					s> -->
+					<mainClass>org.aksw.qamel.RESTendpoints.Application</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>bootable-with-spring</classifier>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <configuration>
+			        <source>1.8</source>
+			        <target>1.8</target>
+			    </configuration>
+			 </plugin>
+		</plugins>
+	</build>
+ 
+<dependencies>
+	
+  	<dependency>
+ 		<groupId>org.aksw.qa</groupId>
+  		<artifactId>commons</artifactId>
+  		<version>0.4.18</version>
+	</dependency>
+	
+ 	<dependency>
+  		<groupId>org.aksw.qa</groupId>
+  		<artifactId>datasets</artifactId>
+  		<version>0.5.13</version>
+	</dependency>
+ 
+	 <dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-web</artifactId>
+	    </dependency> 
+	
+	 
+     <dependency>
+     	<groupId>com.fasterxml.jackson.core</groupId>
+     	<artifactId>jackson-databind</artifactId>
+     </dependency>
+     
+     <dependency>
+		<groupId>org.apache.jena</groupId>
+		<artifactId>apache-jena-libs</artifactId>
+		<type>pom</type>
+		<version>3.6.0</version>
+	</dependency>
+     
+	<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+	<dependency>
+	    <groupId>com.squareup.okhttp3</groupId>
+	    <artifactId>okhttp</artifactId>
+	    <version>3.10.0</version>
+	</dependency>
+	
+	 <dependency>
+      	<groupId>junit</groupId>
+      	<artifactId>junit</artifactId>
+     	 <scope>test</scope>
     </dependency>
+    
+	
+	<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>servlet-api</artifactId>
+	    <version>2.5</version>
+	    <scope>provided</scope>
+	</dependency>
+<!-- <dependency>
+    <groupId>org.aksw.qamel</groupId>
+  <artifactId>OfflineQABenchmark</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
+  </dependency> -->
+  <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-model</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-api</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-memory</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-nativerdf</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-repository-api</artifactId><version>1.0.3</version></dependency>
+    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-repository-sail</artifactId><version>1.0.3</version></dependency>
+    <dependency>
+    <groupId>info.debatty</groupId>
+    <artifactId>java-string-similarity</artifactId>
+    <version>0.24</version>
+</dependency>
   </dependencies>
+  
+   <repositories>
+   		<repository>
+			<id>maven.aksw.internal</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/internal</url>
+		</repository>
+		
+		<repository>
+			<id>maven.aksw.snapshots</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/snapshots</url>
+		</repository>
+   </repositories>
+   
 </project>

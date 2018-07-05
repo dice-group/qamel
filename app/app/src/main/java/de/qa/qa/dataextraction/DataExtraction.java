@@ -7,9 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Florian Speer on 17.07.2017.
- */
+
 
 public class DataExtraction {
     private final LocationExtraction locationExtraction;
@@ -23,7 +21,7 @@ public class DataExtraction {
         this.context = context;
         // Initialize extraction of location + orientation
         locationExtraction = new LocationExtraction();
-         orientationExtraction = new OrientationExtraction();
+        orientationExtraction = new OrientationExtraction();
 
         contactsExtraction = new ContactsExtraction();
         // Initialize calendar extraction
@@ -40,7 +38,7 @@ public class DataExtraction {
     void stop() {
         // Stop location and orientation updates
         locationExtraction.stopLocationUpdates();
-         orientationExtraction.stopOrientationUpdates();
+        orientationExtraction.stopOrientationUpdates();
     }
     JSONObject getData() {
         // Get location, orientation, contacts and calendar data

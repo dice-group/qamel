@@ -35,20 +35,22 @@ import de.qa.R;
  * Created by paramjot on 5/8/18.
  */
 
-public class LocationExtraction extends Fragment{
+public class LocationExtraction extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 10;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
     private View view;
     private LocationCallback locationCallback;
     private Location location = null;
-    TextView locationText;
+    TextView getLocation;
+    OrientationExtraction orientation = new OrientationExtraction();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_location, container, false);
-        locationText = (TextView) view.findViewById(R.id.locationText);
+        getLocation = (TextView) view.findViewById(R.id.locationText);
+
         // Checking for system permissions to access location data
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -68,10 +70,7 @@ public class LocationExtraction extends Fragment{
                 public void onSuccess(Location lastLocation) {
                     if (lastLocation != null) {
                         location = lastLocation;
-                        locationText.setText(location.toString());
-                        //Toast.makeText(getActivity(),"Location: "+location,Toast.LENGTH_LONG).show();
-                        System.out.println("Last Location: " + location);
-
+                        getLocation.setText(location.toString());
                     }
                 }
             });
@@ -90,8 +89,7 @@ public class LocationExtraction extends Fragment{
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     location = locationResult.getLastLocation();
-                  //  locationText.setText(location.toString());
-                    System.out.println("Final Location" + location);
+                    getLocation.setText(locationResult.toString());
                 }
             };
 
@@ -135,8 +133,10 @@ public class LocationExtraction extends Fragment{
                 }
             });
         }
-return view;
+        return view;
+
     }
+
     public Location getLocation() {
         // Returning the current location
         return location;

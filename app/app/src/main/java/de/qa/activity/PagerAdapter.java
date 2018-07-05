@@ -12,6 +12,7 @@ import de.qa.qa.dataextraction.ContactsExtraction;
 import de.qa.qa.dataextraction.LocationExtraction;
 import de.qa.qa.dataextraction.OrientationExtraction;
 
+
 /**
  * Created by paramjot on 2/6/18.
  */
@@ -41,9 +42,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 3:
                 LocationExtraction tab4 = new LocationExtraction();
                 return tab4;
-            /*case 4:
+            case 4:
                 OrientationExtraction tab5 = new OrientationExtraction();
-                return tab5;*/
+                return tab5;
             default:
                 return null;
         }
