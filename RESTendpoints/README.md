@@ -31,7 +31,7 @@ mvn clean install
 Now to build your image, type the below command.
 
 ```
-sudo docker build -f Dockerfile -t qamelrest 
+sudo docker build -f Dockerfile -t qamelrest .
 ```
 To run your image, type the below command.
 ```
