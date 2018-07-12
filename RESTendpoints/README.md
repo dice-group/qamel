@@ -6,6 +6,7 @@ After cloning/downloading the repository, on the terminal run:
 cd RESTendpoints/ 
 mvn clean install 
 mvn spring-boot:run
+```
 
 An example request would look like: 
 
