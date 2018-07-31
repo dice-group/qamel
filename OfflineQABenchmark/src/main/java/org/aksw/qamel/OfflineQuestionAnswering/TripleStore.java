@@ -1,4 +1,4 @@
-package org.aksw.qamel.OfflineQABenchmark;
+package org.aksw.qamel.OfflineQuestionAnswering;
 
 import java.io.File;
 
@@ -11,6 +11,7 @@ import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
 public class TripleStore {
+	@SuppressWarnings("unused")
 	private static final String TAG = TripleStore.class.getSimpleName();
 
 	private Repository sDatabase;

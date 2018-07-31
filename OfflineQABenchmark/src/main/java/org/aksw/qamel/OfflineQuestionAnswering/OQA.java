@@ -1,11 +1,9 @@
-package org.aksw.qamel.OfflineQABenchmark;
+package org.aksw.qamel.OfflineQuestionAnswering;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.naming.Context;
 
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
@@ -14,14 +12,15 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import info.debatty.java.stringsimilarity.Levenshtein;
 
-public class App implements QuestionAnswerer {
-	
+public class OQA  {
+
 	private static final String QUERY_PREFIX = "PREFIX rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 			+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 			+ "PREFIX  dbo: <http://dbpedia.org/ontology/> \n" + "PREFIX  dbp: <http://dbpedia.org/property/> \n"
 			+ "PREFIX  xsd: <http://www.w3.org/2001/XMLSchema#> \n";
-	private static final String[] BLACKLIST = { "the", "is", "did", "do", "his", "her", "to", "does", "are", "was", "were", "he", "she", "it", "they", "of",
-			"in", "at", "by", "why", "who", "where", "when", "what", "which", "year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me","with" };
+	private static final String[] BLACKLIST = { "the", "is", "did", "do", "his", "her", "to", "does", "are", "was",
+			"were", "he", "she", "it", "they", "of", "in", "at", "by", "why", "who", "where", "when", "what", "which",
+			"year", "how", "has", "have", "a", "all", "much", "many", "list", "give", "me", "with" };
 	private static final int QUESTION_TYPE_DATE = 0x1;
 	private static final int QUESTION_TYPE_PLACE = 0x2;
 	private static final int QUESTION_TYPE_PERSON = 0x4;
@@ -36,27 +35,24 @@ public class App implements QuestionAnswerer {
 	public List<Answer> mAnswers;
 	private TripleStore tripleStore;
 
-	public App(Context context) {
-		String mDatabasePath = new File("Database").getAbsolutePath();
+	public OQA(String databasePath) {
+		String mDatabasePath = new File(databasePath).getAbsolutePath();
 		tripleStore = new TripleStore(mDatabasePath);
 	}
 
 	private void findMatches(String word) {
 		try {
 			word = word.replaceAll(" ", ".*").toLowerCase();
-			String candidatesQuery = QUERY_PREFIX
-					+ "SELECT DISTINCT ?x ?z WHERE { "
-					+ "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z "
-					+ "FILTER regex(lcase(str(?x)), \"" + word +"\") "
-					+ "FILTER (lang(?z)='en') } "
-					+ "LIMIT 100";
+			String candidatesQuery = QUERY_PREFIX + "SELECT DISTINCT ?x ?z WHERE { "
+					+ "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z " + "FILTER regex(lcase(str(?x)), \"" + word
+					+ "\") " + "FILTER (lang(?z)='en') } " + "LIMIT 100";
 			TupleQueryResult result = tripleStore.query(candidatesQuery);
 			while (result.hasNext()) {
 				BindingSet set = result.next();
 				String uri = set.getValue("x").stringValue();
 				String label = set.getValue("z").stringValue();
 				insertMatch(word, uri, label);
-				System.out.println("\t "+ word+": "+ uri + ", "+label);
+				System.out.println("\t " + word + ": " + uri + ", " + label);
 			}
 		} catch (MalformedQueryException e) {
 			System.err.println("Invalid query.");
@@ -88,8 +84,7 @@ public class App implements QuestionAnswerer {
 	/**
 	 * Returns number of occurrences for each position of a statement
 	 *
-	 * @param uri
-	 *            the entity to lookup
+	 * @param uri the entity to lookup
 	 * @return an array containing<br>
 	 *         [0] the number of occurrences as subject <br>
 	 *         [1] the number of occurrences as predicate<br>
@@ -130,7 +125,6 @@ public class App implements QuestionAnswerer {
 			mQuestionType = QUESTION_TYPE_UNKNOWN;
 	}
 
-	@Override
 	public QAResult[] answerQuestion(String question) {
 		System.out.println("******************************");
 
@@ -165,10 +159,8 @@ public class App implements QuestionAnswerer {
 		}
 		Collections.sort(mThings, new Match.Comparator());
 		Collections.sort(mProperties, new Match.Comparator());
-		HeaderResult headerResult = new HeaderResult(question);
-		QAResult findBestAnswer = findBestAnswer();
-		FooterResult footerResult = new FooterResult(question);
-		return new QAResult[] { headerResult, findBestAnswer, footerResult };
+		QAResult qaresult = findBestAnswer();
+		return new QAResult[] { qaresult };
 	}
 
 	public QAResult findBestAnswer() {
