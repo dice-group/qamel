@@ -1,4 +1,4 @@
-package org.aksw.qamel.OfflineQuestionAnswering;
+package org.aksw.qamel.OQA;
 
 public class QAResult {
 	  private String mData;

@@ -1,10 +1,13 @@
-package org.aksw.qamel.OfflineQuestionAnswering;
+package org.aksw.qamel.OQA;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.aksw.qamel.OQA.sparql.SPARQLEndpoint;
+import org.aksw.qamel.OQA.sparql.SPARQLInterface;
+import org.aksw.qamel.OQA.sparql.TripleStore;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.MalformedQueryException;
@@ -12,7 +15,7 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import info.debatty.java.stringsimilarity.Levenshtein;
 
-public class OQA  {
+public class OQA {
 
 	private static final String QUERY_PREFIX = "PREFIX rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
 			+ "PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
@@ -33,11 +36,15 @@ public class OQA  {
 	private List<Match> mProperties;
 	private int mQuestionType;
 	public List<Answer> mAnswers;
-	private TripleStore tripleStore;
+	private SPARQLInterface sparql;
 
-	public OQA(String databasePath) {
-		String mDatabasePath = new File(databasePath).getAbsolutePath();
-		tripleStore = new TripleStore(mDatabasePath);
+	public OQA(File database) {
+		String mDatabasePath = database.getAbsolutePath();
+		sparql = new TripleStore(mDatabasePath);
+	}
+
+	public OQA(String SPARQLEndpoint) {
+		sparql = new SPARQLEndpoint(SPARQLEndpoint);
 	}
 
 	private void findMatches(String word) {
@@ -45,8 +52,8 @@ public class OQA  {
 			word = word.replaceAll(" ", ".*").toLowerCase();
 			String candidatesQuery = QUERY_PREFIX + "SELECT DISTINCT ?x ?z WHERE { "
 					+ "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z " + "FILTER regex(lcase(str(?x)), \"" + word
-					+ "\") " + "FILTER (lang(?z)='en') } " + "LIMIT 100";
-			TupleQueryResult result = tripleStore.query(candidatesQuery);
+					+ "\") FILTER (lang(?z)='en' && isURI(?x) ) } " + "LIMIT 100";
+			TupleQueryResult result = sparql.query(candidatesQuery);
 			while (result.hasNext()) {
 				BindingSet set = result.next();
 				String uri = set.getValue("x").stringValue();
@@ -94,13 +101,13 @@ public class OQA  {
 		int[] occurrences = new int[3];
 		// Count occurrences as subject
 		String query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-		occurrences[0] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+		occurrences[0] = Integer.parseInt(sparql.query(query).next().getValue("c").stringValue());
 		// Count occurrences as predicate
 		query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { ?x <" + uri + "> ?y }";
-		occurrences[1] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+		occurrences[1] = Integer.parseInt(sparql.query(query).next().getValue("c").stringValue());
 		// Count occurrences as object
 		query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-		occurrences[2] = Integer.parseInt(tripleStore.query(query).next().getValue("c").stringValue());
+		occurrences[2] = Integer.parseInt(sparql.query(query).next().getValue("c").stringValue());
 		return occurrences;
 	}
 
@@ -194,7 +201,7 @@ public class OQA  {
 				queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <").append(thing.getUri()).append("> .}}");
 			}
 			queryBuilder.append("}");
-			TupleQueryResult result = tripleStore.query(queryBuilder.toString());
+			TupleQueryResult result = sparql.query(queryBuilder.toString());
 			while (result.hasNext()) {
 				BindingSet next = result.next();
 				maxConfidence = Math.max(evaluateResult(thing, next), maxConfidence);
@@ -246,7 +253,7 @@ public class OQA  {
 	public String getLabel(String uri) {
 		String query = "SELECT ?l WHERE { <" + uri + "> "
 				+ "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
-		TupleQueryResult labelResult = tripleStore.query(query);
+		TupleQueryResult labelResult = sparql.query(query);
 		Value value;
 
 		if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)

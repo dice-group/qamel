@@ -1,8 +1,7 @@
-package org.aksw.qamel.OfflineQuestionAnswering;
+package org.aksw.qamel.OQA.sparql;
 
 import java.io.File;
 
-import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 import org.eclipse.rdf4j.repository.Repository;
@@ -10,7 +9,7 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 
-public class TripleStore {
+public class TripleStore implements SPARQLInterface{
 	@SuppressWarnings("unused")
 	private static final String TAG = TripleStore.class.getSimpleName();
 
@@ -26,19 +25,12 @@ public class TripleStore {
 		connection = sDatabase.getConnection();
 	}
 
+	@Override
 	public TupleQueryResult query(String sparqlQuery) {
 		TupleQuery tupleQuery = connection.prepareTupleQuery(sparqlQuery);
 		TupleQueryResult evaluate = tupleQuery.evaluate();
 		return evaluate;
 	}
 
-	public void printTupleResult(TupleQueryResult result) {
-		while (result.hasNext()) {
-			BindingSet set = result.next();
-			for (String s : set.getBindingNames()) {
-				System.out.println(s + ": " + set.getValue(s).stringValue());
-			}
-		}
-	}
 
 }

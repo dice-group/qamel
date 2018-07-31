@@ -1,4 +1,4 @@
-package org.aksw.qamel.OfflineQuestionAnswering;
+package org.aksw.qamel.OQA;
 
 import java.util.ArrayList;
 import java.util.Arrays;

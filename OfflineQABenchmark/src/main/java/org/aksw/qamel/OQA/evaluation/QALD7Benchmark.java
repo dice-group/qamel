@@ -1,5 +1,6 @@
-package org.aksw.qamel.OfflineQuestionAnswering.evaluation;
+package org.aksw.qamel.OQA.evaluation;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -8,15 +9,15 @@ import org.aksw.qa.commons.datastructure.IQuestion;
 import org.aksw.qa.commons.load.Dataset;
 import org.aksw.qa.commons.load.LoaderController;
 import org.aksw.qa.commons.measure.AnswerBasedEvaluation;
-import org.aksw.qamel.OfflineQuestionAnswering.OQA;
-import org.aksw.qamel.OfflineQuestionAnswering.QAResult;
-import org.aksw.qamel.OfflineQuestionAnswering.TextResult;
+import org.aksw.qamel.OQA.OQA;
+import org.aksw.qamel.OQA.QAResult;
+import org.aksw.qamel.OQA.TextResult;
 
 public class QALD7Benchmark {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		OQA app = new OQA("Database");
-
+		OQA app = new OQA(new File("Database"));
+//		OQA app = new OQA("http://dbpedia.org/sparql");
 		/*
 		 * Scanner in = new Scanner(System.in); String ques = in.nextLine(); in.close();
 		 */
@@ -36,7 +37,7 @@ public class QALD7Benchmark {
 			QAResult[] results = app.answerQuestion(question);
 			
 			System.out.println(++i + " / " + questions.size());
-			System.out.println("answer: " + ((TextResult) results[9]).getmData());
+			System.out.println("answer: " + ((TextResult) results[0]).getmData());
 			
 			HashSet<String> systemAnswer = new HashSet<>(
 					Arrays.asList(new String[] { ((TextResult) results[0]).getmData() }));
