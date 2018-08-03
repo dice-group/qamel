@@ -16,7 +16,7 @@ public class QALD7Benchmark {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 //		OQA app = new OQA(new File("Database"));
-		OQA app = new OQA("http://sparql-full-text.cs.upb.de:3030/sparql");
+		OQA app = new OQA("http://131.234.28.180:3030/ds/sparql");
 		/*
 		 * Scanner in = new Scanner(System.in); String ques = in.nextLine(); in.close();
 		 */
