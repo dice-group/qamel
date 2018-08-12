@@ -14,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,6 +83,8 @@ public class ContactsExtraction extends Fragment {
         }
         return view;
     }
+
+
     private int checkSelfPermission(String readContacts) {
         return 0;
     }

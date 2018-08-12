@@ -3,6 +3,8 @@ package de.qa.qa.dataextraction;
 import android.content.Context;
 import android.location.Location;
 
+import com.google.android.gms.maps.MapView;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class DataExtraction {
     private final OrientationExtraction orientationExtraction;
     private final ContactsExtraction contactsExtraction;
     private final CalendarExtraction calendarExtraction;
+    Location location;
 
     Context context;
 
@@ -22,30 +25,25 @@ public class DataExtraction {
         // Initialize extraction of location + orientation
         locationExtraction = new LocationExtraction();
         orientationExtraction = new OrientationExtraction();
-
         contactsExtraction = new ContactsExtraction();
         // Initialize calendar extraction
         calendarExtraction = new CalendarExtraction();
 
     }
 
-    public void start() {
-        // Start location and orientation updates
-        locationExtraction.startLocationUpdates();
+    void start() {
+        locationExtraction.onLocationChanged(location);
         orientationExtraction.startOrientationUpdates();
     }
 
     void stop() {
-        // Stop location and orientation updates
-        locationExtraction.stopLocationUpdates();
         orientationExtraction.stopOrientationUpdates();
     }
+
     JSONObject getData() {
-        // Get location, orientation, contacts and calendar data
-        Location location = locationExtraction.getLocation();
         Double orientation = orientationExtraction.getHeading();
-        ArrayList<String> contacts = contactsExtraction.getContacts();
         String iCalendar = calendarExtraction.getCalendar();
+        ArrayList<String> contacts = contactsExtraction.getContacts();
 
         // Building the JSON
         JSONObject json = new JSONObject();
@@ -57,7 +55,6 @@ public class DataExtraction {
             json.put("ical", iCalendar);
         } catch (Exception e) {
         }
-
         // Returning the JSON String
         return json;
     }

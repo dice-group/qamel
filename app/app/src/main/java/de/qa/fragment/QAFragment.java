@@ -24,11 +24,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
 import de.qa.R;
 import de.qa.misc.Utils;
 import de.qa.qa.OfflineQuestionAnswerer;
@@ -40,7 +38,6 @@ import de.qa.qa.result.QAResult;
 import de.qa.qa.result.TextResult;
 import de.qa.qa.result.UriResult;
 import de.qa.view.adapter.QAAdapter;
-
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -56,7 +53,6 @@ public class QAFragment extends Fragment implements OnClickListener,
     private EditText mQuestionInput;
     private RecyclerView mResultsRecycler;
     private ArrayList<QAResult> mAnswers = new ArrayList<>();
-
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
     private ListView mlist;
     private ImageButton mbtSpeak;
@@ -125,8 +121,6 @@ public class QAFragment extends Fragment implements OnClickListener,
                         // populate the Matches
 
                         mlist.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, textMatchList));
-
-
                         Log.e(TAG, "text that matches in else"+textMatchList);
                     }
 
@@ -145,18 +139,13 @@ public class QAFragment extends Fragment implements OnClickListener,
             }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
-
-/*
+    /*
      * Helper method to show the toast message
      **/
 
     void showToastMessage(String message){
 
     }
-
-
 
     @Override
     public void onClick(View view) {
@@ -178,7 +167,6 @@ public class QAFragment extends Fragment implements OnClickListener,
             // Specify the calling package to identify your application
             intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass()
                     .getPackage().getName());
-
             // Display an hint to the user about what he should say.
             //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, metTextHint.getText().toString());
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -203,7 +191,7 @@ public class QAFragment extends Fragment implements OnClickListener,
         }
     }
 
-/**
+    /**
      * Display a question with all its answers on the screen.
      *
      * @param results the results to display

@@ -37,7 +37,6 @@ public class CalendarExtraction extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
         calendar=(TextView) view.findViewById(R.id.calendar);
-       // cal=(CalendarView)view.findViewById(R.id.cal);
 
         // Checking for system permissions to access contacts data
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)

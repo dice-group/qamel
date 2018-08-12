@@ -40,7 +40,6 @@ public class QAAdapter extends RecyclerView.Adapter<QAAdapter.QaViewHolder> impl
         if (mDataset.get(position) instanceof FooterResult) return R.layout.item_qa_footer;
         return R.layout.item_qa_body;
     }
-
     @Override
     public void onBindViewHolder(QaViewHolder holder, int position) {
         holder.textView.setText(mDataset.get(position).toString());
