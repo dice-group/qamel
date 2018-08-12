@@ -1,4 +1,4 @@
-package org.aksw.qamel.OfflineQABenchmark;
+package org.aksw.qamel.OQA;
 
 import org.eclipse.rdf4j.query.BindingSet;
 
@@ -7,14 +7,12 @@ public class Answer {
     private Match mMatch;
     private BindingSet mBindingSet;
     private String mAnswer;
-    private String mQuestion;
     private int mConfidence;
 
     public Answer(Match match, BindingSet bindingSet, String answer, String question, int confidence, String propertyLabel) {
         mMatch = match;
         mBindingSet = bindingSet;
         mAnswer = answer;
-        mQuestion = question;
         mConfidence = confidence;
         mPropertyLabel = propertyLabel;
     }

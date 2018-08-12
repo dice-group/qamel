@@ -52,7 +52,7 @@ public class Evaluation {
 				boolean[] tmp = queries.get(query);
 				if (tmp[(int) (percentage * query.length())]) {
 					areaUnderSamplePoint++;
-				}
+				}		
 			}
 			areaUnderCurve += areaUnderSamplePoint / queries.size();
 		}

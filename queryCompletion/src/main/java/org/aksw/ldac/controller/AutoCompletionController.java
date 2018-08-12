@@ -21,7 +21,7 @@ public class AutoCompletionController {
 	public static void main(String args[]) throws FileNotFoundException {
 
 		AutoCompletionController controller = new AutoCompletionController();
-		controller.setDatasets(new String[] { "src/main/resources/file1.txt", "src/main/resources/file2.txt" });
+		controller.setDatasets(new String[] { "src/main/resources/limbo-dups-shuf.txt" });
 		controller.run();
 	}
 

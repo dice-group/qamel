@@ -1,4 +1,4 @@
-package org.aksw.qamel.OfflineQABenchmark;
+package org.aksw.qamel.OQA;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,8 @@
-package org.aksw.qamel.OfflineQABenchmark;
+package org.aksw.qamel.OQA;
 
 public class TextResult extends QAResult {
-    private static final String TAG = TextResult.class.getSimpleName();
+    @SuppressWarnings("unused")
+	private static final String TAG = TextResult.class.getSimpleName();
 
     public String getmData() {
 		return mData;

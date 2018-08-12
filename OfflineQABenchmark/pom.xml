@@ -1,86 +1,37 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.aksw.qamel</groupId>
-  <artifactId>OfflineQABenchmark</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>org.aksw.qamel</groupId>
+	<artifactId>OQA</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
 
-  <name>OfflineQABenchmark</name>
-  <url>http://maven.apache.org</url>
-  <build>
+	<name>OfflineQABenchmark</name>
+	<url>http://maven.apache.org</url>
+	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
-					<systemProperties>
-						<JAVA_OPTS>-Xms415m -Xmx16G -XX:MaxPermSize=1G</JAVA_OPTS>
-					</systemProperties>
-					<mainClass>org.aksw.qamel.OfflineQABenchmark.App</mainClass>
-					<layout>JAR</layout>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<classifier>bootable-with-spring</classifier>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
-			
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-compiler-plugin</artifactId>
-			    <version>3.1</version>
-			    <configuration>
-			        <source>1.8</source>
-			        <target>1.8</target>
-			    </configuration>
-			</plugin>
-			
+
 		</plugins>
 	</build>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-model</artifactId><version>1.0.3</version></dependency>
-    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-api</artifactId><version>1.0.3</version></dependency>
-    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-memory</artifactId><version>1.0.3</version></dependency>
-    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-sail-nativerdf</artifactId><version>1.0.3</version></dependency>
-    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-repository-api</artifactId><version>1.0.3</version></dependency>
-    <dependency><groupId>org.eclipse.rdf4j</groupId><artifactId>rdf4j-repository-sail</artifactId><version>1.0.3</version></dependency>
-    <dependency>
-    <groupId>info.debatty</groupId>
-    <artifactId>java-string-similarity</artifactId>
-    <version>0.24</version>
-</dependency>
-<dependency>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-assembly-plugin</artifactId>
-  <version>3.1.0</version>
-  <type>maven-plugin</type>
-</dependency>
-   <dependency>
-  <groupId>org.aksw.qa</groupId>
-  <artifactId>commons</artifactId>
-  <version>0.4.18</version>
-</dependency>
-  </dependencies>
-  <repositories><repository>
+	<!-- AKSW repository for downloading QA-related dependencies -->
+	<repositories>
+		<repository>
 			<id>maven.aksw.internal</id>
 			<name>University Leipzig, AKSW Maven2 Repository</name>
 			<url>http://maven.aksw.org/archiva/repository/internal</url>
@@ -89,5 +40,66 @@
 			<id>maven.aksw.snapshots</id>
 			<name>University Leipzig, AKSW Maven2 Repository</name>
 			<url>http://maven.aksw.org/archiva/repository/snapshots</url>
-</repository></repositories>
+		</repository>
+	</repositories>
+	
+	<!-- AKSW repository for uploading QA-related dependencies -->
+	<distributionManagement>
+		<repository>
+			<id>maven.aksw.internal</id>
+			<url>http://maven.aksw.org/archiva/repository/internal</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven.aksw.snapshots</id>
+			<name>AKSW Snapshot Repository</name>
+			<url>http://maven.aksw.org/archiva/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- RDF4J to query the database file/SPARQL -->
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-model</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-sail-nativerdf</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-repository-api</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-repository-sail</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-query</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<!-- Jaccard Similarity -->
+		<dependency>
+			<groupId>info.debatty</groupId>
+			<artifactId>java-string-similarity</artifactId>
+			<version>0.24</version>
+		</dependency>
+		<!-- Dataset Loading and handling -->
+		<dependency>
+			<groupId>org.aksw.qa</groupId>
+			<artifactId>commons</artifactId>
+			<version>0.4.18</version>
+		</dependency>
+	</dependencies>
 </project>
