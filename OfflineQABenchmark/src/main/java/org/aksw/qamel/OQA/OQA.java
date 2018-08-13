@@ -8,9 +8,11 @@ import java.util.List;
 import org.aksw.qamel.OQA.sparql.SPARQLEndpoint;
 import org.aksw.qamel.OQA.sparql.SPARQLInterface;
 import org.aksw.qamel.OQA.sparql.TripleStore;
+import org.apache.jena.atlas.logging.Log;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.MalformedQueryException;
+import org.eclipse.rdf4j.query.QueryEvaluationException;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 
 import info.debatty.java.stringsimilarity.Levenshtein;
@@ -54,6 +56,15 @@ public class OQA {
 					+ "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z " + "FILTER regex(lcase(str(?x)), \"" + word
 					+ "\") FILTER (lang(?z)='en' && isURI(?x) ) } " + "LIMIT 100";
 			TupleQueryResult result = sparql.query(candidatesQuery);
+			checkBeforeInsertMatch(word, result);
+		} catch (MalformedQueryException e) {
+			System.err.println("Invalid query.");
+			System.err.println(e.getLocalizedMessage());
+		}
+	}
+
+	private void checkBeforeInsertMatch(String word, TupleQueryResult result) {
+		try {
 			while (result.hasNext()) {
 				BindingSet set = result.next();
 				String uri = set.getValue("x").stringValue();
@@ -61,9 +72,8 @@ public class OQA {
 				insertMatch(word, uri, label);
 				System.out.println("\t " + word + ": " + uri + ", " + label);
 			}
-		} catch (MalformedQueryException e) {
-			System.err.println("Invalid query.");
-			System.err.println(e.getLocalizedMessage());
+		} catch (QueryEvaluationException ex) {
+			// TODO logging
 		}
 	}
 
