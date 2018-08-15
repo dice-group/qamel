@@ -1,17 +1,17 @@
 package org.aksw.qamel.OQA;
 
-import org.eclipse.rdf4j.query.BindingSet;
+import org.json.simple.JSONObject;
 
 public class Answer {
 	private String mPropertyLabel;
     private Match mMatch;
-    private BindingSet mBindingSet;
+    private JSONObject mBindingSet;
     private String mAnswer;
     private int mConfidence;
 
-    public Answer(Match match, BindingSet bindingSet, String answer, String question, int confidence, String propertyLabel) {
+    public Answer(Match match, JSONObject next, String answer, String question, int confidence, String propertyLabel) {
         mMatch = match;
-        mBindingSet = bindingSet;
+        mBindingSet = next;
         mAnswer = answer;
         mConfidence = confidence;
         mPropertyLabel = propertyLabel;
@@ -27,8 +27,8 @@ public class Answer {
 
     @Override
     public String toString() {
-        return mMatch.getUri() + " " + mBindingSet.getValue("p").stringValue() + " "
-                + mBindingSet.getValue("o").stringValue() + "[" + mConfidence + "] '" + mPropertyLabel + "'\n";
+        return mMatch.getUri() + " " + (String)  mBindingSet.get("p") + " "
+                + (String)  mBindingSet.get("o") + "[" + mConfidence + "] '" + mPropertyLabel + "'\n";
     }
 
     public static class Comparator implements java.util.Comparator<Answer> {

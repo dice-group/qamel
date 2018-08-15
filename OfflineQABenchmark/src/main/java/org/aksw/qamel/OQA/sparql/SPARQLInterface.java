@@ -1,9 +1,9 @@
 package org.aksw.qamel.OQA.sparql;
 
-import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.json.simple.JSONArray;
 
 public interface SPARQLInterface {
 
-	TupleQueryResult query(String sparqlQuery);
+	JSONArray query(String sparqlQuery) throws Exception;
 
 }

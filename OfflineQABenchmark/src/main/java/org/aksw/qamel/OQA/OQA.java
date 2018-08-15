@@ -3,17 +3,18 @@ package org.aksw.qamel.OQA;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.aksw.qamel.OQA.sparql.SPARQLEndpoint;
 import org.aksw.qamel.OQA.sparql.SPARQLInterface;
 import org.aksw.qamel.OQA.sparql.TripleStore;
-import org.apache.jena.atlas.logging.Log;
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.QueryEvaluationException;
-import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import info.debatty.java.stringsimilarity.Levenshtein;
 
@@ -49,13 +50,13 @@ public class OQA {
 		sparql = new SPARQLEndpoint(SPARQLEndpoint);
 	}
 
-	private void findMatches(String word) {
+	private void findMatches(String word) throws Exception {
 		try {
 			word = word.replaceAll(" ", ".*").toLowerCase();
 			String candidatesQuery = QUERY_PREFIX + "SELECT DISTINCT ?x ?z WHERE { "
 					+ "?x <http://www.w3.org/2000/01/rdf-schema#label> ?z " + "FILTER regex(lcase(str(?x)), \"" + word
-					+ "\") FILTER (lang(?z)='en' && isURI(?x) ) } " + "LIMIT 100";
-			TupleQueryResult result = sparql.query(candidatesQuery);
+					+ "\") FILTER (lang(?z)='en' ) } " + "LIMIT 100";
+			JSONArray result = sparql.query(candidatesQuery);
 			checkBeforeInsertMatch(word, result);
 		} catch (MalformedQueryException e) {
 			System.err.println("Invalid query.");
@@ -63,23 +64,24 @@ public class OQA {
 		}
 	}
 
-	private void checkBeforeInsertMatch(String word, TupleQueryResult result) {
+	private void checkBeforeInsertMatch(String word, JSONArray result) {
 		try {
-			while (result.hasNext()) {
-				BindingSet set = result.next();
-				String uri = set.getValue("x").stringValue();
-				String label = set.getValue("z").stringValue();
+			Iterator<org.json.simple.JSONObject> iter=result.iterator();
+			while (iter.hasNext()) {
+				JSONObject set = iter.next();
+				String uri = (String) set.get("x");
+				String label = (String) set.get("z");
 				insertMatch(word, uri, label);
-				System.out.println("\t " + word + ": " + uri + ", " + label);
 			}
 		} catch (QueryEvaluationException ex) {
-			// TODO logging
+//			System.err.println("QueryEvaluationException.");
+//			ex.printStackTrace();
 		}
 	}
 
 	private void insertMatch(String word, String uri, String label) {
-		Match match = new Match(uri, mQuestion, label, word, getOccurrences(uri));
-		if (match.getType() == Match.TYPE_THING) {
+		Match match = new Match(uri, mQuestion, label, word);
+		if (!uri.contains("/ontology/") && !uri.contains("/property/")) {
 			for (Match m : mThings) {
 				if (m.getUri().equals(uri)) {
 					m.addWord(word);
@@ -96,29 +98,6 @@ public class OQA {
 			}
 			mProperties.add(match);
 		}
-	}
-
-	/**
-	 * Returns number of occurrences for each position of a statement
-	 *
-	 * @param uri the entity to lookup
-	 * @return an array containing<br>
-	 *         [0] the number of occurrences as subject <br>
-	 *         [1] the number of occurrences as predicate<br>
-	 *         [2] the number of occurrences as object
-	 */
-	private int[] getOccurrences(String uri) {
-		int[] occurrences = new int[3];
-		// Count occurrences as subject
-		String query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-		occurrences[0] = Integer.parseInt(sparql.query(query).next().getValue("c").stringValue());
-		// Count occurrences as predicate
-		query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { ?x <" + uri + "> ?y }";
-		occurrences[1] = Integer.parseInt(sparql.query(query).next().getValue("c").stringValue());
-		// Count occurrences as object
-		query = QUERY_PREFIX + "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-		occurrences[2] = Integer.parseInt(sparql.query(query).next().getValue("c").stringValue());
-		return occurrences;
 	}
 
 	private void determineQuestionType() {
@@ -142,7 +121,13 @@ public class OQA {
 			mQuestionType = QUESTION_TYPE_UNKNOWN;
 	}
 
-	public QAResult[] answerQuestion(String question) {
+	public QAResult[] answerQuestion(String question) throws Exception {
+		mQuestion = null;
+		mWords = null;
+		mThings = null;
+		mProperties = null;
+		mQuestionType = 0;
+		mAnswers = null;
 		System.out.println("******************************");
 
 		System.out.println("Question original: " + question);
@@ -180,7 +165,7 @@ public class OQA {
 		return new QAResult[] { qaresult };
 	}
 
-	public QAResult findBestAnswer() {
+	public QAResult findBestAnswer() throws Exception {
 
 		int maxConfidence = Integer.MIN_VALUE;
 		for (Match thing : mThings) {
@@ -211,9 +196,12 @@ public class OQA {
 				queryBuilder.append("UNION { SELECT ?o ?p WHERE {?o ?p <").append(thing.getUri()).append("> .}}");
 			}
 			queryBuilder.append("}");
-			TupleQueryResult result = sparql.query(queryBuilder.toString());
-			while (result.hasNext()) {
-				BindingSet next = result.next();
+			JSONArray result = sparql.query(queryBuilder.toString());
+			Iterator<org.json.simple.JSONObject > iter=result.iterator();
+
+			while (iter.hasNext()) {
+				JSONObject next = iter.next();
+				
 				maxConfidence = Math.max(evaluateResult(thing, next), maxConfidence);
 				if (maxConfidence >= -thing.getDistance()) {
 					Collections.sort(mAnswers, new Answer.Comparator());
@@ -225,18 +213,18 @@ public class OQA {
 		return new TextResult(mQuestion, "An error occurred");
 	}
 
-	private int evaluateResult(Match match, BindingSet result) {
-		if (result.getValue("p") == null || result.getValue("o") == null) {
+	private int evaluateResult(Match match, JSONObject next) throws Exception {
+		if (next.get("p") == null || next.get("o") == null) {
 			return Integer.MIN_VALUE;
 		}
-		String property = result.getValue("p").stringValue();
+		String property = (String) next.get("p");
 		String propertyLabel = getLabel(property);
 		for (Match p : mProperties) {
 			if (p.getUri().equals(property)) {
 				// TODO Save type
-				String answer = result.getValue("o").stringValue();
+				String answer =  (String) next.get("o");
 				int confidence = -1 * match.getDistance() + match.getWordsLength() + match.getQuestion().length();
-				mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
+				mAnswers.add(new Answer(match, next, answer, mQuestion, confidence, propertyLabel));
 				return confidence;
 			}
 		}
@@ -253,20 +241,21 @@ public class OQA {
 				word = w;
 			}
 		}
-		String answer = result.getValue("o").stringValue();
+		String answer = (String)  next.get("o");
 		int confidence = (int) (-2 * match.getDistance() - (10f * minDistance) / word.length()
 				+ match.getWordsLength());
-		mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, word));
+		mAnswers.add(new Answer(match, next, answer, mQuestion, confidence, word));
 		return confidence;
 	}
 
-	public String getLabel(String uri) {
+	public String getLabel(String uri) throws Exception {
 		String query = "SELECT ?l WHERE { <" + uri + "> "
 				+ "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
-		TupleQueryResult labelResult = sparql.query(query);
+		JSONArray labelResult = sparql.query(query);
 		Value value;
+		Iterator<BindingSet> iter=labelResult.iterator();
 
-		if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)
+		if (!iter.hasNext() || (value = iter.next().getValue("l")) == null)
 
 			return null;
 		return value.stringValue();

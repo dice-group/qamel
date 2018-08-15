@@ -16,21 +16,16 @@ public class Match {
     private String mLabel;
     private List<String> mWords;
     private String mQuestion;
-    private int mOccurrences[];
-    private int mType;
     private int mConfidence;
 
-    public Match(String uri, String question, String label, String word, int occurrences[]) {
+    public Match(String uri, String question, String label, String word) {
         mUri = uri;
         mLabel = label;
         mWords = new ArrayList<>();
         mWords.add(word);
-        mOccurrences = occurrences;
         mQuestion = question;
         Levenshtein levenshtein = new Levenshtein();
         mDistance = (int) levenshtein.distance(label, word);
-        if (mOccurrences[1] == 0) mType = TYPE_THING;
-        else mType = TYPE_PROPERTY;
         mConfidence = 0;
     }
 
@@ -58,20 +53,8 @@ public class Match {
         return mWords;
     }
 
-    public int getType() {
-        return mType;
-    }
-
     public String getQuestion() {
         return mQuestion;
-    }
-
-    public int getOccurrences() {
-        return mOccurrences[0] + mOccurrences[1] + mOccurrences[2];
-    }
-
-    public int[] getOccurrencesArray() {
-        return mOccurrences;
     }
 
     public void addWord(String word) {
@@ -99,8 +82,6 @@ public class Match {
             if (match.getWords().size() < t1.getWords().size()) return 1;
             if (match.getDistance() < t1.getDistance()) return -1;
             if (match.getDistance() > t1.getDistance()) return 1;
-            if (match.getOccurrences() > t1.getOccurrences()) return -1;
-            if (match.getOccurrences() < t1.getOccurrences()) return 1;
             if (match.getLabel().length() > t1.getLabel().length()) return -1;
             if (match.getLabel().length() < t1.getLabel().length()) return 1;
             return 0;

@@ -12,11 +12,14 @@ import org.aksw.qamel.OQA.OQA;
 import org.aksw.qamel.OQA.QAResult;
 import org.aksw.qamel.OQA.TextResult;
 
+//TODO remove throws Exception
 public class QALD7Benchmark {
 	@SuppressWarnings("unused")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 //		OQA app = new OQA(new File("Database"));
 		OQA app = new OQA("http://131.234.28.180:3030/ds/sparql");
+//		OQA app = new OQA("http://dbpedia.org/sparql");
+
 		/*
 		 * Scanner in = new Scanner(System.in); String ques = in.nextLine(); in.close();
 		 */
@@ -43,6 +46,8 @@ public class QALD7Benchmark {
 			double precision = AnswerBasedEvaluation.precision(systemAnswer, q);
 			double recall = AnswerBasedEvaluation.recall(systemAnswer, q);
 			double fMeasure = AnswerBasedEvaluation.fMeasure(systemAnswer, q);
+			System.out.println("gold: "+ q.getGoldenAnswers().iterator().next());
+			System.out.println("fmeasure: " + fMeasure);
 			fmeasureavg += fMeasure;
 			
 		}
