@@ -1,5 +1,6 @@
 package org.aksw.qamel.OQA.evaluation;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -16,8 +17,8 @@ import org.aksw.qamel.OQA.TextResult;
 public class QALD7Benchmark {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
-//		OQA app = new OQA(new File("Database"));
-		OQA app = new OQA("http://131.234.28.180:3030/ds/sparql");
+		OQA app = new OQA(new File("Database"));
+//		OQA app = new OQA("http://131.234.28.180:3030/ds/sparql");
 //		OQA app = new OQA("http://dbpedia.org/sparql");
 
 		/*
