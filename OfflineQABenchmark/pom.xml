@@ -5,12 +5,20 @@
 
 	<groupId>org.aksw.qamel</groupId>
 	<artifactId>OQA</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>OfflineQABenchmark</name>
 	<url>http://maven.apache.org</url>
 	<build>
+		<resources>
+      			<resource>
+        		<directory>.</directory>
+        			<includes>
+          				<include>cache/spotterCache</include>
+        			</includes>
+      			</resource>
+  		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
