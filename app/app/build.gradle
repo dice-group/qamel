@@ -1,8 +1,42 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+   /* packagingOptions {
+        pickFirst 'org/apache/xml/serialize/HTMLEntities.res'
+        pickFirst 'org/apache/xerces/impl/msg/DatatypeMessages.properties'
+        pickFirst 'org/apache/xerces/impl/msg/JAXPValidationMessages.properties'
+        pickFirst 'org/apache/xerces/impl/msg/DOMMessages.properties'
+        pickFirst 'org/apache/xerces/impl/msg/XMLSchemaMessages.properties'
+        pickFirst 'org/apache/xerces/impl/xpath/regex/message_ja.properties'
+        pickFirst 'org/apache/xerces/impl/xpath/regex/message_fr.properties'
+        pickFirst 'org/apache/xerces/impl/msg/XIncludeMessages.properties'
+        pickFirst 'org/apache/xerces/impl/xpath/regex/message.properties'
+        pickFirst 'org/apache/xerces/impl/msg/XMLSerializerMessages.properties'
+        pickFirst 'org/apache/xerces/impl/msg/XPointerMessages.properties'
+        pickFirst 'org/apache/xerces/impl/msg/SAXMessages.properties'
+        pickFirst 'org/apache/xerces/impl/msg/XMLMessages.properties'
+        pickFirst 'org/apache/xerces/impl/xpath/regex/message_en.properties'
+        pickFirst 'org/apache/xerces/impl/msg/DOMMessages_en.properties'
+        pickFirst 'etc/owl.rules'
+        pickFirst 'etc/rdfs-fb-tgc.rules'
+        pickFirst 'etc/rdfs-b-tuned.rules'
+        pickFirst 'etc/owl-fb-mini.rules'
+        pickFirst 'etc/location-mapping.ex'
+        pickFirst 'etc/rdfs-fb-lp-expt.rules'
+        pickFirst 'etc/owl-fb-micro.rules'
+        pickFirst 'etc/rdfs-fb-tgc-noresource.rules'
+
+
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    } */
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
     defaultConfig {
         applicationId "de.qa"
         minSdkVersion 16
@@ -21,6 +55,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -28,15 +63,19 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    android {
+        defaultConfig {
+            multiDexEnabled true
+        }
+    }
     compile 'de.julielab:xercesImpl:2.11.0.1'
-    compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'
-    compile 'com.android.support:cardview-v7:26.0.2'
-    compile 'com.android.support:design:26.0.2'
-    compile 'com.android.support:recyclerview-v7:26.0.2'
-    compile 'com.android.support:support-v4:26.0.2'
-    compile 'com.android.support:customtabs:26.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:customtabs:27.0.2'
     compile 'com.android.support:multidex:1.0.2'
     compile 'de.mm20.rdf4a:rdf4j-model:1.1-SNAPSHOT'
     compile 'de.mm20.rdf4a:rdf4j-repository-api:1.1-SNAPSHOT'
@@ -47,9 +86,16 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
     compile 'com.google.android.gms:play-services-location:11.8.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:26.0.0-beta1'
-    compile 'com.android.support:design:26.0.0-beta1'
-    compile 'com.android.support:support-v4:26.0.0-beta1'
+    compile 'com.android.support:appcompat-v7:27.0.0-beta1'
+    compile 'com.android.support:design:27.0.0-beta1'
+    compile 'com.android.support:support-v4:27.0.0-beta1'
+    compile 'com.googlecode.ez-vcard:ez-vcard:0.10.4'
+
+    //compile group: 'org.apache.jena', name: 'jena-arq', version: '3.8.0'
+    //compile group: 'com.hp.hpl.jena', name: 'jena', version: '2.6.4'
+    //compile group: 'org.apache.jena', name: 'jena-core', version: '3.8.0'
+    //compile group: 'org.aksw.jena-sparql-api', name: 'jena-sparql-api-core', version: '3.7.0-3'
+
     // Glide image library
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'

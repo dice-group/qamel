@@ -16,6 +16,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -64,16 +65,16 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
             }
         });
         thread.start();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mHandler = new Handler();
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         // Navigation view header
         navHeader = navigationView.getHeaderView(0);
-        txtName = (TextView) navHeader.findViewById(R.id.name);
-        txtWebsite = (TextView) navHeader.findViewById(R.id.website);
-        imgNavHeaderBg = (ImageView) navHeader.findViewById(R.id.img_header_bg);
+        txtName = navHeader.findViewById(R.id.name);
+        txtWebsite = navHeader.findViewById(R.id.website);
+        imgNavHeaderBg = navHeader.findViewById(R.id.img_header_bg);
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         loadNavHeader();
         setUpNavigationView();
@@ -164,15 +165,15 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_HOME;
                         break;
-                    case R.id.nav_photos:
+                    case R.id.nav_contact:
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_CONTACT;
                         break;
-                    case R.id.nav_movies:
+                    case R.id.nav_calendar:
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_CALENDAR;
                         break;
-                    case R.id.nav_notifications:
+                    case R.id.nav_location:
                         navItemIndex = 3;
                         CURRENT_TAG = TAG_LOCATION;
                         break;
@@ -238,29 +239,21 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     }
 
     @Override
-    public boolean onCreateOptionsMenu( Menu menu) {
-        getMenuInflater().inflate( R.menu.menu, menu);
-        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
-        final SearchView searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                     // add queries
-                } else {
-                    //queries
-
-                }
-                return true;
-            }
-        });
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                //start search dialog
+                super.onSearchRequested();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

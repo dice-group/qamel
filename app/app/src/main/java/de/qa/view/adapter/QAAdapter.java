@@ -74,9 +74,9 @@ public class QAAdapter extends RecyclerView.Adapter<QAAdapter.QaViewHolder> impl
 
         QaViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.item_qa_text);
-            pictureView = (ImageView) itemView.findViewById(R.id.item_qa_picture);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            textView = itemView.findViewById(R.id.item_qa_text);
+            pictureView = itemView.findViewById(R.id.item_qa_picture);
+            cardView = itemView.findViewById(R.id.card_view);
         }
     }
 
