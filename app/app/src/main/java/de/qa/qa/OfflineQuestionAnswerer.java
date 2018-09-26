@@ -69,7 +69,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 String candidatesQuery = QUERY_PREFIX +
                         "SELECT DISTINCT ?x ?z WHERE { ?x <http://www.w3.org/2000/01/rdf-schema#label> ?z . FILTER regex(str(?x), \"(?i).*" + word + ".*\") FILTER (lang(?z)='en') }";
                 TupleQueryResult result = TripleStore.query(mDatabasePath,candidatesQuery);
-                System.out.println("Tuple Query Result: "+result);
+                //System.out.println("Tuple Query Result: "+result);
                 while (result.hasNext())
                 {
                     BindingSet set = result.next();
@@ -273,7 +273,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                     String answer = result.getValue("o").stringValue();
                     int confidence = -1 * match.getDistance() + match.getWordsLength()
                             + match.getQuestion().length();
-                    System.out.println("Evaluate result confidence: "+confidence);
                     mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
                     return confidence;
                 }
@@ -299,6 +298,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
         private String getLabel(String uri) {
             String query = "SELECT ?l WHERE { <" + uri + "> " +
                     "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
+            System.out.println("Get Label Query: "+query);
             TupleQueryResult labelResult = TripleStore.query(mDatabasePath, query);
             Value value;
             if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)

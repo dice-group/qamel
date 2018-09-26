@@ -1,6 +1,7 @@
 
 package de.qa.fragment;
 
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -66,13 +67,11 @@ public class QAFragment extends Fragment implements OnClickListener,
         mQuestionInput = mRootView.findViewById(R.id.question_input);
         mQaButton.setOnClickListener(this);
         mResultsRecycler = mRootView.findViewById(R.id.results_recycler);
-
         mlist = mRootView.findViewById(R.id.list);
         mbtSpeak = mRootView.findViewById(R.id.btSpeak);
         mbtSpeak.setOnClickListener(this);
         mlist.setOnItemClickListener(this);
         checkVoiceRecognition();
-
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setReverseLayout(true);
         mResultsRecycler.setLayoutManager(llm);
@@ -90,7 +89,6 @@ public class QAFragment extends Fragment implements OnClickListener,
         if (activities.size() == 0) {
             mbtSpeak.setEnabled(false);
             //mbtSpeak.setText("Voice recognizer not present");
-
         }
     }
 

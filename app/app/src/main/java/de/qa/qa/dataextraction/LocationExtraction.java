@@ -26,6 +26,7 @@ public class LocationExtraction extends Fragment implements OnMapReadyCallback, 
     LocationManager locationManager;
     View view;
     QAFragment qa = new QAFragment();
+    public LatLng currentLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,7 +66,7 @@ public class LocationExtraction extends Fragment implements OnMapReadyCallback, 
     public void onLocationChanged(Location location) {
 
         map.clear();
-        LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
         System.out.println("Current Location: "+currentLocation);
 
         MarkerOptions markerOptions = new MarkerOptions();

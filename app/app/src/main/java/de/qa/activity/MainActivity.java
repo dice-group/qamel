@@ -12,9 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -246,14 +244,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                //start search dialog
-                super.onSearchRequested();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+       return true;
     }
 
 

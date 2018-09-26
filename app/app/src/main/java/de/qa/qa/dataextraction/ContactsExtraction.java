@@ -49,6 +49,7 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
     String number;
     String fullName;
     String name;
+    Statement nameStatement;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -89,6 +90,9 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
                         try {
                             vcard = Ezvcard.parse(vCard).first();
                             name= vcard.getStructuredName().getFamily();
+                            if (name==null){
+                                name = "No Family name";
+                            }
                             fullName = vcard.getFormattedName().getValue();
                             number = vcard.getTelephoneNumbers().get(0).getText();
                         } catch (Exception e) {
@@ -98,19 +102,20 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
                         numberItems.add(number);
                         adapter = new ArrayAdapter<String>(getActivity(),R.layout.list_item,vCards);
                         contactList.setAdapter(adapter);
-                        ValueFactory factory = SimpleValueFactory.getInstance();
-                        Resource r = factory.createIRI("http://qamel.org/id#"+1);
-                        IRI p = factory.createIRI("http://www.w3.org/2006/vcard/ns#Tel");
-                        Literal o = factory.createLiteral(number);
-                        Statement nameStatement = factory.createStatement(r,p,o);
-                       // Litercontextal l = factory.createLiteral("vcard:Telephone "+number);
-                       // IRI p = factory.createIRI("vcard:Given "+fullName);
-                       // Statement nameStatement = factory.createStatement(r,p,l);
-                        RDFWriter writer = Rio.createWriter(RDFFormat.NTRIPLES, System.out);
-                        writer.startRDF();
-                        Statement st= nameStatement;
-                        writer.handleStatement(st);
-                        writer.endRDF();
+                        for(int x=0; x<numberItems.size();x++) {
+                            ValueFactory factory = SimpleValueFactory.getInstance();
+                            Resource r = factory.createIRI("http://qamel.org/id#" + x);
+                            String firstname = fullName.replace(" ", "_");
+                            IRI p = factory.createIRI("http://www.w3.org/2006/vcard/ns#" + firstname);
+                            Literal o = factory.createLiteral(number);
+                            nameStatement = factory.createStatement(r, p, o);
+                        }
+                            RDFWriter writer = Rio.createWriter(RDFFormat.NTRIPLES, System.out);
+                            writer.startRDF();
+                            Statement st = nameStatement;
+                            writer.handleStatement(st);
+                            writer.endRDF();
+
                     } catch (IOException e) {
                     }
                 } while (cursor.moveToNext());

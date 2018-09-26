@@ -29,7 +29,7 @@ public class SparqlActivity extends Activity {
 
 
     public void executeSparQL(View view) {
-        EditText editText = (EditText) findViewById(R.id.sparqlEditText);
+        EditText editText = findViewById(R.id.sparqlEditText);
         String query = editText.getText().toString();
         try {
             TupleQueryResult result = TripleStore.query(new File(getExternalFilesDir(null),
