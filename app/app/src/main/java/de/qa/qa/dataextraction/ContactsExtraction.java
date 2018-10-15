@@ -29,8 +29,12 @@ import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.RDFWriter;
 import org.eclipse.rdf4j.rio.Rio;
+
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import de.qa.R;
 import ezvcard.Ezvcard;
@@ -50,6 +54,8 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
     String fullName;
     String name;
     Statement nameStatement;
+    private String filename = "SampleFile.txt";
+    File myExternalFile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -107,13 +113,14 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
                             Resource r = factory.createIRI("http://qamel.org/id#" + x);
                             String firstname = fullName.replace(" ", "_");
                             IRI p = factory.createIRI("http://www.w3.org/2006/vcard/ns#" + firstname);
-                            Literal o = factory.createLiteral(number);
+                            Literal o = factory.createLiteral(number+"^^<http://www.w3.org/2001/XMLSchema#string>");
                             nameStatement = factory.createStatement(r, p, o);
                         }
-                            RDFWriter writer = Rio.createWriter(RDFFormat.NTRIPLES, System.out);
+                            RDFWriter writer = Rio.createWriter(RDFFormat.NTRIPLES,System.out);
                             writer.startRDF();
                             Statement st = nameStatement;
                             writer.handleStatement(st);
+                            System.out.println("Statement: "+nameStatement);
                             writer.endRDF();
 
                     } catch (IOException e) {

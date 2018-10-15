@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.qa.R;
 import de.qa.fragment.HomeFragment;
+import de.qa.fragment.QAFragment;
 import de.qa.qa.dataextraction.CalendarExtraction;
 import de.qa.qa.dataextraction.ContactsExtraction;
 import de.qa.qa.dataextraction.DataExtraction;
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                HomeFragment homeFragment = new HomeFragment();
+                QAFragment homeFragment = new QAFragment();
                 return homeFragment;
             case 1:
                 ContactsExtraction contactFragmnet = new ContactsExtraction();

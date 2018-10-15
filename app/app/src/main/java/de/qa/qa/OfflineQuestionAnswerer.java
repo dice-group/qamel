@@ -69,7 +69,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 String candidatesQuery = QUERY_PREFIX +
                         "SELECT DISTINCT ?x ?z WHERE { ?x <http://www.w3.org/2000/01/rdf-schema#label> ?z . FILTER regex(str(?x), \"(?i).*" + word + ".*\") FILTER (lang(?z)='en') }";
                 TupleQueryResult result = TripleStore.query(mDatabasePath,candidatesQuery);
-                //System.out.println("Tuple Query Result: "+result);
                 while (result.hasNext())
                 {
                     BindingSet set = result.next();
@@ -83,7 +82,6 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 System.err.println(e.getLocalizedMessage());
             }
         }
-
         private void insertMatch(String word, String uri, String label) {
             Match match = new Match(uri, mQuestion, label, word, getOccurrences(uri));
             if (match.getType() == Match.TYPE_THING) {
