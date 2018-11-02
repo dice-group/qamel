@@ -19,6 +19,11 @@ TeBaQA
 KnowledgeCards
 ``` curl -d "url=http://dbpedia.org/resource/Barack_Obama" -X POST http://localhost:8080/knowledgeCard ```
 
+Location Service
+``` curl -d "query=What is the architectural style of this building?&lang=en&loc={\"Cologne Cathedral\"}" -X POST http://localhost:8080/location ```
+
+
+
 ## Run it via Docker
 First install docker in your system. For ubuntu you may refer to below link. [https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04]
 
