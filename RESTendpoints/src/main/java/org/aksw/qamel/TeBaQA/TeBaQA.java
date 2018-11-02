@@ -19,13 +19,13 @@ import okhttp3.Response;
 
 public class TeBaQA{
 
-	private static final String URI = "http://185.2.103.92:8081/tebaqa/qa";
+	private static final String URI = "http://139.18.2.39:8187/qa";
 	static String question= "What is capital of France";
 	public List<String> Answer = new ArrayList();
 
 
 
-	public  List answerQuestion(String question) throws IOException {
+	public  List<String> answerQuestion(String question) throws IOException {
 		Answer.clear();
 		System.out.println("QUESTION: "+question);
 		QAResult[] answers = null;
