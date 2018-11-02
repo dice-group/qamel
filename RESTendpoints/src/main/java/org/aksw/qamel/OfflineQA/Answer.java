@@ -7,14 +7,12 @@ public class Answer {
     private Match mMatch;
     private BindingSet mBindingSet;
     private String mAnswer;
-    private String mQuestion;
     private int mConfidence;
 
-    public Answer(Match match, BindingSet bindingSet, String answer, String question, int confidence, String propertyLabel) {
+    public Answer(Match match, BindingSet bindingSet, String answer, int confidence, String propertyLabel) {
         mMatch = match;
         mBindingSet = bindingSet;
         mAnswer = answer;
-        mQuestion = question;
         mConfidence = confidence;
         mPropertyLabel = propertyLabel;
     }

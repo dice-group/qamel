@@ -44,8 +44,6 @@ public class App implements QuestionAnswerer {
 			QAResult[] results = app.answerQuestion(question);
 				System.out.println("answer: " +((TextResult) results[1]).getmData());
 			HashSet<String> systemAnswer = new HashSet<>(Arrays.asList(new String[] {((TextResult) results[1]).getmData()}));
-			double precision = AnswerBasedEvaluation.precision(systemAnswer, q);
-			double recall = AnswerBasedEvaluation.recall(systemAnswer, q);
 			double fMeasure = AnswerBasedEvaluation.fMeasure(systemAnswer, q);
 			fmeasureavg += fMeasure;
 		}
@@ -263,7 +261,7 @@ public class App implements QuestionAnswerer {
 				// TODO Save type
 				String answer = result.getValue("o").stringValue();
 				int confidence = -1 * match.getDistance() + match.getWordsLength() + match.getQuestion().length();
-				mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, propertyLabel));
+				mAnswers.add(new Answer(match, result, answer, confidence, propertyLabel));
 				return confidence;
 			}
 		}
@@ -283,7 +281,7 @@ public class App implements QuestionAnswerer {
 		String answer = result.getValue("o").stringValue();
 		int confidence = (int) (-2 * match.getDistance() - (10f * minDistance) / word.length()
 				+ match.getWordsLength());
-		mAnswers.add(new Answer(match, result, answer, mQuestion, confidence, word));
+		mAnswers.add(new Answer(match, result, answer, confidence, word));
 		return confidence;
 	}
 

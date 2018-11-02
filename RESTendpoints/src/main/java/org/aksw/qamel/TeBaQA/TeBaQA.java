@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.aksw.qamel.OfflineQA.Answer;
 import org.aksw.qamel.OfflineQA.QAResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.lang.Nullable;
+
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,7 +21,7 @@ public class TeBaQA{
 
 	private static final String URI = "http://139.18.2.39:8187/qa";
 	static String question= "What is capital of France";
-	public List<String> Answer = new ArrayList();
+	public List<String> Answer = new ArrayList<String>();
 
 
 

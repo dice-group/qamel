@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
 import javax.naming.Context;
 import javax.servlet.http.HttpServletResponse;
+
 import org.aksw.qa.commons.datastructure.Question;
-import org.aksw.qamel.OfflineQA.App;
-import org.aksw.qamel.OfflineQA.QAResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.github.jsonldjava.utils.JsonUtils;
 
 
