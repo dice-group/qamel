@@ -17,30 +17,24 @@ import de.qa.synchronizer.OfflineDataManager;
  * Created by paramjot on 7/9/18.
  */
 
-public class HomeFragment extends Fragment implements OfflineDataManager.Callback {
+public class HomeFragment extends Fragment{
 
-    private static final String TAG = HomeFragment.class.getSimpleName();
-    private TripleStore mTripleStore;
-    private DataExtraction dataExtraction;
-    Context context;
-    View view;
-
-
-    @Override
+   /* View view;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
+       view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        if (!Utils.isOffline(getActivity())) {
-            new OfflineDataManager().update(getActivity(), this);
-            // new OfflineQuestionAnswerer();
-        }
+//        if (!Utils.isOffline(getActivity())) {
+//            new OfflineDataManager().update(getActivity(), this);
+//            // new OfflineQuestionAnswerer();
+//        }
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(android.R.id.content, new QAFragment())
                 .commit();
         return view;
     }
+
 
     @Override
     public void onUpdateFailed() {
@@ -50,6 +44,5 @@ public class HomeFragment extends Fragment implements OfflineDataManager.Callbac
     @Override
     public void onUpdateCompleted(String newRevision) {
 
-    }
+    }*/
 }
-
