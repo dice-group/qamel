@@ -1,28 +1,16 @@
 package de.qa.qa;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import org.eclipse.rdf4j.model.Value;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.MalformedQueryException;
 import org.eclipse.rdf4j.query.TupleQueryResult;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.qa.R;
 import de.qa.qa.offline.Answer;
 import de.qa.qa.offline.Match;
 import de.qa.qa.result.FooterResult;
@@ -55,12 +43,10 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
     public List<Answer> mAnswers;
     private TripleStore tripleStore;
 
-    String mDatabasePath;
     public OfflineQuestionAnswerer(Context context) {
-        mDatabasePath = new File(context.getExternalFilesDir(null), "/offline_data")
-                .getAbsolutePath();
-        tripleStore = new TripleStore(mDatabasePath);
 
+        String mDatabasePath = new File(context.getExternalFilesDir(null), "/offline_data").getAbsolutePath();
+        tripleStore = new TripleStore(mDatabasePath);
     }
 
         private void findMatches(String word) {
@@ -68,7 +54,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
                 word = word.replaceAll(" ", ".*").toLowerCase();
                 String candidatesQuery = QUERY_PREFIX +
                         "SELECT DISTINCT ?x ?z WHERE { ?x <http://www.w3.org/2000/01/rdf-schema#label> ?z . FILTER regex(str(?x), \"(?i).*" + word + ".*\") FILTER (lang(?z)='en') }";
-                TupleQueryResult result = TripleStore.query(mDatabasePath,candidatesQuery);
+                TupleQueryResult result = tripleStore.query(candidatesQuery);
                 while (result.hasNext())
                 {
                     BindingSet set = result.next();
@@ -118,19 +104,19 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             //Count occurrences as subject
             String query = QUERY_PREFIX +
                     "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-            occurrences[0] = Integer.parseInt(TripleStore.query(mDatabasePath, query).next()
+            occurrences[0] = Integer.parseInt(tripleStore.query( query).next()
                     .getValue("c")
                     .stringValue());
             //Count occurrences as predicate
             query = QUERY_PREFIX +
                     "SELECT (count (?x) as ?c) WHERE { ?x <" + uri + "> ?y }";
-            occurrences[1] = Integer.parseInt(TripleStore.query(mDatabasePath, query).next()
+            occurrences[1] = Integer.parseInt(tripleStore.query( query).next()
                     .getValue("c")
                     .stringValue());
             //Count occurrences as object
             query = QUERY_PREFIX +
                     "SELECT (count (?x) as ?c) WHERE { <" + uri + "> ?x ?y }";
-            occurrences[2] = Integer.parseInt(TripleStore.query(mDatabasePath, query).next()
+            occurrences[2] = Integer.parseInt(tripleStore.query( query).next()
                     .getValue("c")
                     .stringValue());
             return occurrences;
@@ -244,7 +230,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
 
                 }
                 queryBuilder.append("}");
-                TupleQueryResult result = TripleStore.query(mDatabasePath, queryBuilder.toString());
+                TupleQueryResult result = tripleStore.query( queryBuilder.toString());
                 while (result.hasNext()) {
                     maxConfidence = Math.max(evaluateResult(thing, result.next()), maxConfidence);
                     if (maxConfidence >= -thing.getDistance()) {
@@ -297,7 +283,7 @@ public class OfflineQuestionAnswerer implements QuestionAnswerer{
             String query = "SELECT ?l WHERE { <" + uri + "> " +
                     "<http://www.w3.org/2000/01/rdf-schema#label> ?l. FILTER (lang(?l='en'))}";
             System.out.println("Get Label Query: "+query);
-            TupleQueryResult labelResult = TripleStore.query(mDatabasePath, query);
+            TupleQueryResult labelResult = tripleStore.query( query);
             Value value;
             if (!labelResult.hasNext() || (value = labelResult.next().getValue("l")) == null)
                 return null;

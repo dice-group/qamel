@@ -15,7 +15,7 @@ public class TripleStore {
     private static final String TAG = TripleStore.class.getSimpleName();
 
     private Repository sDatabase;
-    private static RepositoryConnection connection;
+    private  RepositoryConnection connection;
 
     public TripleStore(String database) {
         File dbDir = new File(database);
@@ -26,7 +26,7 @@ public class TripleStore {
         connection = sDatabase.getConnection();
     }
 
-    public static TupleQueryResult query(String database, String sparqlQuery) {
+    public TupleQueryResult query(String  sparqlQuery) {
         TupleQuery tupleQuery = connection.prepareTupleQuery(sparqlQuery);
         TupleQueryResult evaluate = tupleQuery.evaluate();
         return evaluate;

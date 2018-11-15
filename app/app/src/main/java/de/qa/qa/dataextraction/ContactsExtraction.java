@@ -63,10 +63,7 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
         view = inflater.inflate(R.layout.fragment_contacts, container, false);
         contactList = view.findViewById(R.id.contacts);
         contactList.setOnItemClickListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSIONS_REQUEST_READ_CONTACTS );
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
+
             // Storing contacts data in a cursorPERMISSION_REQUEST_CODE
             Cursor cursor = getActivity().getContentResolver().query(
                     ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
@@ -129,7 +126,7 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
             } finally {
                 cursor.close();
             }
-        }
+
         return view;
     }
 

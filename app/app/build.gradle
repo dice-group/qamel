@@ -10,11 +10,12 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
-        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -22,7 +23,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    /*packagingOptions {
 
+            exclude 'org/apache/commons/codec/language/bm/*'
+            exclude 'org/eclipse/rdf4j/repository/config/*'
+            exclude 'META-INF/*'
+            exclude 'org/apache/http/*'
+            exclude 'org/apache/http/entity/mime/version.properties'
+            exclude 'org/apache/xerces/impl/msg/*'
+            exclude 'org/apache/http/client/*'
+            exclude 'org/apache/xerces/impl/xpath/regex/*'
+            exclude 'org/apache/xml/serialize/HTMLEntities.res'
+            exclude 'org/apache/jena/tdb/tdb-properties.xml'
+            exclude 'log4j.properties'
+            exclude 'mozilla/public-suffix-list.txt'
+            exclude 'org/apache/http/nio/version.properties'
+            exclude 'log4j.xml'
+            exclude 'plugin.xml'
+            exclude 'stanfordqa-dev.json'
+            exclude 'META-INF/org/apache/logging/log4j/core/config/plugins/Log4j2Plugins.dat'
+
+    }*/
 }
 
 dependencies {
@@ -30,11 +51,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    android {
-        defaultConfig {
-            multiDexEnabled true
-        }
-    }
+
     compile 'de.julielab:xercesImpl:2.11.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'
@@ -50,8 +67,8 @@ dependencies {
     compile 'de.mm20.rdf4a:rdf4j-sail-api:1.1-SNAPSHOT'
     compile 'de.mm20.rdf4a:rdf4j-sail-nativerdf:1.1-SNAPSHOT'
     compile 'info.debatty:java-string-similarity:0.24'
-    compile 'com.google.android.gms:play-services-auth:11.8.0'
-    compile 'com.google.android.gms:play-services-location:11.8.0'
+    compile 'com.google.android.gms:play-services-auth:16.0.0'
+    compile 'com.google.android.gms:play-services-location:16.0.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:27.0.0-beta1'
     compile 'com.android.support:design:27.0.0-beta1'
@@ -60,11 +77,17 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.mnode.ical4j:ical4j:1.0.5'
     // Glide image library
+    //
+    annotationProcessor 'com.google.auto.value:auto-value:1.1'
+    annotationProcessor 'org.apache.logging.log4j:log4j-core:2.6.2'
+    annotationProcessor 'ch.qos.cal10n:cal10n-api:0.8.1'
+    //
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
-    compile group: 'com.google.android.gms', name: 'play-services-maps', version: '11.8.0'
+    compile group: 'com.google.android.gms', name: 'play-services-maps', version: '16.0.0'
     compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
     compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
+   // compile group: 'org.aksw.qamel', name: 'OQA', version: '0.0.2'
     compile project(':offlinedatasynchronizer')
     testCompile 'junit:junit:4.12'
 }

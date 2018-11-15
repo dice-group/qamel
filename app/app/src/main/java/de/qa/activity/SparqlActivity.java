@@ -14,6 +14,7 @@ import org.eclipse.rdf4j.query.TupleQueryResult;
 import java.io.File;
 
 import de.qa.R;
+import de.qa.qa.OfflineQuestionAnswerer;
 import de.qa.qa.triplestore.TripleStore;
 
 /**
@@ -32,15 +33,15 @@ public class SparqlActivity extends Activity {
         EditText editText = findViewById(R.id.sparqlEditText);
         String query = editText.getText().toString();
         try {
-            TupleQueryResult result = TripleStore.query(new File(getExternalFilesDir(null),
-                    "/offline_data").getAbsolutePath(), query);
             StringBuilder out = new StringBuilder();
+/*
+            TupleQueryResult result = OfflineQuestionAnswerer.tripleStore.query(query);
             while (result.hasNext()) {
                 BindingSet set = result.next();
                 for (String s : set.getBindingNames()) {
                     out.append(s).append(": ").append(set.getValue(s).stringValue()).append("\n");
                 }
-            }
+            }*/
             ((TextView) findViewById(R.id.resultText)).setText(out.toString());
         } catch (MalformedQueryException e) {
             Toast.makeText(this, "Invalid query", Toast.LENGTH_SHORT).show();

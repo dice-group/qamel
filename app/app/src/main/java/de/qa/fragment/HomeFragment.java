@@ -18,16 +18,10 @@ import de.qa.synchronizer.OfflineDataManager;
  */
 
 public class HomeFragment extends Fragment{
-
-   /* View view;
+    View view;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
        view = inflater.inflate(R.layout.fragment_home, container, false);
-
-//        if (!Utils.isOffline(getActivity())) {
-//            new OfflineDataManager().update(getActivity(), this);
-//            // new OfflineQuestionAnswerer();
-//        }
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(android.R.id.content, new QAFragment())
@@ -36,13 +30,5 @@ public class HomeFragment extends Fragment{
     }
 
 
-    @Override
-    public void onUpdateFailed() {
 
-    }
-
-    @Override
-    public void onUpdateCompleted(String newRevision) {
-
-    }*/
 }

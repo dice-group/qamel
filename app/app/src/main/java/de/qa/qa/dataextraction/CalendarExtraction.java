@@ -6,6 +6,7 @@ package de.qa.qa.dataextraction;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -50,15 +51,7 @@ public class CalendarExtraction extends Fragment {
       //  calList=(ListView)view.findViewById(R.id.listCalendar);
         textCal=(TextView) view.findViewById(R.id.calendar);
         // Checking for system permissions to access contacts data
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            // Requesting system permission if it wasn't granted
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.READ_CALENDAR},
-                    MY_PERMISSIONS_REQUEST_READ_CALENDAR);
-
-        } else {
             // Defining which event data will be extracted
             String[] INSTANCE_PROJECTION = new String[]{
                     CalendarContract.Instances.EVENT_TIMEZONE,
@@ -153,7 +146,7 @@ public class CalendarExtraction extends Fragment {
             // TODO: There were some errors validating the iCal String on icalendar.org/validator.html
             // eg time stamp and event id are missing, time zone seems to be incorrect
 
-        }
+
         return view;
     }
 

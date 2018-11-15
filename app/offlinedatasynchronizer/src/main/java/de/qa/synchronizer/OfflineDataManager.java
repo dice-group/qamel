@@ -147,7 +147,7 @@ public class OfflineDataManager {
             } else {
                 File file = new File(targetDir, entry.getName());
                 IOUtils.copy(tarIn, new FileOutputStream(file));
-                Log.d(TAG, "Extracting " + file.getAbsolutePath());
+                System.out.println( "Extracting " + file.getAbsolutePath());
             }
         }
         tarIn.close();

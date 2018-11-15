@@ -28,7 +28,7 @@ public class WdaquaQuestionAnswerer implements QuestionAnswerer{
     Button online_test;
     String data = "";
 
-   private static final String TEBAQA_URI = "http://185.2.103.92:8081/tebaqa/qa";
+   private static final String TEBAQA_URI = "http://139.18.2.39:8187/qa";
 
     @Override
     public QAResult[] answerQuestion(String question) {

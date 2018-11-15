@@ -1,11 +1,15 @@
 package de.qa.activity;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,15 +17,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.apache.commons.compress.archivers.dump.DumpArchiveEntry;
+
 import de.qa.R;
 import de.qa.fragment.HomeFragment;
 import de.qa.fragment.QAFragment;
+import de.qa.misc.Utils;
 import de.qa.qa.dataextraction.CalendarExtraction;
 import de.qa.qa.dataextraction.ContactsExtraction;
 import de.qa.qa.dataextraction.DataExtraction;
@@ -31,10 +40,7 @@ import de.qa.synchronizer.OfflineDataManager;
 
 public class MainActivity extends AppCompatActivity implements OfflineDataManager.Callback {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private TripleStore mTripleStore;
-    private DataExtraction dataExtraction;
-    Context context;
+
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
@@ -52,18 +58,21 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     public MainActivity activity;
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
+    int PERMISSION_ALL = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dataExtraction = new DataExtraction(context);
-            }
-        });
-        thread.start();
+        String[] PERMISSIONS = {
+                android.Manifest.permission.READ_CONTACTS,
+                Manifest.permission.READ_CALENDAR,
+        };
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mHandler = new Handler();
@@ -83,8 +92,23 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
         }
+        if (!Utils.isOffline(this)) {
+            new OfflineDataManager().update(this, this);
 
+        }
+       
     }
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void loadNavHeader() {
         txtName.setText("");
         txtWebsite.setText("");
@@ -245,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       return true;
+        return true;
     }
 
 
@@ -269,7 +293,6 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
 
 
 }
-
 
 
 
