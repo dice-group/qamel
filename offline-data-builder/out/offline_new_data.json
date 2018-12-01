@@ -1,7 +1,9 @@
-{
-"revision": "733d6fa5d59eef89dc29556fc0092f6e4046b51bff0b4c09ae47b8baabfed87d",
-"timestamp": "1543661980257",
-"size": "3007",
-"md5": "3dabbfdfbe9ca77e9e3bdfecb97a68e2",
-"url": "https://github.com/param-jot/qamel/raw/master/offline-data-builder/out/offline_new_data.tar.gz",
-}
+[
+  {
+    "revision": "733d6fa5d59eef89dc29556fc0092f6e4046b51bff0b4c09ae47b8baabfed87d",
+    "timestamp": 1543661980257,
+    "size": 3007,
+    "md5": "3dabbfdfbe9ca77e9e3bdfecb97a68e2",
+    "url": "https://github.com/param-jot/qamel/raw/master/offline-data-builder/out/offline_new_data.tar.gz"
+  }
+]
