@@ -1,9 +1,9 @@
 [
   {
-    "revision": "9c627e8aa236232b036f5842fc0de4fefa9be5eec69621996b1549140206ff0c",
-    "timestamp": 1543748659681,
-    "size": 3131,
-    "md5": "395c5a2f9c70a1090ea51ad52630b1d4",
+    "revision": "2f0dc5b3f9fc570716e11d3428fb2a5468b1aae73b2903c1067feb28e26672f3",
+    "timestamp": 1543778643134,
+    "size": 649974,
+    "md5": "26ab21c178d23f99f415248187da9151",
     "url": "https://github.com/param-jot/qamel/raw/master/offline-data-builder/out/offline_new_data.tar.gz"
   }
 ]
