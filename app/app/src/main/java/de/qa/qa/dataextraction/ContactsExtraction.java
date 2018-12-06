@@ -54,8 +54,6 @@ public class ContactsExtraction extends Fragment implements AdapterView.OnItemCl
     String fullName;
     String name;
     Statement nameStatement;
-    private String filename = "SampleFile.txt";
-    File myExternalFile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

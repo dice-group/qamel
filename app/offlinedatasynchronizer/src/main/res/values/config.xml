@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- TODO Insert the URI of your JSON file here -->
-    <string name="config_jsonUri">https://gist.githubusercontent.com/MM2-0/85a678ffdbb35d247ffe5b8e5af9bf0f/raw/2592437027b9b3927f27cf9845df77874c7b26e7/offline-data.json</string>
+<!-- DBpedia offline data
+  <string name="config_jsonUri">https://gist.githubusercontent.com/MM2-0/85a678ffdbb35d247ffe5b8e5af9bf0f/raw/2592437027b9b3927f27cf9845df77874c7b26e7/offline-data.json</string>
+-->
+
+   <!-- User offline data -->
+    <string name="config_jsonUri">https://raw.githubusercontent.com/dice-group/qamel/master/offline-data-builder/out/offline_new_data.json</string>
+
 </resources>

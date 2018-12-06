@@ -18,32 +18,31 @@ android {
 
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    release {
+        minifyEnabled true
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        multiDexEnabled = true
+        debuggable = true
+
+    }
+    }
+
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    signingConfigs {
+        config {
+            storeFile file('/home/paramjot/Desktop/android.jks')
+            storePassword System.getenv('qamelapp')
+            keyAlias = 'key1'
+            keyPassword System.getenv('qamelapp')
         }
     }
-    /*packagingOptions {
-
-            exclude 'org/apache/commons/codec/language/bm/*'
-            exclude 'org/eclipse/rdf4j/repository/config/*'
-            exclude 'META-INF/*'
-            exclude 'org/apache/http/*'
-            exclude 'org/apache/http/entity/mime/version.properties'
-            exclude 'org/apache/xerces/impl/msg/*'
-            exclude 'org/apache/http/client/*'
-            exclude 'org/apache/xerces/impl/xpath/regex/*'
-            exclude 'org/apache/xml/serialize/HTMLEntities.res'
-            exclude 'org/apache/jena/tdb/tdb-properties.xml'
-            exclude 'log4j.properties'
-            exclude 'mozilla/public-suffix-list.txt'
-            exclude 'org/apache/http/nio/version.properties'
-            exclude 'log4j.xml'
-            exclude 'plugin.xml'
-            exclude 'stanfordqa-dev.json'
-            exclude 'META-INF/org/apache/logging/log4j/core/config/plugins/Log4j2Plugins.dat'
-
-    }*/
 }
 
 dependencies {

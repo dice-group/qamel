@@ -66,7 +66,7 @@ public class OfflineDataManager {
                     dlRequest
                             .setTitle(mContext.getString(R.string.notification_download_title))
                             .setDestinationInExternalFilesDir(mContext, null,
-                                    "offline_data.tar.gz")
+                                    "offline_new_data.tar.gz")
                             .setNotificationVisibility(
                                     DownloadManager.Request.VISIBILITY_VISIBLE)
                             .setVisibleInDownloadsUi(false);
@@ -82,7 +82,7 @@ public class OfflineDataManager {
 
         private void deleteOfflineData() {
             try {
-                FileUtils.deleteDirectory(new File(mContext.getExternalFilesDir(null), "offline_data"));
+                FileUtils.deleteDirectory(new File(mContext.getExternalFilesDir(null), "offline_new_data"));
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(), Log.getStackTraceString(e));
             }
@@ -124,7 +124,7 @@ public class OfflineDataManager {
     };
 
     private String getInstalledRevision() {
-        File revisionFile = new File(mContext.getExternalFilesDir(null), "offline_data/revision");
+        File revisionFile = new File(mContext.getExternalFilesDir(null), "offline_new_data/revision");
         try {
             BufferedReader reader = new BufferedReader(new FileReader(revisionFile));
             String revision = reader.readLine();
@@ -136,7 +136,7 @@ public class OfflineDataManager {
     }
 
     private void extractUpdate(Context context) throws IOException {
-        File gzFile = new File(context.getExternalFilesDir(null), "offline_data.tar.gz");
+        File gzFile = new File(context.getExternalFilesDir(null), "offline_new_data.tar.gz");
         File targetDir = context.getExternalFilesDir(null);
         GZIPInputStream gzIn = new GZIPInputStream(new FileInputStream(gzFile));
         TarArchiveInputStream tarIn = new TarArchiveInputStream(gzIn);

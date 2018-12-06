@@ -1,12 +1,12 @@
 
 package de.qa.fragment;
 
-import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -32,7 +32,7 @@ import de.qa.R;
 import de.qa.misc.Utils;
 import de.qa.qa.OfflineQuestionAnswerer;
 import de.qa.qa.QuestionAnswerer;
-import de.qa.qa.WdaquaQuestionAnswerer;
+import de.qa.qa.TeBaQAQuestionAnswerer;
 import de.qa.qa.result.FooterResult;
 import de.qa.qa.result.HeaderResult;
 import de.qa.qa.result.QAResult;
@@ -160,6 +160,7 @@ public class QAFragment extends Fragment implements OnClickListener,
         if (view == mbtSpeak) {
             mlist.setAdapter(null);
             mlist.setVisibility(VISIBLE);
+            mlist.setBackgroundColor(Color.WHITE);
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
             // Specify the calling package to identify your application
@@ -232,7 +233,7 @@ public class QAFragment extends Fragment implements OnClickListener,
             if (Utils.isOffline(context)) {
                 answerer = new OfflineQuestionAnswerer(context);
             } else {
-                answerer = new WdaquaQuestionAnswerer();
+                answerer = new TeBaQAQuestionAnswerer();
             }
             return answerer.answerQuestion(question);
         }

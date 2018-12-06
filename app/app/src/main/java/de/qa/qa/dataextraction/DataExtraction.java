@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class DataExtraction {
     private final LocationExtraction locationExtraction;
-    private final OrientationExtraction orientationExtraction;
     private final ContactsExtraction contactsExtraction;
     private final CalendarExtraction calendarExtraction;
     Location location;
@@ -24,7 +23,6 @@ public class DataExtraction {
         this.context = context;
         // Initialize extraction of location + orientation
         locationExtraction = new LocationExtraction();
-        orientationExtraction = new OrientationExtraction();
         contactsExtraction = new ContactsExtraction();
         // Initialize calendar extraction
         calendarExtraction = new CalendarExtraction();
@@ -33,15 +31,9 @@ public class DataExtraction {
 
     void start() {
         locationExtraction.onLocationChanged(location);
-        orientationExtraction.startOrientationUpdates();
-    }
-
-    void stop() {
-        orientationExtraction.stopOrientationUpdates();
     }
 
     JSONObject getData() {
-        Double orientation = orientationExtraction.getHeading();
         String iCalendar = calendarExtraction.getCalendar();
         ArrayList<String> contacts = contactsExtraction.getContacts();
 
@@ -50,7 +42,6 @@ public class DataExtraction {
         try {
             json.put("lat", String.valueOf(location.getLatitude()));
             json.put("long", String.valueOf(location.getLongitude()));
-            json.put("orient", String.valueOf(orientation));
             json.put("vcards", contacts);
             json.put("ical", iCalendar);
         } catch (Exception e) {

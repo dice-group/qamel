@@ -17,25 +17,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.apache.commons.compress.archivers.dump.DumpArchiveEntry;
-
 import de.qa.R;
 import de.qa.fragment.HomeFragment;
 import de.qa.fragment.QAFragment;
 import de.qa.misc.Utils;
 import de.qa.qa.dataextraction.CalendarExtraction;
 import de.qa.qa.dataextraction.ContactsExtraction;
-import de.qa.qa.dataextraction.DataExtraction;
 import de.qa.qa.dataextraction.LocationExtraction;
-import de.qa.qa.triplestore.TripleStore;
 import de.qa.synchronizer.OfflineDataManager;
 
 public class MainActivity extends AppCompatActivity implements OfflineDataManager.Callback {
@@ -96,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
             new OfflineDataManager().update(this, this);
 
         }
-       
+
     }
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
@@ -167,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
                 return locationFragment;
 
             default:
-                return new HomeFragment();
+                return new QAFragment();
         }
     }
 

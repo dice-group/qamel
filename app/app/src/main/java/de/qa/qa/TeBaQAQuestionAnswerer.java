@@ -23,7 +23,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class WdaquaQuestionAnswerer implements QuestionAnswerer{
+public class TeBaQAQuestionAnswerer implements QuestionAnswerer{
     private static final String TAG = null;
     Button online_test;
     String data = "";

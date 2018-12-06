@@ -21,12 +21,11 @@ public class HomeFragment extends Fragment{
     View view;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-       view = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(android.R.id.content, new QAFragment())
                 .commit();
-        return view;
+    return view;
     }
 
 

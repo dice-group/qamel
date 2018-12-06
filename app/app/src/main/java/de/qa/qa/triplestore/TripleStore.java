@@ -22,7 +22,7 @@ public class TripleStore {
         sDatabase = new SailRepository(new NativeStore(dbDir));
         sDatabase.initialize();
         sDatabase.isInitialized();
-
+        System.out.println("Database Initialize......");
         connection = sDatabase.getConnection();
     }
 
