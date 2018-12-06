@@ -7,12 +7,8 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.rio.RDFFormat;
-import org.eclipse.rdf4j.sail.memory.MemoryStore;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
-
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -32,16 +28,15 @@ public class DBBuilder_CountSPO {
         try {
             File outputDir = new File("out");
             File outputFile = new File(outputDir, "out.ttl");
-            if (outputDir.exists() && System.console().readLine("W: Output directory already exists and will be " +
-                    "overwritten. Continue? [Y/n] ").toLowerCase().startsWith("n")) {
-                return;
-            } else {
-                if (outputDir.exists()) {
-                    System.out.println("I: Deleting existing out directory...");
-                    FileUtils.deleteDirectory(outputDir);
-                    System.out.println("I:  --> Done.");
-                }
+           
+
+            if (outputDir.exists()) {
+                System.out.println("I: Deleting existing out directory...");
+                FileUtils.deleteDirectory(outputDir);
+                System.out.println("I:  --> Done.");
             }
+        
+            
             outputDir.mkdirs();
             File inputFile = new File(args[0]);
             System.out.println("I: Reading entities from input file " + inputFile.getPath() + "...");
@@ -58,9 +53,9 @@ public class DBBuilder_CountSPO {
                     line = reader.readLine();
                     continue;
                 }
-                String subj = line.substring(0, line.indexOf(' '));
+                String subj = line.substring(0, line.indexOf(' ')+1);
                 line = line.substring(line.indexOf(' ') + 1);
-                String pred = line.substring(0, line.indexOf(' '));
+                String pred = line.substring(0, line.indexOf(' ')+1);
                 line = line.substring(line.indexOf(' ') + 1);
                 String obj;
                 //Object is a literal, doesn't have to be counted
@@ -103,9 +98,9 @@ public class DBBuilder_CountSPO {
                     continue;
                 }
                 String triple = line;
-                String subj = line.substring(0, line.indexOf(' '));
+                String subj = line.substring(0, line.indexOf(' ')+1);
                 line = line.substring(line.indexOf(' ') + 1);
-                String pred = line.substring(0, line.indexOf(' '));
+                String pred = line.substring(0, line.indexOf(' ')+1);
                 line = line.substring(line.indexOf(' ') + 1);
                 String obj;
                 // object is not an URI, must be a literal
@@ -136,16 +131,18 @@ public class DBBuilder_CountSPO {
             System.out.println("I:  --> " + triples + " triples have been written.");
             //Write triples to Sail database (for RDF4J)
             System.out.println("I: " + "Writing database...");
-            File databaseDir = new File(outputDir, "offline_data");
+            File databaseDir = new File(outputDir, "offline_new_data");
             Repository db = new SailRepository(new NativeStore(databaseDir));
             db.initialize();
             RepositoryConnection connection = db.getConnection();
-            InputStream inputStream = new FileInputStream(outputFile);
+            InputStream inputStream = new FileInputStream(outputFile); 
             connection.add(inputStream, "", RDFFormat.NTRIPLES);
+            connection.commit();
             db.shutDown();
             writer = new PrintWriter(new FileWriter(new File(databaseDir, "revision")));
             writer.print(revision);
-            writer.close();
+            writer.close();    
+            connection.close();
             System.out.println("I:  --> Database successfully created.");
             //Compress database to one single tar.gz which can be distributed
             System.out.println("I: Compressing database...");
@@ -156,18 +153,23 @@ public class DBBuilder_CountSPO {
             Date timeDiff = new Date(System.currentTimeMillis() - startTime);
             DateFormat df = new SimpleDateFormat("HH:mm:ss");
             df.setTimeZone(TimeZone.getTimeZone("GMT"));
+            
             System.out.println("I:  FINISHED. (" + df.format(timeDiff) + ")");
             System.out.println("I:   --> Offline data has been created successfully.");
             System.out.println("I:   --> Output file: " + tarGz.getPath());
             System.out.println("I:   --> Revision: " + revision);
             System.out.println("");
+            System.out.println("[");
             System.out.println("{");
             System.out.println("\"revision\": \"" + revision + "\",");
-            System.out.println("\"timestamp\": \"" + System.currentTimeMillis() + "\",");
-            System.out.println("\"size\": \"" + FileUtils.sizeOf(tarGz) + "\",");
+            System.out.println("\"timestamp\":"+" " + System.currentTimeMillis() +",");
+            System.out.println("\"size\":"+" " + FileUtils.sizeOf(tarGz) +",");
             System.out.println("\"md5\": \"" + md5 + "\",");
-            System.out.println("\"url\": \"\"");
+            String url = "https://github.com/param-jot/qamel/raw/master/offline-data-builder/out/offline_new_data.tar.gz";
+            System.out.println("\"url\": \"" + url + "\",");
             System.out.println("}");
+            System.out.println("]");
+            
         } catch (FileNotFoundException e) {
             System.err.println("E: input file not found!");
         } catch (IOException | NoSuchAlgorithmException e) {

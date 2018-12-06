@@ -32,16 +32,13 @@ public class DBBuilder_CountS {
         try {
             File outputDir = new File("out");
             File outputFile = new File(outputDir, "out.ttl");
-            if (outputDir.exists() && System.console().readLine("W: Output directory already exists and will be " +
-                    "overwritten. Continue? [Y/n] ").toLowerCase().startsWith("n")) {
-                return;
-            } else {
+
                 if (outputDir.exists()) {
                     System.out.println("I: Deleting existing out directory...");
                     FileUtils.deleteDirectory(outputDir);
                     System.out.println("I:  --> Done.");
                 }
-            }
+            
             outputDir.mkdirs();
             File inputFile = new File(args[0]);
             System.out.println("I: Reading entities from input file " + inputFile.getPath() + "...");
@@ -101,7 +98,7 @@ public class DBBuilder_CountS {
             RepositoryConnection connection = db.getConnection();
             InputStream inputStream = new FileInputStream(outputFile);
             connection.add(inputStream, "", RDFFormat.NTRIPLES);
-             inputStream = new FileInputStream("dbpedia_2016-10.nt");
+             inputStream = new FileInputStream("out/out.ttl");
             connection.add(inputStream, "", RDFFormat.NTRIPLES);
             db.shutDown();
             writer = new PrintWriter(new FileWriter(new File(databaseDir, "revision")));
@@ -109,15 +106,15 @@ public class DBBuilder_CountS {
             writer.close();
             System.out.println("I:  --> Database successfully created.");
 //            //Compress database to one single tar.gz which can be distributed
-//            System.out.println("I: Compressing database...");
-//            File tarGz = new File(databaseDir.getPath() + ".tar.gz");
-//            createTarGZ(databaseDir, tarGz);
-//            String md5 = getMD5(tarGz);
-//            System.out.println("I:  --> Database has been compressed into " + tarGz.getPath());
-//            Date timeDiff = new Date(System.currentTimeMillis() - startTime);
-//            DateFormat df = new SimpleDateFormat("HH:mm:ss");
-//            df.setTimeZone(TimeZone.getTimeZone("GMT"));
-//            System.out.println("I:  FINISHED. (" + df.format(timeDiff) + ")");
+            System.out.println("I: Compressing database...");
+            File tarGz = new File(databaseDir.getPath() + ".tar.gz");
+            createTarGZ(databaseDir, tarGz);
+            String md5 = getMD5(tarGz);
+            System.out.println("I:  --> Database has been compressed into " + tarGz.getPath());
+            Date timeDiff = new Date(System.currentTimeMillis() - startTime);
+            DateFormat df = new SimpleDateFormat("HH:mm:ss");
+            df.setTimeZone(TimeZone.getTimeZone("GMT"));
+            System.out.println("I:  FINISHED. (" + df.format(timeDiff) + ")");
 //            System.out.println("I:   --> Offline data has been created successfully.");
 //            System.out.println("I:   --> Output file: " + tarGz.getPath());
 //            System.out.println("I:   --> Revision: " + revision);
@@ -128,6 +125,7 @@ public class DBBuilder_CountS {
 //            System.out.println("\"size\": \"" + FileUtils.sizeOf(tarGz) + "\",");
 //            System.out.println("\"md5\": \"" + md5 + "\",");
 //            System.out.println("\"url\": \"\"");
+            
 //            System.out.println("}");
         } catch (FileNotFoundException e) {
             System.err.println("E: input file not found!");
