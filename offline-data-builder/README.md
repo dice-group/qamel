@@ -18,3 +18,18 @@ Run
 ```
 $ mvn clean compile assembly:single
 ```
+### Testing Questions for offline QA
+Area of cologne/ What is the area of cologne
+Famous bridge in cologne
+What is the famous food in cologne
+What is the name of cologne perfume/famous cologne perfume
+number of animals in cologne zoo
+Sports in cologne
+Which beer brewed in cologne
+what is the source of rhein
+what is the length of rhein
+inhabitants in cologne
+Date of my meeting/What is the date of meeting
+time of my deutsch unterricht
+What is the time of my meeting
+date of vacation
