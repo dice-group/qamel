@@ -19,17 +19,18 @@ Run
 $ mvn clean compile assembly:single
 ```
 ### Testing Questions for offline QA
-Area of cologne/ What is the area of cologne
-Famous bridge in cologne
-What is the famous food in cologne
-What is the name of cologne perfume/famous cologne perfume
-number of animals in cologne zoo
-Sports in cologne
-Which beer brewed in cologne
-what is the source of rhein
-what is the length of rhein
-inhabitants in cologne
-Date of my meeting/What is the date of meeting
-time of my deutsch unterricht
-What is the time of my meeting
-date of vacation
+1. Area of cologne/ What is the area of cologne
+2. Famous bridge in cologne
+3. What is the famous food in cologne
+4. What is the name of cologne perfume/famous cologne perfume
+5. number of animals in cologne zoo
+6. Sports in cologne
+7. Which beer brewed in cologne
+8. what is the source of rhein
+9. what is the length of rhein
+10. inhabitants in cologne
+11. Date of my meeting/What is the date of meeting
+12. time of my deutsch unterricht
+13. What is the time of my meeting
+14. date of vacation
+15. Archbishop of cologne
