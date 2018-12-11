@@ -1,9 +1,9 @@
 [
   {
-    "revision": "3bd09034b4f0f04d36eccacd000f1fb603906296d534344717d12b585fbedea0",
-    "timestamp": 1544104349033,
-    "size": 3694,
-    "md5": "a28514b530fe09464aa2c96b3483b58d",
+    "revision": "e63e26332f93a02e270453ac2c10e62e0cd8e7014f3b21f1d3ff354989bb6fef",
+    "timestamp": 1544518757614,
+    "size": 4701,
+    "md5": "6ad76371d30454671b01d253a05635ac",
     "url": "https://github.com/dice-group/qamel/raw/master/offline-data-builder/out/offline_new_data.tar.gz"
   }
 ]

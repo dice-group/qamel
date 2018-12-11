@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 
 public class DataExtraction {
-    private final LocationExtraction locationExtraction;
     private final ContactsExtraction contactsExtraction;
     private final CalendarExtraction calendarExtraction;
     Location location;
@@ -22,7 +21,6 @@ public class DataExtraction {
     public DataExtraction(Context context) {
         this.context = context;
         // Initialize extraction of location + orientation
-        locationExtraction = new LocationExtraction();
         contactsExtraction = new ContactsExtraction();
         // Initialize calendar extraction
         calendarExtraction = new CalendarExtraction();
@@ -30,7 +28,7 @@ public class DataExtraction {
     }
 
     void start() {
-        locationExtraction.onLocationChanged(location);
+
     }
 
     JSONObject getData() {

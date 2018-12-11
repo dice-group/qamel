@@ -4,7 +4,6 @@ package de.qa.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -24,12 +23,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.qa.R;
-import de.qa.fragment.HomeFragment;
 import de.qa.fragment.QAFragment;
 import de.qa.misc.Utils;
 import de.qa.qa.dataextraction.CalendarExtraction;
 import de.qa.qa.dataextraction.ContactsExtraction;
-import de.qa.qa.dataextraction.LocationExtraction;
 import de.qa.synchronizer.OfflineDataManager;
 
 public class MainActivity extends AppCompatActivity implements OfflineDataManager.Callback {
@@ -46,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
     private static final String TAG_HOME = "QA";
     private static final String TAG_CONTACT = "Contact";
     private static final String TAG_CALENDAR = "Calendar";
-    private static final String TAG_LOCATION = "Location";
     public static String CURRENT_TAG = TAG_HOME;
     private String[] activityTitles;
     public MainActivity activity;
@@ -156,9 +152,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
             case 2:
                 CalendarExtraction calendarFragment = new CalendarExtraction();
                 return calendarFragment;
-            case 3:
-                LocationExtraction locationFragment = new LocationExtraction();
-                return locationFragment;
+
 
             default:
                 return new QAFragment();
@@ -190,10 +184,7 @@ public class MainActivity extends AppCompatActivity implements OfflineDataManage
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_CALENDAR;
                         break;
-                    case R.id.nav_location:
-                        navItemIndex = 3;
-                        CURRENT_TAG = TAG_LOCATION;
-                        break;
+
                     default:
                         navItemIndex = 0;
                 }
