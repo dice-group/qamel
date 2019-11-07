@@ -55,12 +55,12 @@
                 android:layout_alignParentStart="true"
                 android:layout_margin="8dp"
                 android:layout_toLeftOf="@+id/qa_btn"
-                android:layout_toStartOf="@+id/btSpeak"
+                android:layout_toStartOf="@+id/audio_input"
                 android:background="@null"
                 android:hint="@string/question_input_hint"/>
 
             <ImageButton
-                android:id="@+id/btSpeak"
+                android:id="@+id/audio_input"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="5dp"

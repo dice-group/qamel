@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -28,6 +29,8 @@ import android.widget.ListView;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 import de.qa.R;
 import de.qa.misc.Utils;
 import de.qa.qa.OfflineQuestionAnswerer;
@@ -56,7 +59,7 @@ public class QAFragment extends Fragment implements OnClickListener,
     private ArrayList<QAResult> mAnswers = new ArrayList<>();
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
     private ListView mlist;
-    private ImageButton mbtSpeak;
+    private ImageButton voiceInput, voiceOutput;
 
     @Nullable
     @Override
@@ -68,8 +71,9 @@ public class QAFragment extends Fragment implements OnClickListener,
         mQaButton.setOnClickListener(this);
         mResultsRecycler = mRootView.findViewById(R.id.results_recycler);
         mlist = mRootView.findViewById(R.id.list);
-        mbtSpeak = mRootView.findViewById(R.id.btSpeak);
-        mbtSpeak.setOnClickListener(this);
+        voiceInput = mRootView.findViewById(R.id.audio_input);
+        voiceOutput = mRootView.findViewById(R.id.audio_output);
+        voiceInput.setOnClickListener(this);
         mlist.setOnItemClickListener(this);
         checkVoiceRecognition();
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -87,7 +91,7 @@ public class QAFragment extends Fragment implements OnClickListener,
         List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(
                 RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
         if (activities.size() == 0) {
-            mbtSpeak.setEnabled(false);
+            voiceInput.setEnabled(false);
             //mbtSpeak.setText("Voice recognizer not present");
         }
     }
@@ -157,7 +161,7 @@ public class QAFragment extends Fragment implements OnClickListener,
             view.setVisibility(INVISIBLE);
             mRootView.findViewById(R.id.progress).setVisibility(VISIBLE);
         }
-        if (view == mbtSpeak) {
+        if (view == voiceInput) {
             mlist.setAdapter(null);
             mlist.setVisibility(VISIBLE);
             mlist.setBackgroundColor(Color.WHITE);
@@ -171,7 +175,12 @@ public class QAFragment extends Fragment implements OnClickListener,
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                     RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
             startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+        }
+        if (view == voiceOutput){
 
+            TextToSpeech tts = new TextToSpeech(getContext(), (TextToSpeech.OnInitListener) getContext());
+            tts.setLanguage(Locale.US);
+            tts.speak(String.valueOf(mAnswers), TextToSpeech.QUEUE_ADD, null);
         }
     }
 
@@ -208,7 +217,7 @@ public class QAFragment extends Fragment implements OnClickListener,
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.e(TAG,"item sleected position"+i);
+        Log.e(TAG,"item selected position"+i);
         mQuestionInput.setText(adapterView.getItemAtPosition(i).toString());
         mlist.setVisibility(GONE);
     }

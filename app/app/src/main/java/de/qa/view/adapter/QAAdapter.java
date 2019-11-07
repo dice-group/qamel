@@ -1,5 +1,6 @@
 package de.qa.view.adapter;
 
+import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.qa.R;
 import de.qa.qa.result.FooterResult;
@@ -22,7 +25,6 @@ public class QAAdapter extends RecyclerView.Adapter<QAAdapter.QaViewHolder> impl
     private ArrayList<QAResult> mDataset;
 
     private OnItemClickListener mListener;
-
     public QAAdapter(ArrayList<QAResult> dataset) {
         mDataset = dataset;
     }
@@ -61,7 +63,7 @@ public class QAAdapter extends RecyclerView.Adapter<QAAdapter.QaViewHolder> impl
     @Override
     public void onClick(View view) {
         if(mListener != null) mListener.onItemClick((Integer) view.getTag(), view);
-    }
+        }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
@@ -69,14 +71,15 @@ public class QAAdapter extends RecyclerView.Adapter<QAAdapter.QaViewHolder> impl
 
     static class QaViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
-        ImageView pictureView;
+        ImageView pictureView, audioOutput;
         CardView cardView;
 
-        QaViewHolder(View itemView) {
+        QaViewHolder(final View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.item_qa_text);
             pictureView = itemView.findViewById(R.id.item_qa_picture);
             cardView = itemView.findViewById(R.id.card_view);
+            audioOutput = itemView.findViewById(R.id.audio_output);
         }
     }
 
